@@ -14,12 +14,20 @@ class Navbar extends Component
         'productRemoved' => 'updateCartTotal',
     ];
 
+    private function getCarts()
+    {
+        $carts = json_decode(request()->cookie('carts'), true);
+        $carts = $carts != '' ? $carts:[];
+        return $carts;
+    }
+
     public function mount()
     {
-        $a = Cart::get()['product'];
-        $b = array_column($a, 'id');
-        $c = array_count_values($b);
-        $this->cartTotal = count($c);
+        $carts = $this->getCarts();
+        $brgtotal = collect($carts)->sum(function($q) {
+            return $q['qty'];
+        });
+        $this->cartTotal = $brgtotal;
     }
 
     public function render()
@@ -29,10 +37,12 @@ class Navbar extends Component
 
     public function updateCartTotal()
     {
-        $a = Cart::get()['product'];
-        $b = array_column($a, 'id');
-        $c = array_count_values($b);
-        $this->cartTotal = count($c);
+        $carts = $this->getCarts();
+        $brgtotal = collect($carts)->sum(function($q) {
+            return $q['qty'];
+        });
+        $this->cartTotal = $brgtotal;
+        
 
     }
 }

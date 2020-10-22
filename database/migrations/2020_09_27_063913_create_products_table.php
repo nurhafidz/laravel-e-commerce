@@ -18,11 +18,12 @@ class CreateProductsTable extends Migration
             $table->string('name')->unique();
             $table->integer('harga');
             $table->integer('stock');
-            $table->string('description');
-            $table->string('image');
+            $table->longText('description');
+            $table->longText('image');
             $table->enum('status',['0','1']);
             $table->integer('store_id');
             $table->integer('category_id');
+            $table->integer('weight');
             $table->timestamps();
         });
     }

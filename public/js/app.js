@@ -15,13 +15,6 @@
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-            // tailwind.config.js
-            module.exports = {
-              // ...
-              variants: {
-                backgroundColor: ['responsive', 'hover', 'focus', 'checked'],
-              },
-            }
 /******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);

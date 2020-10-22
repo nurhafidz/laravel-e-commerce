@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\District;
 use App\Models\Province;
-use App\Models\Regency;
-use App\Models\Village;
+use App\Models\City;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +17,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+ 
     public function index()
     {
         //
@@ -25,31 +25,27 @@ class UserController extends Controller
 
     public function detail()
     {
+        
         $check = Auth::user()->alamat_lengkap;
 
         if($check == Null){
             // $data['province']= Province::all();
             $province = Province::pluck("name", "id");
-            return view('detailuser',compact('province'));
+            return view('publik.detailuser',compact('province'));
         }
         else{
             return abort(404);
         }
     }
-    public function getRegency($id)
+    public function getCity($id)
     {
-        $regency = Regency::where("province_id", $id)->pluck("name", "id");
-        return json_encode($regency);
+        $city = City::where("province_id", $id)->pluck("name", "id");
+        return json_encode($city);
     }
     public function getDistrict($id)
     {
-        $district = District::where("regency_id", $id)->pluck("name", "id");
+        $district = District::where("city_id", $id)->pluck("name", "id");
         return json_encode($district);
-    }
-    public function getVillage($id)
-    {
-        $village = Village::where("district_id", $id)->pluck("name", "id");
-        return json_encode($village);
     }
 
     public function detailupdate(Request $request, $id)
@@ -60,7 +56,7 @@ class UserController extends Controller
         $user->tempat_lahir = $request->tmp_lahir;
         $user->tanggal_lahir = $request->tgl_lahir;
         $user->alamat_lengkap = $request->alamat;
-        $user->village_id = $request->village_id;
+        $user->district_id = $request->district;
         $user->kode_pos = $request->kode;
         $user->update();
         return redirect()->route('home.guest');

@@ -19,11 +19,4 @@ class Detailproduct extends Component
     {
         return view('livewire.detailproduct');
     }
-    public function addToCart(int $productId)
-    {
-        Cart::add(Product::where('id',$productId)->first());
-
-        $this->emit('cartAdded'); 
-    }
-    
 }

@@ -24,6 +24,7 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->word,
             'harga' => $this->faker->numberBetween($min = 10000, $max = 900000),
+            'weight' => $this->faker->numberBetween($min = 100, $max = 1000),
             'description' => $this->faker->paragraph($nbSentences = 3, $variableNbSentences = true),
             'stock' => $this->faker->numberBetween($min = 1, $max = 100),
             'image' => $this->faker->imageUrl($width = 500, $height = 500),

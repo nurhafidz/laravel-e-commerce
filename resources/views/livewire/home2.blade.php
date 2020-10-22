@@ -5,19 +5,32 @@
 
             <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl " href="#">
                 Best Seller
+                
             </a>
 
         </div>
     </nav>
 
     @foreach ($products as $product)
-    <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+    <div class="w-1/2 md:w-1/3 lg:w-1/4 p-6 flex flex-col">
         @php
             $get = $product->name;
-            $slug = str_replace('','-',$get);
+            $b = $product->store->name;
+            $slug = str_replace(' ','-',$get);
+            $storename = str_replace(' ','-',$b);
         @endphp
-        <a href="{{url('detail',$slug)}}">
-            <img class="hover:grow hover:shadow-lg" src="{{$product->image}}">
+        <a href="{{url('/shop/'.$storename.'/'.$slug)}}">
+            @php
+                $ex = count(explode('|', $product->image));
+            @endphp
+            @if ($ex != 1)
+            @php
+                $x =explode('|', $product->image,$ex);
+            @endphp
+            <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$x[0])}}">
+            @else
+            <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$product->image)}}">
+            @endif
             <div class="pt-3 flex items-center justify-between">
                 <p class="">{{$product->name}}</p>
                 <svg class="h-6 w-6 fill-current text-gray-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >

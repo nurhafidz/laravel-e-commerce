@@ -44,7 +44,8 @@
                 </div>
                 <div class="my-2 px-2 w-full overflow-hidden sm:my-2 sm:px-2 sm:w-1/2 md:my-2 md:px-2 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2 capitalize ">
                     Daerah pengriman : 
-                    {{Auth::user()->village->name}}, {{Auth::user()->village->district->name}} {{Auth::user()->kode_pos}}, {{Auth::user()->village->district->regency->name}}, {{Auth::user()->village->district->regency->province->name}}
+                    {{Auth::user()->district->name}} {{Auth::user()->kode_pos}}, 
+                    {{Auth::user()->district->city->name}}, {{Auth::user()->district->city->province->name}}
                 </div>
             </div>
         </div>

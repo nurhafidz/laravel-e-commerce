@@ -13,6 +13,9 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+        {{-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"> --}}
+
+
         @livewireStyles
 
         <!-- Scripts -->
@@ -20,6 +23,10 @@
 
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js" integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
+        {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css"> --}}
+
+        <script src="{{asset('vendor/ckeditor/ckeditor.js')}}"></script>
 
         <style>
         .worksans {
@@ -115,11 +122,16 @@
         .custom-number-input button:focus {
             outline: none !important;
         }
-        
+        .inset-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-57%, 20%);
+        }
     </style>
 </head>
 <body class="font-sans antialiased">
-        <!--Nav-->
+    @stack('head')
     
 
     @yield('content')
@@ -128,6 +140,7 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     @livewireScripts
     
-
+    @stack('script')
+    <script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>

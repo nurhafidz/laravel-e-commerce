@@ -45,15 +45,15 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
     public function store()
     {
-        return $this->belongsTo('App\Models\Store');
+        return $this->hasOne('App\Models\Store');
     }
-    public function village()
+    public function district()
     {
-        return $this->belongsTo('App\Models\Village');
+        return $this->belongsTo(District::class);
     }
     public function role()
     {
-        return $this->hasMany('App\Models\Roles');
+        return $this->belongsTo('App\Models\Roles');
     }
     public function order()
     {

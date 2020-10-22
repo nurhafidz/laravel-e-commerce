@@ -1,18 +1,19 @@
 <div class="container px-5 py-24 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
-        <div class="carousel shadow-2xl bg-white lg:w-1/2 w-full lg:h-auto object-cover object-center rounded">
-            <div class="carousel-inner relative overflow-hidden w-full">
+        <div class="carousel lg:w-1/2 w-full lg:h-auto object-none object-center rounded">
+            <div class="carousel-inner shadow-2xl bg-white relative overflow-hidden w-full">
                 @php
                     $no=1;
                     $ex=count(explode('|', $product->image));
                 @endphp
                 @foreach (explode('|', $product->image) as $a=>$products)
+                
                 @if ($no == 1)
                     <input class="carousel-open" type="radio" id="carousel-{{$no}}" name="carousel" aria-hidden="true" hidden="" checked="checked">
                 @else
                     <input class="carousel-open" type="radio" id="carousel-{{$no}}" name="carousel" aria-hidden="true" hidden="">
                 @endif
-                <img alt="ecommerce" class="carousel-item absolute opacity-0" src="{{$products}}">
+            <img alt="ecommerce" class="carousel-item absolute opacity-0 h-fill w-full" src="{{asset('image/product/'.$products)}}">
                 @if ($ex != 1)
                     @if ($no == 1)
                     <label for="carousel-{{$ex}}" class="prev control-{{$no}} w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden text-3xl font-bold text-black hover:text-white rounded-full bg-white hover:bg-blue-700 leading-tight text-center z-10 inset-y-0 left-0 my-auto">‹</label>
@@ -85,33 +86,63 @@
         </span>
         </div>
         <p class="leading-relaxed">{{$product->description}}</p>
-        <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
-            <div class="flex ml-6 items-center">
-                <div class="custom-number-input h-10 w-32">
-                    <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
-                        <button data-action="decrement" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer outline-none">
-                        <span class="m-auto text-2xl font-thin">−</span>
-                        </button>
-                        <input type="number" class="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="jumlah" value="0"></input>
-                        <button data-action="increment" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-r cursor-pointer">
-                        <span class="m-auto text-2xl font-thin">+</span>
-                        </button>
+        <form action="{{ route('front.cart') }}" method="POST">
+            @csrf
+            <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
+                <div class="flex ml-6 items-center">
+                    <div class="custom-number-input h-10 w-32">
+                        <input type="hidden" name="product_id" value="{{ $product->id }}" class="form-control">
+                        <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer outline-none">
+                            <span class="m-auto text-2xl font-thin">−</span>
+                            </button>
+                            <input type="number" class="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="qty"  id="sst" value="1" title="Quantity:"></input>
+                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-r cursor-pointer">
+                            <span class="m-auto text-2xl font-thin">+</span>
+                            </button>
+                        </div>
+                        
                     </div>
                     
                 </div>
-                
+                <div class="demo" id="demo"></div>
             </div>
-            <div class="demo" id="demo"></div>
-        </div>
-        <div class="flex">
-        <span class="title-font font-medium text-2xl text-gray-900">Rp {{ number_format($product->harga)}}</span>
-        <button class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded" wire:click="addToCart({{$product->id}})">Button</button>
+            <div class="flex">
+            <span class="title-font font-medium text-2xl text-gray-900">Rp {{ number_format($product->harga)}}</span>
+            
+            <button class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded main_btn" type="submit">Tambah ke <br> Keranjang</button>
+
+        </form>
         <a class="rounded-full w-10 h-10 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
             <svg class="h-6 w-6 fill-current text-red-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
                 <path d="M12,4.595c-1.104-1.006-2.512-1.558-3.996-1.558c-1.578,0-3.072,0.623-4.213,1.758c-2.353,2.363-2.352,6.059,0.002,8.412 l7.332,7.332c0.17,0.299,0.498,0.492,0.875,0.492c0.322,0,0.609-0.163,0.792-0.409l7.415-7.415 c2.354-2.354,2.354-6.049-0.002-8.416c-1.137-1.131-2.631-1.754-4.209-1.754C14.513,3.037,13.104,3.589,12,4.595z M18.791,6.205 c1.563,1.571,1.564,4.025,0.002,5.588L12,18.586l-6.793-6.793C3.645,10.23,3.646,7.776,5.205,6.209 c0.76-0.756,1.754-1.172,2.799-1.172s2.035,0.416,2.789,1.17l0.5,0.5c0.391,0.391,1.023,0.391,1.414,0l0.5-0.5 C14.719,4.698,17.281,4.702,18.791,6.205z" />
             </svg>
         </a>
-        </div>
     </div>
+    @if (session('success'))
+    <div class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-blue-500 mt-3">
+        <span class="text-xl inline-block mr-5 align-middle">
+            <svg class="h-8 w-8 text-white-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="9" />  <line x1="9" y1="12" x2="15" y2="12" />  <line x1="12" y1="9" x2="12" y2="15" /></svg>
+        </span>
+        <span class="inline-block align-middle mr-8">
+            {{ session('success') }}
+        </span>
+        <button class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none" onclick="closeAlert(event)">
+            <span>×</span>
+
+        </button>
     </div>
+    
+    <script>
+    function closeAlert(event){
+        let element = event.target;
+        while(element.nodeName !== "BUTTON"){
+        element = element.parentNode;
+        }
+        element.parentNode.parentNode.removeChild(element.parentNode);
+    }
+    </script>
+    @endif
+    
 </div>
+    
