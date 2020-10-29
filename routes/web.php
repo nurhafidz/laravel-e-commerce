@@ -22,15 +22,16 @@ use App\Http\Controllers\Seller\ProductController;
 Route::get('/', [HomeController::class, 'index'])->name('home.guest');
 Route::get('/shop/{storename}/{slug}', [HomeController::class, 'show'])->name('shop.product');
 Route::get('/keranjang', [CartController::class, 'listCart']);
-Route::get('/checkout', function () {
-    return view('publik.checkout');
-});
+Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout');
 Route::get('/shop', function () {
     return view('publik.shop');
 })->name('shop');
 Route::get('/profil', function () {
     return view('publik.profil.profil');
 });
+// Route::get('/detail', function () {
+//     return view('publik.profil.detail');
+// });
 Route::get('/detailuser', [UserController::class, 'detail'])->name('detail.user');
 Route::get('/detailuser/getcity/{id}', [UserController::class, 'getCity'] );
 Route::get('/detailuser/getdistrict/{id}', [UserController::class, 'getDistrict'] );
@@ -40,8 +41,8 @@ Route::post('keranjang', [CartController::class, 'addToCart'])->name('front.cart
 Route::post('/keranjang/update', [CartController::class, 'updateCart'])->name('front.update_cart');
 
 
-
 Auth::routes(['verify' => true]);
+Route::get('/new-store',[StoreController::class, 'create'])->name('create.seller');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {

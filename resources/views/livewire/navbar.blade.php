@@ -100,6 +100,8 @@
                         <a href="/profil" class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
                         Profil
                         </a>
+                        @if (Auth::user()->role_id == 4)
+                            
                         @php
                             $a = Auth::user()->store->name;
                             $storename = str_replace(' ','-',$a)
@@ -107,6 +109,11 @@
                         <a href="/dashboard/{{$storename}}" class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
                         My store
                         </a>
+                        @else
+                        <a href="/new-store" class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
+                        Buka toko
+                        </a>
+                        @endif
                         <a href="#" class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
                         Settings
                         </a>

@@ -69,5 +69,6 @@
     <div class="w-full overflow-hidden items-center">
         {{ $products->links() }}
     </div>
+    
 </div>
 

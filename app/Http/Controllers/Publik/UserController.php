@@ -31,7 +31,7 @@ class UserController extends Controller
         if($check == Null){
             // $data['province']= Province::all();
             $province = Province::pluck("name", "id");
-            return view('publik.detailuser',compact('province'));
+            return view('publik.profil.detail',compact('province'));
         }
         else{
             return abort(404);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Province;
 use App\Models\Product;
 use App\Models\Store;
 use Auth;
@@ -15,6 +16,7 @@ class StoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index($storename)
     {
         $checkuser = Auth::user()->store->name;
@@ -35,7 +37,8 @@ class StoreController extends Controller
      */
     public function create()
     {
-        //
+        $data['province'] = Province::pluck("name", "id");
+        return view('seller.store.create',$data);
     }
 
     /**

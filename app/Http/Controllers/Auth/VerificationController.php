@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
@@ -26,7 +27,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::DETAIL;
 
     /**
      * Create a new controller instance.
@@ -39,4 +40,33 @@ class VerificationController extends Controller
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
+    // protected function authenticated(Request $request)
+    // {
+    //     if ($request->user()->roles_id == 4) { // do your magic here
+    //         $credentials = $request->only($this->username(), 'password');
+            
+    //         if($request->user()->alamat_lengkap == null){
+    //             return redirect()->route('detail.user');
+    //         }
+    //         else{
+    //             return redirect()->route('home.guest');
+    //         }
+    //     }
+    //     if ($request->user()->roles_id == 2 && $request->user()->status_id == 1) { // do your magic here
+    //         $credentials = $request->only($this->username(), 'password');
+    //         $credentials['status_id'] = 1;
+    //         return redirect()->route('writter.home');
+    //     }
+    //     if ($request->user()->status_id == 2) {
+    //         return redirect()->route('writter.home');
+    //     }
+    //     if ($request->user()->status_id == 3) {
+    //         if($request->user()->alamat_lengkap == null){
+    //             return redirect()->route('detail.user');
+    //         }
+    //         else{
+    //             return redirect()->route('home.guest');
+    //         }
+    //     }
+    // }
 }

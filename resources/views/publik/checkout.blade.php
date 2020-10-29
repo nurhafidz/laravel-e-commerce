@@ -3,70 +3,111 @@
 @section('content')
 <livewire:navbar>
 
-<div x-data="{ cartOpen: false , isOpen: false }" class="bg-white">
-    <div class="container mx-auto px-5 mb-5">
-        <h3 class="text-gray-700 text-2xl font-medium">Checkout</h3>
-        <div class="flex flex-col lg:flex-row mt-8">
-            <div class="w-full  order-2">
-                <div class="flex items-center">
-                    <button class="flex text-sm text-blue-500 focus:outline-none"><span class="flex items-center justify-center text-white bg-blue-500 rounded-full h-5 w-5 mr-2">1</span> Contacts</button>
-                    <button class="flex text-sm text-gray-700 ml-8 focus:outline-none"><span class="flex items-center justify-center border-2 border-blue-500 rounded-full h-5 w-5 mr-2">2</span> Shipping</button>
-                    <button class="flex text-sm text-gray-500 ml-8 focus:outline-none" disabled><span class="flex items-center justify-center border-2 border-gray-500 rounded-full h-5 w-5 mr-2">3</span> Payments</button>
-                </div>
-                <form class="mt-8">
-                    <div>
-                        <h4 class="text-sm text-gray-500 font-medium">Delivery method</h4>
-                        <div class="mt-6">
-                            <label class="block w-1/2">
-                                <select class="form-select text-gray-700 mt-1 block w-full">
-                                    <option>JNE</option>
-                                    <option>SI Cepat</option>
-                                    <option>go jek</option>
-                                    <option>asa</option>
-                                </select>
-                            </label>
+<div class="container mx-auto px-5 mb-5">
+    <div class="flex flex-wrap -mx-2 overflow-hidden">
+        <div class="my-2 px-2 md:w-2/3 w-full overflow-hidden">
+            <div class="my-2 px-2 w-full overflow-hidden">
+                <!-- Column Content -->
+                <div class="mt-6">
+                @forelse ($carts as $key=>$row)
+                    
+                <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
+                    <div class="sm:w-32 sm:h-32 h-20 w-20 sm:mr-10 inline-flex items-center justify-center rounded-full bg-red-100 text-red-500 flex-shrink-0">
+                        @php
+                            $ex = count(explode('|', $row['product_image']));
+                        @endphp
+                        @if ($ex != 1)
+                        @php
+                            $x =explode('|', $row['product_image'],$ex);
+                        @endphp
+                        <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$x[0])}}">
+                        @else
+                        <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$row['product_image'])}}">
+                        @endif
+                        
+                    </div>
+                        <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+                            <h2 class="text-gray-900 text-lg title-font font-medium mb-2">{{$row['product_name']}}</h2>
+                            <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2">
+                                
+                                <p class="leading-relaxed text-base">Jumlah barang : {{$row['qty']}}</p>
+                            </div>
+                            <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2 ">
+                                <p class="leading-relaxed text-base">Harga : Rp {{ number_format($row['product_price'] * $row['qty']) }}</p>
+                            </div>
+                            <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2 ">
+                                <p class="leading-relaxed text-base">Berat : {{ number_format($row['weight'] * $row['qty']) }} g</p>
+                            </div>
                             
-                        </div>
-                    </div>
-                    <div class="mt-8">
-                        <h4 class="text-sm text-gray-500 font-medium">Delivery address</h4>
-                        <div class="mt-6 flex">
-                            <label class="block w-3/12">
-                                <select class="form-select text-gray-700 mt-1 block w-full">
-                                    <option>NY</option>
-                                    <option>DC</option>
-                                    <option>MH</option>
-                                    <option>MD</option>
+                            {{-- <button wire:click="removeItem({{$id}})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">hapus </button> --}}
+                            <input type="hidden" name="origin_id" id="origin_id" value="{{$row['product_place']}}">
+                            <input type="hidden" name="district_id" id="district_id" value="{{Auth::user()->district_id}}">
+                                <input type="hidden" name="weight" id="weight" value="{{ $weight }}">
+                                <select class="form-select text-gray-700 mt-1 block w-full"  name="courier[]" id="courier" >
+                                    <option>pilih kurir</option>
                                 </select>
-                            </label>
-                            <label class="block flex-1 ml-3">
-                                <input type="text" class="form-input mt-1 block w-full text-gray-700" placeholder="Address">
-                            </label>
                         </div>
                     </div>
-                    <div class="mt-8">
-                        <h4 class="text-sm text-gray-500 font-medium">Date</h4>
-                        <div class="mt-6 flex">
-                            <label class="block flex-1">
-                                <input type="date" class="form-input mt-1 block w-full text-gray-700" placeholder="Date">
-                            </label>
-                        </div>
+                    @empty
+                    @php
+                        $key=Null;
+                    @endphp
+                    <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
+                        <p class="text-gray-900 title-font font-medium mb-2">Tidak ada belanjaan</p>
                     </div>
-                    <div class="flex items-center justify-between mt-8">
-                        <button class="flex items-center text-gray-700 text-sm font-medium rounded hover:underline focus:outline-none">
-                            <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M7 16l-4-4m0 0l4-4m-4 4h18"></path></svg>
-                            <span class="mx-2">Back step</span>
-                        </button>
-                        <button class="flex items-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
-                            <span>Payment</span>
-                            <svg class="h-5 w-5 mx-2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </button>
-                    </div>
-                </form>
+                    @endforelse
+                    
+                </div>
             </div>
         </div>
-    </div>    
+        <div class="my-2 px-2 md:w-1/3 w-full overflow-hidden">
+            <div class="max-w-xs rounded overflow-hidden shadow-md my-2">
+                <div class="px-6 py-4 sticky top-0">
+                    <div class="font-bold text-xl mb-2">Alamat tujuan</div>
+                    <label class="inline-flex items-center mt-3">
+                        <input type="radio" class="form-radio h-5 w-5 text-gray-600"><p class="ml-5 text-grey-darker text-base">
+                        {{Auth::user()->alamat_lengkap}}
+                        {{Auth::user()->district->name}} {{Auth::user()->kode_pos}}, 
+                        {{Auth::user()->district->city->name}}, {{Auth::user()->district->city->province->name}}
+                        </p>
+                    </label>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<meta name="csrf-token" content="<?= csrf_token() ?>">
+<script type="text/javascript">
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+            $.ajax({
+                url: "{{ url('/api/cost') }}",
+                type: "POST",
+                data: { origin: $('#origin_id').val(), destination: $('#district_id').val(), weight: $('#weight').val() },
+                success: function(html){
+                    console.log(html);
+                    $('#courier').empty()
+                    $('#courier').append('<option value="">Pilih Kurir</option>')
+                    $.each(html.data.results, function(key, item) {
+                        let courier = item.courier + ' - ' + item.service + ' (Rp '+ item.cost +')'
+                        let value = item.courier + '-' + item.service + '-'+ item.cost
+                        $('#courier').append('<option value="'+value+'">' + courier + '</option>')
+                    })
+                }
+            });
+        
+</script>
+
 
 <livewire:footer>
 @endsection

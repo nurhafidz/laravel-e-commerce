@@ -29,17 +29,6 @@ class LoginController extends Controller
      * @var string
      */
     // protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-        // $this->middleware('auth')->except('logout');
-    }
     protected function authenticated(Request $request)
     {
         if ($request->user()->roles_id == 4) { // do your magic here
@@ -49,7 +38,8 @@ class LoginController extends Controller
                 return redirect()->route('detail.user');
             }
             else{
-                return redirect()->route('home.guest');
+                //return redirect()->route('home.guest');
+                return $this->redirectTo = route('home.guest');
             }
         }
         if ($request->user()->roles_id == 2 && $request->user()->status_id == 1) { // do your magic here
@@ -61,7 +51,24 @@ class LoginController extends Controller
             return redirect()->route('writter.home');
         }
         if ($request->user()->status_id == 3) {
-            return redirect()->route('writter.home');
+            if($request->user()->alamat_lengkap == null){
+                return redirect()->route('detail.user');
+            }
+            else{
+                // return redirect()->route('home.guest');
+                return $this->redirectTo = route('home.guest');
+            }
         }
+    }
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+        // $this->middleware('auth')->except('logout');
     }
 }

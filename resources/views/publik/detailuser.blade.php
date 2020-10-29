@@ -60,7 +60,7 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                     {{ __('Provinsi') }}
                 </label>
-                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline select2 " name="province" >
+                <select class="shadow form-select text-gray-700 mt-1 block w-full " name="province" >
                     <option value="">Provinsi</option>
                     @foreach ($province as $key => $value)
                         <option value="{{ $key }}">{{ $value }}</option>
@@ -129,7 +129,7 @@
     });
 </script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
      //Select2
     
 

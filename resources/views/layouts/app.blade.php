@@ -128,6 +128,9 @@
         left: 50%;
         transform: translate(-57%, 20%);
         }
+        input:checked + svg {
+            display: block;
+        }
     </style>
 </head>
 <body class="font-sans antialiased">

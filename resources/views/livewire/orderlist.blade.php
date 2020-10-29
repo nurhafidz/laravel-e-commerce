@@ -36,9 +36,9 @@
             @php
                 $x =explode('|', $image,$ex);
             @endphp
-            <img class="hover:grow hover:shadow-lg" src="{{$x[0]}}">
+            <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$x[0])}}">
             @else
-            <img class="hover:grow hover:shadow-lg" src="{{$image}}">
+            <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$product->image)}}">
             @endif
             
         </div>

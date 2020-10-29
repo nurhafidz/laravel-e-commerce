@@ -22,9 +22,9 @@
                 @php
                     $x =explode('|', $row['product_image'],$ex);
                 @endphp
-                <img class="hover:grow hover:shadow-lg" src="{{$x[0]}}">
+                <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$x[0])}}">
                 @else
-                <img class="hover:grow hover:shadow-lg" src="{{$row['product_image']}}">
+                <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$row['product_image'])}}">
                 @endif
                 
             </div>
@@ -39,7 +39,7 @@
                                 <button onclick="var result = document.getElementById('sst{{$key}}'); var sst{{$key}} = result.value; if( !isNaN( sst{{$key}} ) &amp;&amp; sst{{$key}} > 0 ) result.value--;return false;" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer outline-none">
                                     <span class="m-auto text-2xl font-thin">−</span>
                                     </button>
-                                    <input type="number" class="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="qty[]"  id="sst{{$key}}" value="{{ $row['qty'] }}" title="Quantity:"></input>
+                                    <input type="number" class="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="qty[]" id="sst{{$key}}" value="{{ $row['qty'] }}" title="Quantity:"></input>
                                     <button onclick="var result = document.getElementById('sst{{$key}}'); var sst{{$key}} = result.value; if( !isNaN( sst{{$key}} )) result.value++;return false;" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-r cursor-pointer">
                                     <span class="m-auto text-2xl font-thin">+</span>
                                     </button>
