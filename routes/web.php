@@ -7,6 +7,8 @@ use App\Http\Controllers\Publik\UserController;
 use App\Http\Controllers\Publik\CartController;
 use App\Http\Controllers\Seller\StoreController;
 use App\Http\Controllers\Seller\ProductController;
+use App\Http\Controllers\Service\ServiceController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,7 @@ use App\Http\Controllers\Seller\ProductController;
 Route::get('/', [HomeController::class, 'index'])->name('home.guest');
 Route::get('/shop/{storename}/{slug}', [HomeController::class, 'show'])->name('shop.product');
 Route::get('/keranjang', [CartController::class, 'listCart']);
-Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/shop', function () {
     return view('publik.shop');
 })->name('shop');
@@ -40,9 +42,10 @@ Route::post('/detailuser/update/{id}', [UserController::class, 'detailupdate'])-
 Route::post('keranjang', [CartController::class, 'addToCart'])->name('front.cart');
 Route::post('/keranjang/update', [CartController::class, 'updateCart'])->name('front.update_cart');
 
+Route::get('/new-store',[StoreController::class, 'create'])->name('create.seller');
+Route::post('new-store',[StoreController::class, 'store'])->name('store.seller');
 
 Auth::routes(['verify' => true]);
-Route::get('/new-store',[StoreController::class, 'create'])->name('create.seller');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
@@ -50,4 +53,8 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
     Route::get('/dashboard/{storename}/product',[ProductController::class,'index'])->name('product.index');
     Route::get('/dashboard/{storename}/product/create',[ProductController::class,'create'])->name('product.create');
     Route::post('/dashboard/{storename}/product/store',[ProductController::class,'store'])->name('product.store');
+    Route::get('/dashboard/{storename}/product/{brandname}',[ProductController::class,'show'])->name('product.show');
+});
+Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function () {
+    Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');
 });

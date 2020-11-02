@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class Maintenercheck
+class SellerandGuestcheck
 {
     /**
      * Handle an incoming request.
@@ -17,9 +17,17 @@ class Maintenercheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() && $request->user()->role_id == '2') {
-            return $next($request);
+        
+        if ($request->user() != NULL) {
+            if ($request->user()->role_id == '3'|| $request->user()->role_id == '4') {
+            return $next($request);}
+            return new Response(view('unauthorized'));
         }
-        return new Response(view('unauthorized')->with('role', 'Maintener'));
+        else{
+            return redirect()->route('login');
+            
+        }
+        
     }
+    
 }

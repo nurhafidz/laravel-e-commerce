@@ -29,7 +29,7 @@
                         $b = $product->store->name;
                         $storename = str_replace(' ','-',$b);
                     @endphp
-                    <a href="{{url('/shop/'.$storename.'/'.$slug)}}">
+                    <a href="{{url('/dashboard/'.$storename.'/product/'.$slug)}}">
                         @php
                             $ex = count(explode('|', $product->image));
                         @endphp
@@ -37,9 +37,9 @@
                         @php
                             $x =explode('|', $product->image,$ex);
                         @endphp
-                        <img class="hover:grow hover:shadow-lg" src="{{$x[0]}}">
+                        <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$x[0])}}">
                         @else
-                        <img class="hover:grow hover:shadow-lg" src="{{$product->image}}">
+                        <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$product->image)}}">
                         @endif
                         <div class="pt-3 flex items-center justify-between">
                             <p class="">{{$product->name}}</p>

@@ -31,34 +31,43 @@ class LoginController extends Controller
     // protected $redirectTo = RouteServiceProvider::HOME;
     protected function authenticated(Request $request)
     {
-        if ($request->user()->roles_id == 4) { // do your magic here
+        if ($request->user()->role_id == 4) { // do your magic here
             $credentials = $request->only($this->username(), 'password');
             
             if($request->user()->alamat_lengkap == null){
                 return redirect()->route('detail.user');
             }
             else{
-                //return redirect()->route('home.guest');
-                return $this->redirectTo = route('home.guest');
+                return redirect()->route('home.guest');
             }
         }
-        if ($request->user()->roles_id == 2 && $request->user()->status_id == 1) { // do your magic here
+        if ($request->user()->role_id == 3) { // do your magic here
             $credentials = $request->only($this->username(), 'password');
-            $credentials['status_id'] = 1;
-            return redirect()->route('writter.home');
-        }
-        if ($request->user()->status_id == 2) {
-            return redirect()->route('writter.home');
-        }
-        if ($request->user()->status_id == 3) {
+            
             if($request->user()->alamat_lengkap == null){
                 return redirect()->route('detail.user');
             }
             else{
-                // return redirect()->route('home.guest');
-                return $this->redirectTo = route('home.guest');
+                return redirect()->route('home.guest');
             }
         }
+        if ($request->user()->role_id == 2) { // do your magic here
+            $credentials = $request->only($this->username(), 'password');
+            
+            if($request->user()->alamat_lengkap == null){
+                return redirect()->route('detail.user');
+            }
+            else{
+                return redirect()->route('service.dashboard');
+            }
+        }
+        
+        if ( $request->user()->status_id == 1) { // do your magic here
+            $credentials = $request->only($this->username(), 'password');
+            $credentials['status_id'] = 1;
+            return redirect()->route('service.dashboard');
+        }
+        
     }
 
     /**

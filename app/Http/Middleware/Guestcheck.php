@@ -17,7 +17,7 @@ class Guestcheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() && $request->user()->roles_id == '4') {
+        if ($request->user() && $request->user()->role_id == '4') {
             return $next($request);
         }
         return new Response(view('unauthorized')->with('role', 'guest'));

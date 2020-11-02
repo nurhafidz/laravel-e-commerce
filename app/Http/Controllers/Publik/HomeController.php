@@ -18,7 +18,7 @@ class HomeController extends Controller
     
     public function show($storename,$slug)
     {
-        $a = $storename;
+        
         $c =str_replace('-', ' ', $storename);
         $b = Store::where('name',$c)->firstOrFail();
         $get = str_replace('-', ' ', $slug);

@@ -17,7 +17,7 @@ class Sellercheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() && $request->user()->roles_id == '3') {
+        if ($request->user() && $request->user()->role_id == '3') {
             return $next($request);
         }
         return new Response(view('unauthorized')->with('role', 'Seller'));

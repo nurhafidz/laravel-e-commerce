@@ -100,9 +100,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($storename,$brandname)
     {
-        //
+        $c =str_replace('-', ' ', $storename);
+        $b = Store::where('name',$c)->firstOrFail();
+        $get = str_replace('-', ' ', $brandname);
+        $data['product'] = Product::where('store_id',$b->id)->where('name', $get)->firstOrFail();
+        return view('seller.product.show',$data);
     }
 
     /**

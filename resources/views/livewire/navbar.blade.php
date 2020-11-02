@@ -100,7 +100,8 @@
                         <a href="/profil" class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
                         Profil
                         </a>
-                        @if (Auth::user()->role_id == 4)
+                        
+                        @if (Auth::user()->role_id == 3)
                             
                         @php
                             $a = Auth::user()->store->name;
@@ -111,7 +112,7 @@
                         </a>
                         @else
                         <a href="/new-store" class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
-                        Buka toko
+                        Create Store
                         </a>
                         @endif
                         <a href="#" class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">

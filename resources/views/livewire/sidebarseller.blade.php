@@ -1,8 +1,8 @@
-<div class="flex justify-between flex-row sticky top-0 z-50 md:hidden bg-white shadow-2xl rounded-md">
-    <div class="p-2 my-4">
+<div class="flex justify-between flex-row sticky top-0 z-50 md:hidden bg-white shadow-2xl rounded-full py-1 px-4">
+    <div class=" my-4">
         <p>Seller dashboard</p>
     </div>
-    <div class=" bg-white flex my-4 shadow-2xl p-2 rounded-md ">
+    <div class=" bg-white flex my-4 shadow-2xl rounded-md ">
         <div class="inline-block">
             <button class="md:hidden rounded-lg flex h-full focus:outline-none focus:shadow-outline " @click="open = !open">
                 <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
@@ -40,17 +40,17 @@
             </a>
         </li>
         <li class="my-px">
+            <span class="flex font-medium text-sm text-gray-400 px-4 my-4 uppercase">MANAJEMEN PRODUK</span>
+        </li>
+        <li class="my-px">
             <a href="{{url('/dashboard/'.$storename.'/product')}}"
-                class="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 {{ \Request::routeIs(['product.index','product.create'])? 'bg-gray-100' : ''}} hover:bg-gray-100">
+                class="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 {{ \Request::routeIs(['product.index','product.create','product.show'])? 'bg-gray-100' : ''}} hover:bg-gray-100">
                 <span class="flex items-center justify-center text-lg text-gray-400">
                     <svg class="h-6 w-6 "  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
                 </span>
                 <span class="ml-3">Product</span>
                 
             </a>
-        </li>
-        <li class="my-px">
-            <span class="flex font-medium text-sm text-gray-400 px-4 my-4 uppercase">Projects</span>
         </li>
         <li class="my-px">
             <a href="#"
@@ -66,8 +66,11 @@
                         <path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
                     </svg>
                 </span>
-                <span class="ml-3">Manager</span>
+                <span class="ml-3">Pesanan</span>
             </a>
+        </li>
+        <li class="my-px">
+            <span class="flex font-medium text-sm text-gray-400 px-4 my-4 uppercase">Laporan</span>
         </li>
         <li class="my-px">
             <a href="#"
@@ -83,7 +86,7 @@
                         <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
                 </span>
-                <span class="ml-3">Tasks</span>
+                <span class="ml-3">Order</span>
             </a>
         </li>
         <li class="my-px">
@@ -97,28 +100,10 @@
                             viewBox="0 0 24 24"
                             stroke="currentColor"
                             class="h-6 w-6">
-                        <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </span>
-                <span class="ml-3">Clients</span>
-                <span class="flex items-center justify-center text-sm text-gray-500 font-semibold bg-gray-200 h-6 px-2 rounded-full ml-auto">1k</span>
-            </a>
-        </li>
-        <li class="my-px">
-            <a href="#"
-                class="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 hover:bg-gray-100">
-                <span class="flex items-center justify-center text-lg text-green-400">
-                    <svg fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            class="h-6 w-6">
-                        <path d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </span>
-                <span class="ml-3">Add new</span>
+                <span class="ml-3">Saldo</span>
             </a>
         </li>
         <li class="my-px">
@@ -135,10 +120,11 @@
                             viewBox="0 0 24 24"
                             stroke="currentColor"
                             class="h-6 w-6">
-                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                     </svg>
                 </span>
-                <span class="ml-3">Profile</span>
+                <span class="ml-3">Chat</span>
+                <span class="flex items-center justify-center text-sm text-gray-500 font-semibold bg-gray-200 h-6 px-2 rounded-full ml-auto">10</span>
             </a>
         </li>
         <li class="my-px">
@@ -156,7 +142,7 @@
                     </svg>
                 </span>
                 <span class="ml-3">Notifications</span>
-                <span class="flex items-center justify-center text-sm text-gray-500 font-semibold bg-gray-200 h-6 px-2 rounded-full ml-auto">10</span>
+                
             </a>
         </li>
         <li class="my-px">

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Province;
 use App\Models\Product;
 use App\Models\Store;
+use App\Models\User;
 use Auth;
 
 class StoreController extends Controller
@@ -49,7 +50,19 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $store = new Store;
+        $store->name = $request->name;
+        $store->decsription = $request->decsription;
+        $store->user_id = $request->user_id;
+        $store->district_id = $request->district;
+        $store->status = 1;
+        $user = User::findorFail($request->user_id);
+        $user->role_id = 3;
+        $store->save();
+        $user->save();
+
+        return view('seller.dashboard');
+
     }
 
     /**

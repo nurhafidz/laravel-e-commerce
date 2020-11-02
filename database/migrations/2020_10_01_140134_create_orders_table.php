@@ -19,6 +19,9 @@ class CreateOrdersTable extends Migration
             $table->integer('User_id');
             $table->integer('jumlah');
             $table->longText('note');
+            $table->integer('subtotal')->nullable();
+            $table->integer('cost');
+            $table->string('shipping')->nullable();
             $table->timestamps();
         });
     }

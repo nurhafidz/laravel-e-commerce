@@ -17,7 +17,7 @@ class Admincheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() && $request->user()->roles_id == '1') {
+        if ($request->user() && $request->user()->role_id == '1') {
             return $next($request);
         }
         return new Response(view('unauthorized')->with('role', 'Admin'));
