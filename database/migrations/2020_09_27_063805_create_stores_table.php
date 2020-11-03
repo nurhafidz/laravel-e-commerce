@@ -18,9 +18,10 @@ class CreateStoresTable extends Migration
             $table->string('name')->unique();
             $table->string('decsription')->nullable();
             $table->integer('user_id');
-            $table->integer('districts_id');
+            $table->integer('district_id');
             $table->string('store_image')->nullable();
-            $table->string('verifiy_image');
+            $table->string('verifiy_image')->nullable();
+            $table->integer('saldo')->default(0)->nullable();
             $table->integer('status');
             $table->timestamps();
         });

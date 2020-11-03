@@ -8,6 +8,8 @@ use App\Http\Controllers\Publik\CartController;
 use App\Http\Controllers\Seller\StoreController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Service\ServiceController;
+use App\Http\Controllers\Admin\AdminServiceController;
+use App\Http\Controllers\Admin\SaldoAdminController;
 
 
 /*
@@ -25,11 +27,18 @@ Route::get('/', [HomeController::class, 'index'])->name('home.guest');
 Route::get('/shop/{storename}/{slug}', [HomeController::class, 'show'])->name('shop.product');
 Route::get('/keranjang', [CartController::class, 'listCart']);
 Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout')->middleware('App\Http\Middleware\SellerandGuestcheck');
+Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('processCheckout')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/shop', function () {
     return view('publik.shop');
 })->name('shop');
 Route::get('/profil', function () {
     return view('publik.profil.profil');
+});
+Route::get('/payment/success', function () {
+    return view('publik.payment.success');
+});
+Route::get('/payment/fail', function () {
+    return view('publik.payment.fail');
 });
 // Route::get('/detail', function () {
 //     return view('publik.profil.detail');
@@ -57,4 +66,9 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
 });
 Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function () {
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');
+});
+Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
+    Route::get('/admin/dashboard',[SaldoAdminController ::class, 'index'] )->name('admin.dashboard');
+    Route::get('/admin/service',[AdminServiceController::class, 'index'])->name('admin.service.index');
+    Route::get('/admin/service/{id}/detail',[AdminServiceController::class, 'show'])->name('admin.service.show');
 });

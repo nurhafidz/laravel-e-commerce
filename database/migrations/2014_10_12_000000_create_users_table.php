@@ -28,7 +28,8 @@ class CreateUsersTable extends Migration
             $table->string('foto')->nullable();
             $table->integer('telepon')->nullable();
             $table->integer('kode_pos')->nullable();
-            $table->integer('roles_id');
+            $table->integer('status')->default('1');
+            $table->integer('role_id');
             $table->rememberToken();
             $table->timestamps();
         });

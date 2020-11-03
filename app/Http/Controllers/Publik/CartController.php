@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Province;
-use App\Models\City;
-use App\Models\District;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use Xendit\Xendit;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Str;
 
 
 class CartController extends Controller
@@ -85,9 +87,6 @@ class CartController extends Controller
             return $q['qty'] * $q['weight'];
         });
         
-        $c = array_column($carts,'product_store');
-        $d = array_count_values($c);
-        
      return view('publik.checkout', compact('provinces', 'carts', 'subtotal', 'weight'));
     }
 
@@ -115,6 +114,81 @@ class CartController extends Controller
 
         $body = json_decode($response->getBody(), true);
         return $body;
+    }
+    public function checkresi(Request $request)
+    {
+        
+
+        $url = 'https://ruangapi.com/api/v1/waybill';
+        $client = new Client();
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
+            ],
+            'form_params' => [
+                'waybill' => 'JD0068856818',
+                'courier	' => $request->kode,
+                
+            ]
+        ]);
+
+        $body = json_decode($response->getBody(), true);
+        dd($body) ;
+    }
+    public function processCheckout(Request $request)
+    {
+        $this->validate($request, [
+            'courier' => 'required'
+        ]);
+        $carts = $this->getCarts();
+        $subtotal = collect($carts)->sum(function ($q) {
+            return $q['qty'] * $q['product_price'];
+        });
+        $shipping = explode('-', $request->courier);
+        $total = $subtotal+$shipping[3];
+        $user = User::findorFail($request->user_id);
+        $email = $user->email;
+        
+        Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
+
+        $params = [
+            'external_id' => Str::random(4) . '-' . time(),
+            'payer_email' => $email,
+            'description' => 'Bealajar',
+            'amount' => $total,
+            'failure_redirect_url'=>'http://localhost:8000/payment/fail',
+            'success_redirect_url'=>'http://localhost:8000/payment/success'
+        ];
+
+        $createInvoice = \Xendit\Invoice::create($params);
+
+        $order = Order::create([
+                'invoice' => $createInvoice['id'],
+                'external_id' => $createInvoice['external_id'],
+                'user_id' => $user->id,
+                'subtotal' => $subtotal,
+                'cost' => $shipping[3],
+                'status' => 0,
+                'shipping' => $shipping[0] . '-' . $shipping[1],
+                
+            ]);
+
+        foreach ($carts as $row) {
+            $product = Product::find($row['product_id']);
+            $orderdetail=OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $row['product_id'],
+                    'price' => $row['product_price'],
+                    'qty' => $row['qty'],
+                    'weight' => $product->weight
+                ]);
+        }
+        $order->save();
+        $orderdetail->save();
+        $carts = [];
+        $cookie = cookie('cart', json_encode($carts), 2880);
+        Cookie::queue(Cookie::forget('cart'));
+        return redirect('https://checkout-staging.xendit.co/web/'.$createInvoice['id']);
     }
     
 }

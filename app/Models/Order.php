@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    protected $fillable = [
+        'invoice',
+        'external_id',
+        'user_id',
+        'subtotal',
+        'cost'
+    ];
     use HasFactory;
     public function product()
     {

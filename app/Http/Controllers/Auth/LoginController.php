@@ -61,13 +61,16 @@ class LoginController extends Controller
                 return redirect()->route('service.dashboard');
             }
         }
-        
-        if ( $request->user()->status_id == 1) { // do your magic here
+        if ($request->user()->role_id == 1) { // do your magic here
             $credentials = $request->only($this->username(), 'password');
-            $credentials['status_id'] = 1;
-            return redirect()->route('service.dashboard');
+            
+            if($request->user()->alamat_lengkap == null){
+                return redirect()->route('detail.user');
+            }
+            else{
+                return redirect()->route('admin.dashboard');
+            }
         }
-        
     }
 
     /**

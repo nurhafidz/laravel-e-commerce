@@ -15,13 +15,14 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
-            $table->integer('User_id');
-            $table->integer('jumlah');
-            $table->longText('note');
-            $table->integer('subtotal')->nullable();
+            $table->string('invoice');
+            $table->string('external_id')->unique();
+            $table->integer('user_id');
+            $table->integer('subtotal');
             $table->integer('cost');
+            $table->char('status')->default('0')->comment('0: new, 1: confirm, 2: process, 3: shipping, 4: done');
             $table->string('shipping')->nullable();
+            $table->string('tracking_number')->nullable();
             $table->timestamps();
         });
     }
