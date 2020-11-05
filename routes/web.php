@@ -10,6 +10,10 @@ use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Service\ServiceController;
 use App\Http\Controllers\Admin\AdminServiceController;
 use App\Http\Controllers\Admin\SaldoAdminController;
+use App\Http\Controllers\Seller\SaldoController;
+use App\Http\Controllers\Seller\PesananController;
+use App\Http\Controllers\service\PenggunaController;
+
 
 
 /*
@@ -65,9 +69,14 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
     Route::get('/dashboard/{storename}/product/create',[ProductController::class,'create'])->name('product.create');
     Route::post('/dashboard/{storename}/product/store',[ProductController::class,'store'])->name('product.store');
     Route::get('/dashboard/{storename}/product/{brandname}',[ProductController::class,'show'])->name('product.show');
+    Route::get('/seller/{storename}/saldo',[SaldoController::class,'index'])->name('seller.saldo');
+    Route::get('/seller/{storename}/pesanan',[PesananController::class,'index'])->name('seller.pesanan');
+    Route::get('/seller/{storename}/pesanan/show',[PesananController::class,'show'])->name('seller.pesanan.show');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function () {
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');
+    Route::get('/services/pengguna',[PenggunaController::class,'index'] )->name('service.pengguna');
+    Route::get('/services/pengguna/{id}',[PenggunaController::class,'show'] )->name('service.pengguna.show');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
     Route::get('/admin/dashboard',[SaldoAdminController ::class, 'index'] )->name('admin.dashboard');
