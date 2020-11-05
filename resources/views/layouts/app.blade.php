@@ -127,6 +127,11 @@
         input:checked + svg {
             display: block;
         }
+        .top-100 {top: 100%}
+        .bottom-100 {bottom: 100%}
+        .max-h-select {
+            max-height: 300px;
+        }
     </style>
 </head>
 <body class="font-sans antialiased">

@@ -46,9 +46,9 @@
                                 <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->id}}">
                                 <input type="hidden" name="district_id" id="district_id" value="{{Auth::user()->district_id}}">
                                 <input type="hidden" name="weight" id="weight" value="{{ $weight }}">
-                                    <select class="form-select text-gray-700 mt-1 block w-full"  name="courier" id="courier" required>
-                                        <option>pilih kurir</option>
-                                    </select>
+                                <select class="form-select text-gray-700 mt-1 block w-full"  name="courier" id="courier" required>
+                                    <option>pilih kurir</option>
+                                </select>
                             </div>
                             
                         </div>

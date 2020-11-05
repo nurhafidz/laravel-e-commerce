@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "livewire/livewire": "^2.2",
+        "pusher/pusher-php-server": "^4.1",
         "xendit/xendit-php": "^2.5"
     },
     "require-dev": {

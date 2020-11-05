@@ -7,8 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\City;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\User;
+use Xendit\Xendit;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
 {
@@ -47,7 +51,35 @@ class UserController extends Controller
         $district = District::where("city_id", $id)->pluck("name", "id");
         return json_encode($district);
     }
-
+    public function myorder($id)
+    {
+        $z = Crypt::decrypt($id);
+        
+        $data['order'] = Order::where('user_id',$z)->get();
+        Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
+        // foreach($data['order'] as $key=>$c){
+        //     $id = $c->invoice;
+        //     $getInvoice = \Xendit\Invoice::retrieve($id);
+        //     $body = json_encode($getInvoice, true);
+        // }
+        
+        return view('publik.myorder',$data);
+        
+    }
+    public function orderdetail($id,$invoice)
+    {
+        $z = Crypt::decrypt($id);
+        $data['order'] = Order::where('user_id',$z)->where('external_id',$invoice)->first();
+        $data['order_detail'] = OrderDetail::where('order_id',$data['order']['id'])->get();
+        Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
+        $id = $data['order']->invoice;
+        $data['invoice'] = \Xendit\Invoice::retrieve($id);
+        
+        
+        return view('publik.myorderdetail',$data);
+        
+    }
+    
     public function detailupdate(Request $request, $id)
     {
         $user = User::findOrFail($id);

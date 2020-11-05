@@ -115,26 +115,7 @@ class CartController extends Controller
         $body = json_decode($response->getBody(), true);
         return $body;
     }
-    public function checkresi(Request $request)
-    {
-        
-
-        $url = 'https://ruangapi.com/api/v1/waybill';
-        $client = new Client();
-        $response = $client->request('POST', $url, [
-            'headers' => [
-                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
-            ],
-            'form_params' => [
-                'waybill' => 'JD0068856818',
-                'courier	' => $request->kode,
-                
-            ]
-        ]);
-
-        $body = json_decode($response->getBody(), true);
-        dd($body) ;
-    }
+    
     public function processCheckout(Request $request)
     {
         $this->validate($request, [
@@ -166,6 +147,7 @@ class CartController extends Controller
                 'invoice' => $createInvoice['id'],
                 'external_id' => $createInvoice['external_id'],
                 'user_id' => $user->id,
+                'store_id' => $user->id,
                 'subtotal' => $subtotal,
                 'cost' => $shipping[3],
                 'status' => 0,
@@ -178,6 +160,7 @@ class CartController extends Controller
             $orderdetail=OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $row['product_id'],
+                    'store_id' => $product->store_id,
                     'price' => $row['product_price'],
                     'qty' => $row['qty'],
                     'weight' => $product->weight

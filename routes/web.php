@@ -28,6 +28,8 @@ Route::get('/shop/{storename}/{slug}', [HomeController::class, 'show'])->name('s
 Route::get('/keranjang', [CartController::class, 'listCart']);
 Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('processCheckout')->middleware('App\Http\Middleware\SellerandGuestcheck');
+Route::get('/myorder/{id}', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
+Route::get('/myorder/{id}/detail/{invoice}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/shop', function () {
     return view('publik.shop');
 })->name('shop');

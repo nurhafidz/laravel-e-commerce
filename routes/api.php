@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Publik\CartController;
+use App\Http\Controllers\Publik\UserController;
 use App\Http\Controllers\Admin\SaldoAdminController;
 
 /*
@@ -19,6 +20,7 @@ Route::get('city',[CartController::class, 'getCity']);
 Route::get('district',[CartController::class, 'getDistrict']);
 Route::post('cost', [CartController::class, 'getCourier']);
 Route::post('cekresi', [CartController::class, 'checkresi']);
+Route::post('getinvoice', [UserController::class, 'getinvoice']);
 Route::get('balance',[SaldoAdminController::class, 'getBalance']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
