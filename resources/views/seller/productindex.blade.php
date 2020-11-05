@@ -14,7 +14,7 @@
                     $b=Auth::user()->store->name;
                     $storename = str_replace(' ','-',$b);
                 @endphp
-                <a href="{{url('/dashboard/'.$storename.'/product/create')}}" class="bg-green-500 inline-block hover:bg-green-600 text-white ml-4 py-2 px-4 rounded-md">
+                <a href="{{url('/seller/'.$storename.'/product/create')}}" class="bg-green-500 inline-block hover:bg-green-600 text-white ml-4 py-2 px-4 rounded-md">
                     <svg class="h-6 w-6 inline-block"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="9" />  <line x1="9" y1="12" x2="15" y2="12" />  <line x1="12" y1="9" x2="12" y2="15" /></svg>
                     <p class="inline-block align-middle">Tambah Product</p>
                 
@@ -29,7 +29,7 @@
                         $b = $product->store->name;
                         $storename = str_replace(' ','-',$b);
                     @endphp
-                    <a href="{{url('/dashboard/'.$storename.'/product/'.$slug)}}">
+                    <a href="{{url('/seller/'.$storename.'/product/'.$slug)}}">
                         @php
                             $ex = count(explode('|', $product->image));
                         @endphp

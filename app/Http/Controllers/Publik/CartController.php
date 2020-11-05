@@ -87,7 +87,7 @@ class CartController extends Controller
             return $q['qty'] * $q['weight'];
         });
         
-     return view('publik.checkout', compact('provinces', 'carts', 'subtotal', 'weight'));
+    return view('publik.checkout', compact('provinces', 'carts', 'subtotal', 'weight'));
     }
 
     public function getCourier(Request $request)
@@ -109,6 +109,31 @@ class CartController extends Controller
                 'destination' => $request->destination,
                 'weight' => $request->weight,
                 'courier' => 'jnt,tiki,sicepat'
+            ]
+        ]);
+
+        $body = json_decode($response->getBody(), true);
+        return $body;
+    }
+    
+    public function waybill(Request $request)
+    {
+        // $this->validate($request, [
+        //     'destination' => 'required',
+        //     'weight' => 'required|integer'
+        // ]);
+
+
+        $url = 'https://ruangapi.com/api/v1/waybill';
+        $client = new Client();
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
+            ],
+            'form_params' => [
+                'waybill' => 'JP8786802938',
+                'courier' => 'jnt',
+                
             ]
         ]);
 
@@ -150,7 +175,7 @@ class CartController extends Controller
                 'store_id' => $user->id,
                 'subtotal' => $subtotal,
                 'cost' => $shipping[3],
-                'status' => 0,
+                'status' => 1,
                 'shipping' => $shipping[0] . '-' . $shipping[1],
                 
             ]);

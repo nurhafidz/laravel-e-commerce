@@ -22,7 +22,7 @@
     @endphp
     <ul class="flex flex-col w-full">
         <li class="my-px">
-            <a href="{{url('dashboard',$storename)}}"
+            <a href="{{url('seller',$storename)}}"
                 class="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 {{ Request::routeIs('dashboard.seller') ?  'bg-gray-100' : ''}} hover:bg-gray-100">
                 <span class="flex items-center justify-center text-lg text-gray-400">
                     <svg fill="none"

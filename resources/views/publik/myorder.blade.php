@@ -26,12 +26,11 @@
                 </div>
             </div>
             <div class="align-middle inline-block min-w-full shadow overflow-hidden bg-white shadow-dashboard px-8 pt-3 rounded-bl-lg rounded-br-lg ">
-                <table class="min-w-full ">
+                <table class="min-w-full" id="datatable">
                     <thead>
                         <tr>
                             <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">ID</th>
                             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Alamat</th>
-                            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Email</th>
                             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Phone</th>
                             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Status</th>
                             <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Tanggal transaksi</th>
@@ -51,13 +50,49 @@
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                                 <div class="text-sm leading-5 text-blue-900">{{Auth::user()->alamat_lengkap}}, {{Auth::user()->district->name}} {{Auth::user()->kode_pos}}, {{Auth::user()->district->city->name}}, {{Auth::user()->district->city->province->name}}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{Auth::user()->email}}</td>
+                            
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{$item->telepon}}</td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                <span class="relative text-xs">active</span>
+                                @php
+                                $s = $getinvoice[$key]['status'];
+                                $s2 = $item->status;
+                            @endphp
+                            @if ($s == "PENDING")
+                            <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:bg-orange-700 dark:text-orange-100">
+                                Menunggu pembayaran
                             </span>
+                            @endif
+                            @if ($s == "PAID")
+                            @switch($s2)
+                                @case(1)
+                                    <span class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-blue-700 dark:text-blue-100">
+                                        Menunggu konfirmasi
+                                    </span>
+                                    @break
+                                @case(2)
+                                    <span class="px-2 py-1 font-semibold leading-tight text-teal-700 bg-teal-100 rounded-full dark:bg-teal-700 dark:text-teal-100">
+                                        Sedang di proses
+                                    </span>
+                                    @break
+                                @case(3)
+                                    <span class="px-2 py-1 font-semibold leading-tight text-indigo-700 bg-indigo-100 rounded-full dark:bg-indigo-700 dark:text-indigo-100">
+                                        Sedang dalam perjalanan
+                                    </span>
+                                    @break
+                                @case(4)
+                                    <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                        Sedang dalam perjalanan
+                                    </span>
+                                    @break
+                                @default
+                                    
+                            @endswitch
+                            @endif
+                            @if ($s == "EXPIRED")
+                            <span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
+                                Di batalkan
+                            </span>
+                            @endif
                             </td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{{Str::limit($item->created_at,10,'')}}</td>
                             <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
@@ -119,6 +154,16 @@
     </div>
 </section>
 
+<script>
+    $(document).ready(function() {
+    
+    var table = $('#datatable').DataTable( {
+            responsive: true
+        } )
+        .columns.adjust()
+        .responsive.recalc();
+} );
+</script>
 
 <livewire:footer>
 @endsection

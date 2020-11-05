@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\User;
 use Xendit\Xendit;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
@@ -57,11 +58,13 @@ class UserController extends Controller
         
         $data['order'] = Order::where('user_id',$z)->get();
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
-        // foreach($data['order'] as $key=>$c){
-        //     $id = $c->invoice;
-        //     $getInvoice = \Xendit\Invoice::retrieve($id);
-        //     $body = json_encode($getInvoice, true);
-        // }
+        foreach($data['order'] as $abc)
+        {
+            $invoice = $abc->invoice;
+            $getInvoice = \Xendit\Invoice::retrieve($invoice);
+            $getInvoice2[] = $getInvoice;
+        }
+        $data['getinvoice'] = $getInvoice2;
         
         return view('publik.myorder',$data);
         
@@ -79,6 +82,27 @@ class UserController extends Controller
         return view('publik.myorderdetail',$data);
         
     }
+    public function waybill(Request $request,$id,$invoice,$idorder)
+    {
+        $z = Crypt::decrypt($id);
+        $data['order'] = Order::where('user_id',$z)->where('external_id',$invoice)->first();
+        $url = 'https://ruangapi.com/api/v1/waybill';
+        $item = OrderDetail::where('id',$idorder)->where('order_id',$data['order']['id'])->first();
+        $client = new Client();
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
+            ],
+            'form_params' => [
+                'waybill' => $data['order']->tracking_number,
+                'courier' => $data['order']->shipping,
+            ]
+        ]);
+
+        $data['respon'] = json_decode($response->getBody(), true);
+        return view('publik.trackoerder',$data,compact('item'));
+        
+    }
     
     public function detailupdate(Request $request, $id)
     {
@@ -93,6 +117,7 @@ class UserController extends Controller
         $user->update();
         return redirect()->route('home.guest');
     }
+    
 
     /**
      * Show the form for creating a new resource.

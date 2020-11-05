@@ -105,7 +105,13 @@
                                                     @if ($order->tracking_number!=Null)
                                                     <p class="text-gray-700 text-base">No resi : {{$item->resi}}</p>
                                                     </div>
-                                            <div class=" px-2 w-1/2 overflow-hidden"><a class="text-green-500 hover:text-white hover:bg-green-500 border border-green-500 text-xs font-semibold rounded-full px-4  leading-normal" href="#">Lacak</a></div>
+                                            <div class=" px-2 w-1/2 overflow-hidden">
+                                                @php
+                                                    $data=Auth::user()->id;
+                                                    $invoice=$item->order->external_id;
+                                                @endphp
+                                                <a class="text-green-500 hover:text-white hover:bg-green-500 border border-green-500 text-xs font-semibold rounded-full px-4  leading-normal" href="{{url('/myorder/'.\Crypt::encrypt($data).'/detail/'.$invoice.'/track/'.$item->id)}}">Lacak</a>
+                                            </div>
                                                     @else
                                                     <p class="text-gray-700 text-base">No resi : -</p></div>
                                                     @endif

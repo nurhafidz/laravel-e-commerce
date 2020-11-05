@@ -12,7 +12,7 @@
         $a = Auth::user()->store->name;
         $storename = str_replace(' ','-',$a)
         @endphp
-        <form action="{{url('/dashboard/'.$storename.'/product/store')}}" method="post" enctype="multipart/form-data">
+        <form action="{{url('/seller/'.$storename.'/product/store')}}" method="post" enctype="multipart/form-data">
           @csrf
           <h1 class="text-4xl">Tambah Product</h1>
           <div class="my-2 px-2 w-full overflow-hidden ">

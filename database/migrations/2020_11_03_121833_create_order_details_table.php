@@ -21,10 +21,12 @@ class CreateOrderDetailsTable extends Migration
             $table->integer('price');
             $table->integer('qty');
             $table->integer('weight');
+            $table->string('shipping')->nullable();
+            $table->string('tracking_number')->nullable();
             $table->longText('note')->nullable();
             $table->timestamps();
         });
-    }
+    }   
 
     /**
      * Reverse the migrations.

@@ -34,6 +34,7 @@ Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checko
 Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('processCheckout')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/myorder/{id}', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/myorder/{id}/detail/{invoice}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
+Route::get('/myorder/{id}/detail/{invoice}/track/{idorder}', [UserController::class, 'waybill'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/shop', function () {
     return view('publik.shop');
 })->name('shop');
@@ -65,10 +66,10 @@ Auth::routes(['verify' => true]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
     Route::get('/dashboard/{storename}',[StoreController::class, 'index'])->name('dashboard.seller');
-    Route::get('/dashboard/{storename}/product',[ProductController::class,'index'])->name('product.index');
-    Route::get('/dashboard/{storename}/product/create',[ProductController::class,'create'])->name('product.create');
-    Route::post('/dashboard/{storename}/product/store',[ProductController::class,'store'])->name('product.store');
-    Route::get('/dashboard/{storename}/product/{brandname}',[ProductController::class,'show'])->name('product.show');
+    Route::get('/seller/{storename}/product',[ProductController::class,'index'])->name('product.index');
+    Route::get('/seller/{storename}/product/create',[ProductController::class,'create'])->name('product.create');
+    Route::post('/seller/{storename}/product/store',[ProductController::class,'store'])->name('product.store');
+    Route::get('/seller/{storename}/product/{brandname}',[ProductController::class,'show'])->name('product.show');
     Route::get('/seller/{storename}/saldo',[SaldoController::class,'index'])->name('seller.saldo');
     Route::get('/seller/{storename}/pesanan',[PesananController::class,'index'])->name('seller.pesanan');
     Route::get('/seller/{storename}/pesanan/show',[PesananController::class,'show'])->name('seller.pesanan.show');
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function ()
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');
     Route::get('/services/pengguna',[PenggunaController::class,'index'] )->name('service.pengguna');
     Route::get('/services/pengguna/{id}',[PenggunaController::class,'show'] )->name('service.pengguna.show');
+    Route::get('/services/seller',[PenjualController::class,'index'] )->name('service.seller.index');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
     Route::get('/admin/dashboard',[SaldoAdminController ::class, 'index'] )->name('admin.dashboard');
