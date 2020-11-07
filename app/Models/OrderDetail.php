@@ -13,7 +13,11 @@ class OrderDetail extends Model
         'qty',
         'product_id',
         'store_id',
-        'weight'
+        'weight',
+        'shipping',
+        'shipping_detail',
+        'user_id',
+        'note'
     ];
     use HasFactory;
     public function order()
@@ -23,5 +27,9 @@ class OrderDetail extends Model
     public function product()
     {
         return $this->belongsTo('App\Models\Product');
+    }
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
     }
 }

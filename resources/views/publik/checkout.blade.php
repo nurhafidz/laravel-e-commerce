@@ -13,6 +13,7 @@
                     <div class="mt-6">
                     @forelse ($carts as $key=>$row)
                     <input type="hidden" value="{{ $row['product_store'] }}" name="toko">
+                    <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
                     
                     <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
                         <div class="sm:w-32 sm:h-32 h-20 w-20 sm:mr-10 inline-flex items-center justify-center rounded-full bg-red-100 text-red-500 flex-shrink-0">
@@ -41,7 +42,7 @@
                                     <p class="leading-relaxed text-base">Berat : {{ number_format($row['weight'] * $row['qty']) }} g</p>
                                 </div>
                                 
-                                <input type="hidden" name="origin_id" id="origin_id" value="1">
+                                <input type="hidden" name="origin_id" id="origin_id" value="{{$row['product_place']}}">
                                 
                                 <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->id}}">
                                 <input type="hidden" name="district_id" id="district_id" value="{{Auth::user()->district_id}}">
@@ -105,8 +106,9 @@
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     
+    
     $.ajax({
-
+        
         url: "{{ url('/api/cost') }}",
         type: "POST",
         data: { origin: $('#origin_id').val(), destination: $('#district_id').val(), weight: $('#weight').val() },
@@ -125,12 +127,24 @@
     $('#courier').on('change', function() {
     //UPDATE INFORMASI BIAYA PENGIRIMAN
     let split = $(this).val().split('-')
+    var a =split[2]/2;
+    if(isNaN(a) == true)
+    {
     $('#ongkir').text('Rp ' + split[3])
-
     //UPDATE INFORMASI TOTAL (SUBTOTAL + ONGKIR)
     let subtotal = "{{ $subtotal }}"
     let total = parseInt(subtotal) + parseInt(split['3'])
     $('#total').text('Rp' + total)
+    }
+    else
+    {
+        $('#ongkir').text('Rp ' + split[2])
+
+    //UPDATE INFORMASI TOTAL (SUBTOTAL + ONGKIR)
+    let subtotal = "{{ $subtotal }}"
+    let total = parseInt(subtotal) + parseInt(split['2'])
+    $('#total').text('Rp' + total)
+    }
 })
 </script>
 

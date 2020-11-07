@@ -17,7 +17,7 @@ class PesananController extends Controller
         # code...
         $c =str_replace('-', ' ', $storename);
         $data['toko'] = Store::where('name',$c)->firstOrFail();
-        $data['orderdetail'] = OrderDetail::where('store_id',$data['toko']->id)->get();
+        $data['orderdetail'] = OrderDetail::where('store_id',$data['toko']->id)->latest()->get();
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
         
         foreach($data['orderdetail'] as $abc)
@@ -30,11 +30,19 @@ class PesananController extends Controller
         //$abc = array_combine($data['orderdetail'],$data['getinvoice']);
         return view('seller.pesanan.index',$data);
     }
-    public function show($storename)
+    public function show($storename,$orderid)
     {
         # code...
     $c =str_replace('-', ' ', $storename);
     $data['toko'] = Store::where('name',$c)->firstOrFail();
+    $data['orderdetail'] = OrderDetail::findorfail($orderid);
+        Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
+    
+    $invoice = $data['orderdetail']->order->invoice;
+    $getInvoice = \Xendit\Invoice::retrieve($invoice);
+    
+    $data['getinvoice'] = $getInvoice;
+    
 
 
         return view('seller.pesanan.show',$data);

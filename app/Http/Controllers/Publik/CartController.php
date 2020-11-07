@@ -151,7 +151,14 @@ class CartController extends Controller
             return $q['qty'] * $q['product_price'];
         });
         $shipping = explode('-', $request->courier);
-        $total = $subtotal+$shipping[3];
+        if(count($shipping) == 3){
+            $total = $subtotal+$shipping[2];
+        }
+        if(count($shipping) == 4){
+            $total = $subtotal+$shipping[3];
+        }
+        
+        
         $user = User::findorFail($request->user_id);
         $email = $user->email;
         
@@ -174,25 +181,51 @@ class CartController extends Controller
                 'user_id' => $user->id,
                 'store_id' => $user->id,
                 'subtotal' => $subtotal,
-                'cost' => $shipping[3],
-                'status' => 1,
-                'shipping' => $shipping[0] . '-' . $shipping[1],
-                
             ]);
-
+            
         foreach ($carts as $row) {
             $product = Product::find($row['product_id']);
+            if(count($shipping) == 3){
+            $a =$shipping[1];
+            $b =$shipping[0];
             $orderdetail=OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $row['product_id'],
+                    'user_id' => $request->user_id,
                     'store_id' => $product->store_id,
                     'price' => $row['product_price'],
                     'qty' => $row['qty'],
+                    'shipping' => $b,
+                    'shipping_detail' => $a,
+                    'cost' => $shipping[2],
+                    'status' => 1,
                     'weight' => $product->weight
                 ]);
+                
+                $orderdetail->save();
+            }
+            if(count($shipping) == 4){
+            $a =$shipping[2].'-'.$shipping[1];
+            $b =$shipping[0];
+            $orderdetail=OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $row['product_id'],
+                    'user_id' => $request->user_id,
+                    'store_id' => $product->store_id,
+                    'price' => $row['product_price'],
+                    'qty' => $row['qty'],
+                    'shipping' => $b,
+                    'shipping_detail' => $a,
+                    'cost' => $shipping[3],
+                    'status' => 1,
+                    'weight' => $product->weight
+                ]);
+                
+                $orderdetail->save();
+            }
+            
         }
         $order->save();
-        $orderdetail->save();
         $carts = [];
         $cookie = cookie('cart', json_encode($carts), 2880);
         Cookie::queue(Cookie::forget('cart'));

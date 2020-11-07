@@ -23,7 +23,7 @@ class ProductController extends Controller
         $c =str_replace('-', ' ', $storename);
         if($checkuser == $c){
             $b = Store::where('name',$c)->firstOrFail();
-            $data['products'] = Product::where('store_id',$b->id)->paginate(12);
+            $data['products'] = Product::where('store_id',$b->id)->latest()->paginate(12);
             return view('seller.productindex',$data);
         }
         else{
@@ -77,7 +77,8 @@ class ProductController extends Controller
             $product->name =$request->name;
             $product->image =$imagename;
             $product->store_id =Auth::user()->store->id;
-            $product->status = "0" ;
+            $product->status = "1" ;
+            $product->status_product = $request->status_product ;
             $product->stock =$request->stock;
             $product->weight =$request->weight;
             $product->harga =$request->price;

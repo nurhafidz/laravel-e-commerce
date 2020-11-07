@@ -11,9 +11,9 @@ class SaldoController extends Controller
 {
     public function index($storename)
     {
-          # code...
-          $c =str_replace('-', ' ', $storename);
-              $data['toko'] = Store::where('name',$c)->firstOrFail();
+        # code...
+        $c =str_replace('-', ' ', $storename);
+        $data['toko'] = Store::where('name',$c)->firstOrFail();
 
 
         return view('seller.saldo.index',$data);

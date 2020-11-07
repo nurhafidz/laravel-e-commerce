@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\SaldoAdminController;
 use App\Http\Controllers\Seller\SaldoController;
 use App\Http\Controllers\Seller\PesananController;
 use App\Http\Controllers\service\PenggunaController;
+use App\Http\Controllers\service\PenjualController;
 
 
 
@@ -33,8 +34,8 @@ Route::get('/keranjang', [CartController::class, 'listCart']);
 Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('processCheckout')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/myorder/{id}', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
-Route::get('/myorder/{id}/detail/{invoice}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
-Route::get('/myorder/{id}/detail/{invoice}/track/{idorder}', [UserController::class, 'waybill'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
+Route::get('/myorder/{id}/detail/{orderid}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
+Route::get('/myorder/{id}/detail/{orderid}/track/{idorder}', [UserController::class, 'waybill'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/shop', function () {
     return view('publik.shop');
 })->name('shop');
@@ -72,7 +73,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
     Route::get('/seller/{storename}/product/{brandname}',[ProductController::class,'show'])->name('product.show');
     Route::get('/seller/{storename}/saldo',[SaldoController::class,'index'])->name('seller.saldo');
     Route::get('/seller/{storename}/pesanan',[PesananController::class,'index'])->name('seller.pesanan');
-    Route::get('/seller/{storename}/pesanan/show',[PesananController::class,'show'])->name('seller.pesanan.show');
+    Route::get('/seller/{storename}/pesanan/{orderid}',[PesananController::class,'show'])->name('seller.pesanan.show');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function () {
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');

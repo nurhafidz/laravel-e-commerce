@@ -20,7 +20,9 @@ class CreateProductsTable extends Migration
             $table->integer('stock');
             $table->longText('description');
             $table->longText('image');
-            $table->enum('status',['0','1']);
+
+            $table->char('status')->default('1')->comment('1: aktif, 0: tidak aktif');
+            $table->char('status_product')->default('1')->comment('1: baru, 2: bekas');
             $table->integer('store_id');
             $table->integer('category_id');
             $table->integer('weight');

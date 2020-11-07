@@ -93,6 +93,14 @@
                         @endforeach
                       </select>
                     </div>
+                    <div class="my-2 px-2 w-full overflow-hidden">
+                      <p>kondisi product</p>
+                      <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline select2 " name="status_product" >
+                        <option value="">kondisi</option>
+                        <option value="1">Baru</option>
+                        <option value="2">Bekas</option>
+                      </select>
+                    </div>
 
                     <div class="my-2 px-2 w-full overflow-hidden">
                       <p>Deskripsi product</p>

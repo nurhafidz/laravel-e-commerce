@@ -56,29 +56,43 @@ class UserController extends Controller
     {
         $z = Crypt::decrypt($id);
         
-        $data['order'] = Order::where('user_id',$z)->get();
+        //$data['order'] = Order::where('user_id',$z)->latest()->get();
+        $data['order'] = OrderDetail::where('user_id',$z)->get();
+        
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
         foreach($data['order'] as $abc)
         {
-            $invoice = $abc->invoice;
+            $invoice = $abc->order->invoice;
             $getInvoice = \Xendit\Invoice::retrieve($invoice);
             $getInvoice2[] = $getInvoice;
+            
         }
         $data['getinvoice'] = $getInvoice2;
         
-        return view('publik.myorder',$data);
         
+        return view('publik.myorder',$data);
     }
-    public function orderdetail($id,$invoice)
+    public function orderdetail($id,$orderid)
     {
         $z = Crypt::decrypt($id);
-        $data['order'] = Order::where('user_id',$z)->where('external_id',$invoice)->first();
-        $data['order_detail'] = OrderDetail::where('order_id',$data['order']['id'])->get();
+        
+        $data['order_detail'] = OrderDetail::where('id',$orderid)->where('user_id',$z)->first();
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
-        $id = $data['order']->invoice;
+        $id = $data['order_detail']->order->invoice;
         $data['invoice'] = \Xendit\Invoice::retrieve($id);
-        
-        
+        $url = 'https://ruangapi.com/api/v1/waybill';
+        $client = new Client();
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
+            ],
+            'form_params' => [
+                'waybill' => $data['order_detail']->tracking_number,
+                'courier' => $data['order_detail']->shipping,
+            ]
+        ]);
+
+        $data['respon'] = json_decode($response->getBody(), true);
         return view('publik.myorderdetail',$data);
         
     }
@@ -94,12 +108,13 @@ class UserController extends Controller
                 'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
             ],
             'form_params' => [
-                'waybill' => $data['order']->tracking_number,
-                'courier' => $data['order']->shipping,
+                'waybill' => $item->tracking_number,
+                'courier' => $item->shipping,
             ]
         ]);
 
         $data['respon'] = json_decode($response->getBody(), true);
+        
         return view('publik.trackoerder',$data,compact('item'));
         
     }

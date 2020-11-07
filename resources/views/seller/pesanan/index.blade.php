@@ -13,9 +13,9 @@
             <table class="w-full whitespace-no-wrap">
               <thead>
                 <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                  <th class="px-4 py-3">Invoice</th>
                   <th class="px-4 py-3">Nama</th>
-                  <th class="px-4 py-3">Alamat</th>
+                  <th class="px-4 py-3">Barang</th>
+                  <th class="px-4 py-3">Qty</th>
                   <th class="px-4 py-3">Subtotal</th>
                   <th class="px-4 py-3">Status</th>
                   <th class="px-4 py-3"></th>
@@ -24,15 +24,15 @@
               <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                 @forelse ($orderdetail as $key=>$item)
                   <tr class="text-gray-700 dark:text-gray-400">
-                    <td class="px-4 py-3 text-sm">{{Str::limit($item->order->invoice,15)}}</td>
-                    <td class="px-4 text-sm">{{$item->order->user->first_name}}</td>
-                    <td class="px-4 text-sm">{{$item->order->user->alamat_lengkap}}</td>
+                    <td class="px-4 py-3 text-sm">{{Str::limit($item->order->user->first_name,15)}}</td>
+                    <td class="px-4 text-sm">{{$item->product->name}}</td>
+                    <td class="px-4 text-sm">{{$item->qty}}</td>
                     
                     <td class="px-4 py-3 text-sm">{{$item->price*$item->qty}}</td>
                     <td class="px-4 py-3 text-xs"> 
                       @php
                           $s = $getinvoice[$key]['status'];
-                          $s2 = $item->order->status;
+                          $s2 = $item->status;
                       @endphp
                       @if ($s == "PENDING")
                       <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:bg-orange-700 dark:text-orange-100">
@@ -71,9 +71,15 @@
                       </span>
                       @endif
                     </td>
-                    <td>@php $a = Auth::user()->store->name; $storename = str_replace(' ','-',$a) @endphp <a href="{{route('seller.pesanan.show',$storename)}}" class="bg-green-500 hover:bg-green-700 text-white  px-4 rounded-full">
-                        Confirm
+                    <td>
+                      @if ($s == "PAID")
+                      @php $a = Auth::user()->store->name; $storename = str_replace(' ','-',$a) @endphp <a 
+                      href="{{url('/seller/'.$storename.'/pesanan/'.$item->id)}}" class="bg-green-500 hover:bg-green-700 text-white  px-4 rounded-full">
+                        Detail
                       </a> 
+                      @endif
+                      
+                      
                     </td>
                   </tr>
                 @empty
