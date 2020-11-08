@@ -23,4 +23,23 @@ class ProdukSellerController extends Controller
 
         return view('service.produk',compact('product'));
     }
+    public function editstatus($id)
+    {
+        $data=Product::findorFail($id);
+        $stat = $data->status;
+        if($stat == 1)
+        {
+            $data->status=0;
+        }
+        if($stat == 0)
+        {
+            $data->status=1;
+        }
+        else{
+            $data->status=0;
+        }
+        $data->update();
+     
+         return redirect()->back();
+}
 }

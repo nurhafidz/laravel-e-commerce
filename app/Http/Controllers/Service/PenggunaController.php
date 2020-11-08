@@ -22,4 +22,24 @@ class PenggunaController extends Controller
 
         return view('service.penggunashow',compact('user'));
     }
+    public function editstatus($id)
+    {
+        $data=User::findorFail($id);
+        $stat = $data->status;
+        if($stat == 1)
+        {
+            $data->status=0;
+        }
+        if($stat == 0)
+        {
+            $data->status=1;
+        }
+        else{
+            $data->status=0;
+        }
+        $data->update();
+
+        return redirect()->back();
+}
+
 }

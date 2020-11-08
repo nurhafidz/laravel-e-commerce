@@ -86,6 +86,10 @@ Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function ()
     Route::get('/services/seller',[PenjualController::class,'index'] )->name('service.seller.index');
     Route::get('/services/produk',[ProdukSellerController::class,'index'] )->name('service.produk');
     Route::get('/services/produk/{id}',[ProdukSellerController::class,'show'] )->name('service.produk.show');
+    Route::get('/services/servicesellershow/{id}',[PenjualController::class,'show'] )->name('service.seller.show');
+    Route::put('/services/seller/{id}/editstatus',[PenjualController::class,'editstatus'] )->name('service.seller.show.editstatus');
+    Route::put('/services/produk/{id}/editstatus',[ProdukSellerController::class,'editstatus'] )->name('service.produk.show.editstatus');
+    Route::put('/services/pengguna/{id}/editstatus',[PenggunaController::class,'editstatus'] )->name('service.pengguna.show.editstatus');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
     Route::get('/admin/dashboard',[AdminController ::class, 'index'] )->name('admin.dashboard');

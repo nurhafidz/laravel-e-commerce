@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $fillable =[
+        'status'
+    ];
     use HasFactory;
     public function category()
     {
