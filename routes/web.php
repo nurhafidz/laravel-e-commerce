@@ -14,7 +14,7 @@ use App\Http\Controllers\Seller\SaldoController;
 use App\Http\Controllers\Seller\PesananController;
 use App\Http\Controllers\service\PenggunaController;
 use App\Http\Controllers\service\PenjualController;
-
+use App\Http\Controllers\Service\ProdukSellerController;
 
 
 /*
@@ -79,6 +79,8 @@ Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function ()
     Route::get('/services/pengguna',[PenggunaController::class,'index'] )->name('service.pengguna');
     Route::get('/services/pengguna/{id}',[PenggunaController::class,'show'] )->name('service.pengguna.show');
     Route::get('/services/seller',[PenjualController::class,'index'] )->name('service.seller.index');
+    Route::get('/services/produk',[ProdukSellerController::class,'index'] )->name('service.produk');
+    Route::get('/services/produk/{id}',[ProdukSellerController::class,'show'] )->name('service.produk.show');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
     Route::get('/admin/dashboard',[AdminController ::class, 'index'] )->name('admin.dashboard');
