@@ -27,6 +27,36 @@
         
 
         <style>
+            .select2-container--default .select2-selection--single {
+    height: 40px !important;
+    -webkit-appearance: none;
+        -moz-appearance: none;
+            appearance: none;
+    -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+    background-repeat: no-repeat;
+    background-color: #ffffff;
+    border-color: #d2d6dc;
+    padding-top: 0.5rem;
+    padding-right: 2.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 1px;
+    
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    top: 85% !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 26px !important;
+}
+.select2-container--default .select2-selection--single {
+    border: 1px solid #CCC !important;
+    
+    transition: border-color 0.15s ease-in-out 0s, 
+}
         .worksans {
             font-family: 'Work Sans', sans-serif;
         }

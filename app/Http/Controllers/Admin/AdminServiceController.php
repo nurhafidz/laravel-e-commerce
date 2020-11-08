@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Roles;
 use App\Models\Province;
 use Alert;
+use File;
+use Illuminate\Support\Facades\Storage;
 
 class AdminServiceController extends Controller
 {
@@ -107,6 +109,10 @@ class AdminServiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::where('id',$id)->first();
+        $file_path = storage_path().'/image/user/'.$user->foto;
+        unlink($file_path);
+        User::where('id',$id)->delete();
+        return redirect()->back();
     }
 }

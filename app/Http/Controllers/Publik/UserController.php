@@ -9,6 +9,7 @@ use App\Models\Province;
 use App\Models\City;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Store;
 use App\Models\User;
 use Xendit\Xendit;
 use GuzzleHttp\Client;
@@ -110,6 +111,23 @@ class UserController extends Controller
         $user->kode_pos = $request->kode;
         $user->update();
         return redirect()->route('home.guest');
+    }
+
+    public function changestatus(Request $request, $id,$orderid)
+    {
+        $z = Crypt::decrypt($id);
+        
+        $data['order_detail'] = OrderDetail::where('id',$orderid)->where('user_id',$z)->first();
+        $saldo=$data['order_detail']->price;
+        $store=$data['order_detail']->store_id;
+        $data['store'] = Store::findorfail($store);
+        $data['store']->saldo=$saldo;
+        $data['order_detail']->status=$request->status;
+        $data['order_detail']->update();
+        $data['store']->update();
+        return redirect()->back();
+
+
     }
     
 

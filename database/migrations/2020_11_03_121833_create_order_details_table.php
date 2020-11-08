@@ -23,6 +23,7 @@ class CreateOrderDetailsTable extends Migration
             $table->integer('weight');
             $table->string('shipping')->nullable();
             $table->string('shipping_detail')->nullable();
+            $table->integer('cost')->nullable();
             $table->char('status')->default('1')->comment('1: confirm, 2: process, 3: shipping, 4: done');
             $table->string('tracking_number')->nullable();
             $table->longText('note')->nullable();

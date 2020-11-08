@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\Store;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -108,6 +109,16 @@ class ProductController extends Controller
         $get = str_replace('-', ' ', $brandname);
         $data['product'] = Product::where('store_id',$b->id)->where('name', $get)->firstOrFail();
         return view('seller.product.show',$data);
+    }
+    public function changestatus(Request $request,$storename,$id)
+    {
+        $c =str_replace('-', ' ', $storename);
+        $b = Store::where('name',$c)->firstOrFail();
+        $data['product'] = OrderDetail::where('store_id',$b->id)->where('id', $id)->firstOrFail();
+        $data['product']->status=$request->status;
+        $data['product']->tracking_number=$request->tracking_number;
+        $data['product']->update();
+        return redirect()->back();
     }
 
     /**

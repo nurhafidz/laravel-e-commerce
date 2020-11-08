@@ -69,7 +69,6 @@
             
             <div class="col-span-3 md:col-span-2 md:row-span-2">
                 <div class="grid grid-cols-3 gap-4">
-                    
                     <div class="col-span-3">
                         <div class="rounded overflow-hidden shadow-lg mb-5 w-full lg:max-w-full lg:flex">
                             @php
@@ -122,11 +121,21 @@
                                                 </div>
                                                 @endif
                                             </div>
+                                            @if ($order_detail->status == 3)
                                             <div class="mt-3 px-2 w-1/2 overflow-hidden">
-                                                <button class="text-green-500 hover:text-white hover:bg-green-500 border border-green-500 text-xs px-4 py-1 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1" type="button" style="transition: all .15s ease">
-                                                    Sudah sampai
-                                                </button>
+                                                @php
+                                                    $data=Auth::user()->id;
+                                                    $idorder=$order_detail->id;
+                                                @endphp
+                                                <form action="{{url('/myorder/'.\Crypt::encrypt($data).'/detail/'.$idorder.'/changestatus')}}" method="post">
+                                                    @csrf
+                                                    @method('put')
+                                                    <button class="text-green-500 hover:text-white hover:bg-green-500 border border-green-500 text-xs px-4 py-1 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1" style="transition: all .15s ease" name="status" value="4" type="submit">
+                                                        Sudah sampai
+                                                    </button>
+                                                </form>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

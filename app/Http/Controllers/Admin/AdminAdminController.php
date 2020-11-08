@@ -11,18 +11,18 @@ use Alert;
 use File;
 use Illuminate\Support\Facades\Storage;
 
-class AdminSellerController extends Controller
+class AdminAdminController extends Controller
 {
     public function index()
     {
-        $data['seller']=User::where('role_id', '3')->paginate(10);
+        $data['admin']=User::where('role_id', '1')->paginate(10);
         
-        return view('admin.seller.index',$data);
+        return view('admin.admin.index',$data);
     }
     public function show($id)
     {
-        $data['seller']=User::findorFail($id);
-        return view('admin.seller.show',$data);
+        $data['admin']=User::findorFail($id);
+        return view('admin.admin.show',$data);
     }
 
     public function editstatus ($id)

@@ -8,8 +8,8 @@
     <livewire:adminnav>
         <form action="{{route('admin.store')}}" method="post" enctype="multipart/form-data">
             @csrf
-            <main class="h-full overflow-y-auto ">
-                
+             <main class="h-full overflow-y-auto">
+                <div class="container px-6 mx-auto grid">
                 <div class="container grid px-6 mx-auto mb-10 mt-5">
                     <!-- component -->
                     <div class="my-2 px-2 md:w-1/2 overflow-hidden">
@@ -167,6 +167,7 @@
                 </footer>
             </div>
         </div>
+    </div>
     </form>
 </div>
 <style>

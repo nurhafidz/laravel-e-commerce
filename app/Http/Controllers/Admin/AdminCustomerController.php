@@ -11,21 +11,21 @@ use Alert;
 use File;
 use Illuminate\Support\Facades\Storage;
 
-class AdminSellerController extends Controller
+class AdminCustomerController extends Controller
 {
     public function index()
     {
-        $data['seller']=User::where('role_id', '3')->paginate(10);
+        $data['customer']=User::where('role_id', '4')->paginate(10);
         
-        return view('admin.seller.index',$data);
+        return view('admin.customer.index',$data);
     }
     public function show($id)
     {
-        $data['seller']=User::findorFail($id);
-        return view('admin.seller.show',$data);
+        $data['customer']=User::findorFail($id);
+        return view('admin.customer.show',$data);
     }
 
-    public function editstatus ($id)
+    public function editstatus($id)
     {
         $data=User::findorFail($id);
         $stat = $data->status;

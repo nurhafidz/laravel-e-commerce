@@ -138,7 +138,7 @@
     {
         jQuery('select[name="province"]').on('change',function(){
             var provinceID = jQuery(this).val();
-            
+            alert(provinceID);
             if(provinceID)
             {
                 jQuery.ajax({

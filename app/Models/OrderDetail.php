@@ -17,7 +17,8 @@ class OrderDetail extends Model
         'shipping',
         'shipping_detail',
         'user_id',
-        'note'
+        'note',
+        'cost'
     ];
     use HasFactory;
     public function order()
