@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Roles;
+use App\Models\Province;
+use Alert;
 
 class AdminServiceController extends Controller
 {
@@ -53,6 +56,23 @@ class AdminServiceController extends Controller
         return view('admin.service.show',$data);
     }
 
+    public function editstatus ($id)
+    {
+        $data=User::findorFail($id);
+        $stat = $data->status;
+        if($stat == 1)
+        {
+            $data->status=0;
+        }
+        if($stat == 0)
+        {
+            $data->status=1;
+        }
+        $data->update();
+        Alert::alert('Title', 'Message', 'Type');
+        return redirect()->back();
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -61,7 +81,10 @@ class AdminServiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user=User::findorFail($id);
+        $role = Roles::all();
+        $province = Province::pluck("name", "id");
+        return view('admin.service.edit',compact('user','role','province'));
     }
 
     /**

@@ -16,7 +16,7 @@
         <ul>
         <li class="relative px-6 py-3">
             <span class="{{ \Request::routeIs('admin.service.index')? 'absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg' : ''}}" aria-hidden="true"></span>
-            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-g {{ \Request::routeIs('admin.service.index')? 'text-gray-800 dark:text-gray-100' : ''}}" href="{{route('admin.service.index')}}">
+            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 {{ \Request::routeIs('admin.service.index')? 'text-gray-800 dark:text-gray-100' : ''}}" href="{{route('admin.service.index')}}">
             <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                 <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
             </svg> <span class="ml-4">Services</span>
@@ -84,7 +84,7 @@
             <ul x-transition:enter="transition-all ease-in-out duration-300" x-transition:enter-start="opacity-25 max-h-0" x-transition:enter-end="opacity-100 max-h-xl" x-transition:leave="transition-all ease-in-out duration-300" x-transition:leave-start="opacity-100 max-h-xl" x-transition:leave-end="opacity-0 max-h-0" class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900" aria-label="submenu">
                 <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"> <a class="w-full" href="pages/login.html">Login</a>
                 </li>
-                <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"> <a class="w-full" href="pages/create-account.html">
+                <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"> <a class="w-full" href="#">
                         Create account
                     </a>
                 </li>
@@ -101,8 +101,8 @@
         </li>
         </ul>
         <div class="px-6 my-6">
-        <button class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">Create account <span class="ml-2" aria-hidden="true">+</span>
-        </button>
+        <a class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" href="{{route('admin.create')}}">Create account <span class="ml-2" aria-hidden="true">+</span>
+        </a>
         </div>
     </div>
 </aside>

@@ -9,7 +9,7 @@ use App\Http\Controllers\Seller\StoreController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Service\ServiceController;
 use App\Http\Controllers\Admin\AdminServiceController;
-use App\Http\Controllers\Admin\SaldoAdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Seller\SaldoController;
 use App\Http\Controllers\Seller\PesananController;
 use App\Http\Controllers\service\PenggunaController;
@@ -35,7 +35,6 @@ Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checko
 Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('processCheckout')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/myorder/{id}', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/myorder/{id}/detail/{orderid}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
-Route::get('/myorder/{id}/detail/{orderid}/track/{idorder}', [UserController::class, 'waybill'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/shop', function () {
     return view('publik.shop');
 })->name('shop');
@@ -82,7 +81,11 @@ Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function ()
     Route::get('/services/seller',[PenjualController::class,'index'] )->name('service.seller.index');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
-    Route::get('/admin/dashboard',[SaldoAdminController ::class, 'index'] )->name('admin.dashboard');
+    Route::get('/admin/dashboard',[AdminController ::class, 'index'] )->name('admin.dashboard');
+    Route::get('/admin/create',[AdminController ::class, 'create'] )->name('admin.create');
+    Route::post('/admin/store',[AdminController ::class, 'store'] )->name('admin.store');
     Route::get('/admin/service',[AdminServiceController::class, 'index'])->name('admin.service.index');
     Route::get('/admin/service/{id}/detail',[AdminServiceController::class, 'show'])->name('admin.service.show');
+    Route::put('/admin/service/{id}/edit-status',[AdminServiceController::class, 'editstatus'])->name('admin.service.edit.status');
+    Route::get('/admin/service/{id}/edit',[AdminServiceController::class, 'edit'])->name('admin.service.edit');
 });

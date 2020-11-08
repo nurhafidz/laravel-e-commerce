@@ -44,7 +44,7 @@ class UserController extends Controller
     }
     public function getCity($id)
     {
-        $city = City::where("province_id", $id)->pluck("name", "id");
+        $city = City::where("province_id", $id)->pluck("name", "id","type");
         return json_encode($city);
     }
     public function getDistrict($id)
@@ -96,28 +96,7 @@ class UserController extends Controller
         return view('publik.myorderdetail',$data);
         
     }
-    public function waybill(Request $request,$id,$invoice,$idorder)
-    {
-        $z = Crypt::decrypt($id);
-        $data['order'] = Order::where('user_id',$z)->where('external_id',$invoice)->first();
-        $url = 'https://ruangapi.com/api/v1/waybill';
-        $item = OrderDetail::where('id',$idorder)->where('order_id',$data['order']['id'])->first();
-        $client = new Client();
-        $response = $client->request('POST', $url, [
-            'headers' => [
-                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
-            ],
-            'form_params' => [
-                'waybill' => $item->tracking_number,
-                'courier' => $item->shipping,
-            ]
-        ]);
-
-        $data['respon'] = json_decode($response->getBody(), true);
-        
-        return view('publik.trackoerder',$data,compact('item'));
-        
-    }
+    
     
     public function detailupdate(Request $request, $id)
     {
