@@ -1,31 +1,28 @@
 @extends('layouts.app')
+
 @section('content')
-<div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
-<!-- Desktop sidebar -->
-<livewire:servicesnav>
-<main class="h-full overflow-y-auto ">
-<div class="container grid px-6 mx-auto mb-10 mt-5">
-	<!-- component -->
-	<div class="grid grid-cols-3 gap-4">
-		
-		<div class="col-span-3">
-			<div class="max-w-sm w-full lg:max-w-full lg:flex shadow-lg">
-				@php
-				$ex = count(explode('|', $product->image));
-				@endphp
-				@if ($ex != 1)
-				@php
-				$x =explode('|', $product->image,$ex);
-				@endphp
-				<img class="hover:grow hover:shadow-lg">
-				<div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{asset('image/product/'.$x[0])}}')" title="Woman holding a mug">
-				</div>
-				@else
-				<img class="hover:grow hover:shadow-lg">
-				<div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{asset('image/product/'.$product->image)}}')" title="Woman holding a mug">
-				</div>
-				@endif
-				<div class=" lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+<livewire:navbar>
+<!-- component -->
+<div x-data="{ open: false }" @click.away="open = false">
+    <div class="w-full container mx-auto grid grid-cols-1 md:grid-cols-7 items-center mt-0 px-6 py-3">
+        <livewire:sidebarseller>
+        <div class="col-span-1 md:col-span-5 text-gray-700 px-4 py-2 m-2">
+        <div class="flex flex-wrap -mx-3 overflow-hidden">
+        <div class="flex flex-wrap -mx-4 overflow-hidden">
+
+  <div class="my-4 px-4 w-full overflow-hidden">
+  <a href="{{url('/seller/'.$storename.'/product/create')}}" class="bg-green-500 inline-block hover:bg-green-600 text-white ml-4 py-2 px-4 rounded-md">
+                    <svg class="h-6 w-6 inline-block"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="9" />  <line x1="9" y1="12" x2="15" y2="12" />  <line x1="12" y1="9" x2="12" y2="15" /></svg>
+                    <p class="inline-block align-middle">Tambah Product</p>
+                
+    </a>
+
+  <div class="my-4 px-4 w-full overflow-hidden">
+    <!-- Column Content -->
+  </div>
+
+  <div class="my-4 px-4 w-full overflow-hidden">
+  <div class=" lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
 					<div class="mb-8">
 						<p class="text-sm text-gray-600 flex items-center">
 							<svg class="fill-current text-gray-500 w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -83,27 +80,15 @@
 							<div class="my-5 px-5 w-full overflow-hidden text-left">
 								{{$product->description}}
 							</div>
-                            <div class="my-5 px-5 w-full overflow-hidden text-left">
-                            <a href="{{url('/product/editproduk',$product->id)}}"
-                            class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                            aria-label="Edit"
-                          > 
-                            <svg
-                              class="w-5 h-5"
-                              aria-hidden="true"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
-                              ></path>
-                            </svg>
-							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+  </div>
+
 </div>
+        </div>
+        </div>
+    </div>
+</div>
+<livewire:footer>
 @endsection

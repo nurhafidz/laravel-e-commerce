@@ -78,7 +78,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
     Route::get('/seller/{storename}/saldo',[SaldoController::class,'index'])->name('seller.saldo');
     Route::get('/seller/{storename}/pesanan',[PesananController::class,'index'])->name('seller.pesanan');
     Route::get('/seller/{storename}/pesanan/{orderid}',[PesananController::class,'show'])->name('seller.pesanan.show');
-    Route::get('/seller/{storename}/product/editproduk',[ProductController::class,'edit'])->name('product.editproduk');
+    Route::get('/seller/{storename}/product/{brandname}/editproduk',[ProductController::class,'edit'])->name('product.editproduk');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function () {
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');
