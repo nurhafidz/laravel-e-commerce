@@ -30,7 +30,7 @@
 			</div>
 		</div>
 
-                        <div class="flex flex-col bg-white p-4 shadow rounded-lg dark:divide-gray-700 dark:bg-gray-800">
+                        <div class="flex flex-col -mxy-3 px-3 bg-white p-4 shadow rounded-lg dark:divide-gray-700 dark:bg-gray-800">
                             <div class="flex flex-col items-center">
                                 <div class="inline-flex shadow-lg border border-gray-200 rounded-full overflow-hidden h-40 w-40">
                                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&w=128&h=128&q=60&facepad=2" alt="" class="h-full w-full">

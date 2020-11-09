@@ -78,6 +78,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
     Route::get('/seller/{storename}/saldo',[SaldoController::class,'index'])->name('seller.saldo');
     Route::get('/seller/{storename}/pesanan',[PesananController::class,'index'])->name('seller.pesanan');
     Route::get('/seller/{storename}/pesanan/{orderid}',[PesananController::class,'show'])->name('seller.pesanan.show');
+    Route::get('/seller/{storename}/product/editproduk',[ProductController::class,'edit'])->name('product.editproduk');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function () {
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');
@@ -86,10 +87,8 @@ Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function ()
     Route::get('/services/seller',[PenjualController::class,'index'] )->name('service.seller.index');
     Route::get('/services/produk',[ProdukSellerController::class,'index'] )->name('service.produk');
     Route::get('/services/produk/{id}',[ProdukSellerController::class,'show'] )->name('service.produk.show');
-    Route::get('/services/servicesellershow/{id}',[PenjualController::class,'show'] )->name('service.seller.show');
+     Route::get('/services/servicesellershow/{id}',[PenjualController::class,'show'] )->name('service.seller.show');
     Route::put('/services/seller/{id}/editstatus',[PenjualController::class,'editstatus'] )->name('service.seller.show.editstatus');
-    Route::put('/services/produk/{id}/editstatus',[ProdukSellerController::class,'editstatus'] )->name('service.produk.show.editstatus');
-    Route::put('/services/pengguna/{id}/editstatus',[PenggunaController::class,'editstatus'] )->name('service.pengguna.show.editstatus');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
     Route::get('/admin/dashboard',[AdminController ::class, 'index'] )->name('admin.dashboard');

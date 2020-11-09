@@ -129,7 +129,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        {
+            $product=Product::findorfail($id);
+    
+            return view('seller.editproduk',compact('product'));
+        }
     }
 
     /**
@@ -154,4 +158,6 @@ class ProductController extends Controller
     {
         //
     }
+
+  
 }
