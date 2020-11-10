@@ -68,6 +68,14 @@
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline "id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
             </div>
+            <div class="mb-4">
+                <label class="flex items-center dark:text-gray-400">
+                    <input type="checkbox" class="text-blue-600 form-checkbox focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray" required/> <span class="ml-2">
+                            I agree to the
+                            <span class="underline">privacy policy</span>
+                    </span>
+                </label>
+            </div>
             
             
             <div class="flex items-center justify-between">

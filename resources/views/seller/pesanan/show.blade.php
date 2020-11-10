@@ -108,7 +108,21 @@
 					</div>
 					<div class="row-span-3">
 						<div class="max-w-sm w-full lg:max-w-full lg:flex shadow-lg ">
-							<div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('https://id-test-11.slatic.net/original/68ae5dbfe3526ecdffc416065fb751c7.jpg')" title="pesanan"></div>
+							@php
+                                $ex = count(explode('|', $orderdetail->product->image));
+                            @endphp
+                            @if ($ex != 1)
+                            @php
+                                $x =explode('|', $orderdetail->product->image,$ex);
+                            @endphp
+                            <img class="hover:grow hover:shadow-lg">
+                            <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{asset('image/product/'.$x[0])}}')" title="Woman holding a mug">
+                            </div>
+                            @else
+                            <img class="hover:grow hover:shadow-lg">
+                            <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{asset('image/product/'.$orderdetail->product->image)}}')" title="Woman holding a mug">
+                            </div>
+                            @endif
 							<div class=" bg-white rounded p-4 flex flex-col justify-between leading-normal">
 								<div class="mb-8">
 									<div class="text-gray-900 font-bold text-xl mb-2">{{$orderdetail->product->name}}</div>
@@ -140,6 +154,7 @@
 						<div class="rounded overflow-hidden shadow-lg mb-5 w-full lg:max-w-full lg:flex">
 							<div class="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
 								<h2 class="text-lg">Track</h2>
+								<p class="text-md">No resi : {{$orderdetail->tracking_number}}</p>
 								<div class="flex flex-wrap -mx-2 overflow-hidden">@foreach ($respon['data']['details'] as $track)
 									<div class="my-2 px-2 w-full overflow-hidden">
 										<div class="border-b-2 border-gray-400">

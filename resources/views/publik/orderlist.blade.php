@@ -57,14 +57,14 @@
                     </div>
                     {{-- <button wire:click="removeItem({{$id}})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">hapus </button> --}}
                     
-                    
-
                     @php
-                    $get = $row['product_name'];
-                    $slug = str_replace('','-',$get);
+                        $get = $row['product_name'];
+                        $b = $row['product_store_name'];
+                        $slug = str_replace(' ','-',$get);
+                        $storename = str_replace(' ','-',$b);
                     @endphp
-
-                    <a href="{{url('detail',$slug)}}" class="mt-3 text-red-500 inline-flex items-center">Lihat barang
+                    
+                    <a href="{{url('/shop/'.$storename.'/'.$slug)}}" class="mt-3 text-red-500 inline-flex items-center">Lihat barang
                     <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"></path>
                     </svg>
@@ -85,15 +85,12 @@
         </form>
         
         <div class="flex flex-wrap -mx-3 overflow-hidden sm:-mx-3 md:-mx-3 lg:-mx-3 xl:-mx-3 ">
-
             <div class="my-3 px-3 w-full overflow-hidden sm:my-3 sm:px-3 sm:w-1/2 md:my-3 md:px-3 md:w-1/2 lg:my-3 lg:px-3 lg:w-1/2 xl:my-3 xl:px-3 xl:w-1/2">
                 <h1>Jumlah Barang : {{$brgtotal}}</h1>
             </div>
-
             <div class="my-3 px-3 w-full overflow-hidden sm:my-3 sm:px-3 sm:w-1/2 md:my-3 md:px-3 md:w-1/2 lg:my-3 lg:px-3 lg:w-1/2 xl:my-3 xl:px-3 xl:w-1/2 ">
-                <h1>Jumlah Harga : {{ number_format($subtotal) }}</h1>
+                <h1>Jumlah Harga : Rp {{ number_format($subtotal) }}</h1>
             </div>
-
         </div>
         <hr>
         <div class="flex">

@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Store;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Xendit\Xendit;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
@@ -58,17 +59,21 @@ class UserController extends Controller
         $z = Crypt::decrypt($id);
         
         //$data['order'] = Order::where('user_id',$z)->latest()->get();
-        $data['order'] = OrderDetail::where('user_id',$z)->get();
+        $data['order'] = OrderDetail::where('user_id',$z)->latest()->get();
         
-        Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
-        foreach($data['order'] as $abc)
+        if(count($data['order']) != 0)
         {
-            $invoice = $abc->order->invoice;
-            $getInvoice = \Xendit\Invoice::retrieve($invoice);
-            $getInvoice2[] = $getInvoice;
-            
+
+            Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
+            foreach($data['order'] as $abc)
+            {
+                $invoice = $abc->order->invoice;
+                $getInvoice = \Xendit\Invoice::retrieve($invoice);
+                $getInvoice2[] = $getInvoice;
+                
+            }
+            $data['getinvoice'] = $getInvoice2;
         }
-        $data['getinvoice'] = $getInvoice2;
         
         
         return view('publik.myorder',$data);
@@ -126,10 +131,21 @@ class UserController extends Controller
         $data['order_detail']->update();
         $data['store']->update();
         return redirect()->back();
-
-
     }
+
+    public function cetak($id,$invoice)
+    {
+        $order = Order::where('user_id',$id)->where('invoice',$invoice)->first();
+        $orderdetail = OrderDetail::where('order_id',$order->id)->get();
+        
+        Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
+        $invoice = $order->invoice;
+        $getInvoice = \Xendit\Invoice::retrieve($invoice);
+         $data = ['title' => 'Welcome to belajarphp.net'];
+        $pdf = PDF::loadView('publik.nota', compact('data'));
+        return $pdf->stream();
     
+    }
 
     /**
      * Show the form for creating a new resource.

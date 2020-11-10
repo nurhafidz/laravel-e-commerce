@@ -14,7 +14,7 @@
                 <ul class="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
                     <li><a class="inline-block active:underline hover:text-black hover:underline py-2 px-4 {{ Request::routeIs('home.guest') ?  'underline' : ''}} " href="/" >Home</a></li>
                     <li><a class="inline-block hover:text-black hover:underline py-2 px-4 {{ Request::routeIs('shop') ?  'underline' : ''}}" href="/shop">Shop</a></li>
-                    <li><a class="inline-block hover:text-black hover:underline py-2 px-4 {{ Request::routeIs('about') ?  'underline' : ''}}" href="#">About</a></li>
+                    {{-- <li><a class="inline-block hover:text-black hover:underline py-2 px-4 {{ Request::routeIs('about') ?  'underline' : ''}}" href="#">About</a></li> --}}
                 </ul>
             </nav>
         </div>

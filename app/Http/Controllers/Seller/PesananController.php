@@ -21,13 +21,17 @@ class PesananController extends Controller
         $data['orderdetail'] = OrderDetail::where('store_id',$data['toko']->id)->latest()->get();
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
         
-        foreach($data['orderdetail'] as $abc)
+        if(count($data['orderdetail']) != 0)
         {
-            $invoice = $abc->order->invoice;
-            $getInvoice = \Xendit\Invoice::retrieve($invoice);
-            $getInvoice2[] = $getInvoice;
+
+            foreach($data['orderdetail'] as $abc)
+            {
+                $invoice = $abc->order->invoice;
+                $getInvoice = \Xendit\Invoice::retrieve($invoice);
+                $getInvoice2[] = $getInvoice;
+            }
+            $data['getinvoice'] = $getInvoice2;
         }
-        $data['getinvoice'] = $getInvoice2;
         //$abc = array_combine($data['orderdetail'],$data['getinvoice']);
         return view('seller.pesanan.index',$data);
     }

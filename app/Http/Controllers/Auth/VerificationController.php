@@ -47,7 +47,7 @@ class VerificationController extends Controller
             
     //         if($request->user()->alamat_lengkap == null){
     //             return redirect()->route('detail.user');
-    //         }
+    //         }    
     //         else{
     //             return redirect()->route('home.guest');
     //         }

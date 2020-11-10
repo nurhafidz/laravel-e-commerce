@@ -37,8 +37,10 @@ class CartController extends Controller
             $product = Product::find($request->product_id);
             $carts[$request->product_id] = [
                 'qty' => $request->qty,
+                'note' => $request->note,
                 'product_id' => $product->id,
                 'product_store' => $product->store_id,
+                'product_store_name' => $product->store->name,
                 'product_name' => $product->name,
                 'product_price' => $product->harga,
                 'product_image' => $product->image,
@@ -168,6 +170,7 @@ class CartController extends Controller
             'external_id' => Str::random(4) . '-' . time(),
             'payer_email' => $email,
             'description' => 'Bealajar',
+            'merchant_profile_picture_url' => 'http://localhost:8000/logo.png',
             'amount' => $total,
             'failure_redirect_url'=>'http://localhost:8000/payment/fail',
             'success_redirect_url'=>'http://localhost:8000/payment/success'
@@ -187,7 +190,10 @@ class CartController extends Controller
             $product = Product::find($row['product_id']);
             if(count($shipping) == 3){
             $a =$shipping[1];
-            $b =$shipping[0];
+            $b =strtolower($shipping[0]);
+            $productqty=$product->stock;
+            $jumlahqty=$productqty - $row['qty'];
+            $product->stock=$jumlahqty;
             $orderdetail=OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $row['product_id'],
@@ -199,14 +205,18 @@ class CartController extends Controller
                     'shipping_detail' => $a,
                     'cost' => $shipping[2],
                     'status' => 1,
-                    'weight' => $product->weight
+                    'weight' => $product->weight,
+                    'note'=>$row['note']
                 ]);
-                
                 $orderdetail->save();
+                $product->update();
             }
             if(count($shipping) == 4){
             $a =$shipping[2].'-'.$shipping[1];
-            $b =$shipping[0];
+            $b =strtolower($shipping[0]);
+            $productqty=$product->stock;
+            $jumlahqty=$productqty - $row['qty'];
+            $product->stock=$jumlahqty;
             $orderdetail=OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $row['product_id'],
@@ -218,18 +228,18 @@ class CartController extends Controller
                     'shipping_detail' => $a,
                     'cost' => $shipping[3],
                     'status' => 1,
-                    'weight' => $product->weight
+                    'weight' => $product->weight,
+                    'note'=>$row['note']
                 ]);
                 
                 $orderdetail->save();
+                $product->update();
             }
             
         }
         $order->save();
-        $carts = [];
-        $cookie = cookie('cart', json_encode($carts), 2880);
-        Cookie::queue(Cookie::forget('cart'));
-        return redirect('https://checkout-staging.xendit.co/web/'.$createInvoice['id']);
+        
+        return redirect('https://checkout-staging.xendit.co/web/'.$createInvoice['id'])->withCookie(Cookie::forget('carts'));
     }
     
 }
