@@ -21,7 +21,7 @@ Route::get('district',[CartController::class, 'getDistrict']);
 Route::post('cost', [CartController::class, 'getCourier']);
 Route::post('cekresi', [CartController::class, 'waybill']);
 Route::post('getinvoice', [UserController::class, 'getinvoice']);
-Route::get('balance',[SaldoAdminController::class, 'getBalance']);
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

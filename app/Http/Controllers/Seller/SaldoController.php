@@ -17,6 +17,5 @@ class SaldoController extends Controller
 
 
         return view('seller.saldo.index',$data);
-      
     }
 }

@@ -56,6 +56,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo('App\Models\Roles');
     }
+    public function cart()
+    {
+        return $this->hasMany('App\Models\Cart');
+    }
     public function order()
     {
         return $this->hasMany('App\Models\Order');
@@ -63,5 +67,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function orderdetail()
     {
         return $this->hasMany('App\Models\OrderDetail');
+    }
+    public function message() {
+        return $this->hasMany("App\Models\Message");
     }
 }

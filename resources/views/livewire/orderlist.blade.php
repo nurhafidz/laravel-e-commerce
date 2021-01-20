@@ -52,7 +52,7 @@
                                 <button data-action="decrement" wire:click="removeItem({{$id}})" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer outline-none">
                                 <span class="m-auto text-2xl font-thin">−</span>
                                 </button>
-                                <input type="number" class="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="jumlah" value="{{$products[11]}}"></input>
+                                <input type="number" class="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700 " name="jumlah" value="{{$products[11]}}"></input>
                                 
                                 <button data-action="increment" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-r cursor-pointer" wire:click="addToCart({{$id}})">
                                 <span class="m-auto text-2xl font-thin">+</span>

@@ -16,30 +16,31 @@
         <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
             <div class="sm:w-32 sm:h-32 h-20 w-20 sm:mr-10 inline-flex items-center justify-center rounded-full bg-red-100 text-red-500 flex-shrink-0">
                 @php
-                    $ex = count(explode('|', $row['product_image']));
+                    $ex = count(explode('|', $row->product->image));
                 @endphp
                 @if ($ex != 1)
                 @php
-                    $x =explode('|', $row['product_image'],$ex);
+                    $x =explode('|', $row->product->image,$ex);
                 @endphp
                 <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$x[0])}}">
                 @else
-                <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$row['product_image'])}}">
+                <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$row->product->image)}}">
                 @endif
                 
             </div>
                 <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
-                    <h2 class="text-gray-900 text-lg title-font font-medium mb-2">{{$row['product_name']}}</h2>
+                    <h2 class="text-gray-900 text-lg title-font font-medium mb-2">{{$row->product->name}}</h2>
                     <div class="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:-mx-1 lg:-mx-2 xl:-mx-2">
                         <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2">
                             <div class="flex ml-6 items-center">
                                 <p class="leading-relaxed text-base">Jumlah barang :</p>
                                 <div class="flex bg-transparent w-32">
-                                    <input type="hidden" name="product_id[]" value="{{ $row['product_id'] }}" class="form-control">
+                                    <input type="hidden" name="id[]" value="{{ $row->id }}" class="form-control">
+                                    <input type="hidden" name="product_id[]" value="{{ $row->product_id }}" class="form-control">
                                 <button onclick="var result = document.getElementById('sst{{$key}}'); var sst{{$key}} = result.value; if( !isNaN( sst{{$key}} ) &amp;&amp; sst{{$key}} > 0 ) result.value--;return false;" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer outline-none">
                                     <span class="m-auto text-2xl font-thin">−</span>
                                     </button>
-                                    <input type="number" class="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="qty[]" id="sst{{$key}}" value="{{ $row['qty'] }}" title="Quantity:"></input>
+                                    <input type="number" class=" focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="qty[]" id="sst{{$key}}" value="{{ $row->qty }}" title="Quantity:"></input>
                                     <button onclick="var result = document.getElementById('sst{{$key}}'); var sst{{$key}} = result.value; if( !isNaN( sst{{$key}} )) result.value++;return false;" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-r cursor-pointer">
                                     <span class="m-auto text-2xl font-thin">+</span>
                                     </button>
@@ -48,7 +49,7 @@
                             
                         </div>
                         <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2 ">
-                            <p class="leading-relaxed text-base mt-2">Harga : Rp {{ number_format($row['product_price'] * $row['qty']) }}</p>
+                            <p class="leading-relaxed text-base mt-2">Harga : Rp {{ number_format($row->product->harga * $row->qty) }}</p>
                         </div>
                         <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2">
                             {{-- <p class="leading-relaxed text-base">Jumlah Harga : Rp {{number_format($jmlhrg)}}</p> --}}
@@ -58,8 +59,8 @@
                     {{-- <button wire:click="removeItem({{$id}})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">hapus </button> --}}
                     
                     @php
-                        $get = $row['product_name'];
-                        $b = $row['product_store_name'];
+                        $get = $row->product->name;
+                        $b = $row->product->store->name;
                         $slug = str_replace(' ','-',$get);
                         $storename = str_replace(' ','-',$b);
                     @endphp
@@ -79,8 +80,13 @@
                 <p class="text-gray-900 title-font font-medium mb-2">Tidak ada belanjaan</p>
             </div>
             @endforelse
+            
+            
             @if ($key != Null)
             <button type="submit" class=" mt-5 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">Update Keranjang</button>
+            @endif
+            @if ($key === 0)
+                <button type="submit" class=" mt-5 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">Update Keranjang</button>
             @endif
         </form>
         

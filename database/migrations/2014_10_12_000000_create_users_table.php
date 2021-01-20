@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->integer('telepon')->nullable();
             $table->integer('kode_pos')->nullable();
             $table->integer('status')->default('1');
+            $table->boolean('is_online')->default(0);
             $table->integer('role_id')->comment('1: Admin, 2: Service, 3: Seller, 4: Guest');
             $table->rememberToken();
             $table->timestamps();

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Publik\HomeController;
 use App\Http\Controllers\Publik\UserController;
 use App\Http\Controllers\Publik\CartController;
+use App\Http\Controllers\Publik\InboxPubController;
 use App\Http\Controllers\Seller\StoreController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Service\ServiceController;
@@ -59,11 +60,14 @@ Route::get('/detailuser/getcity/{id}', [UserController::class, 'getCity'] );
 Route::get('/detailuser/getdistrict/{id}', [UserController::class, 'getDistrict'] );
 Route::post('/detailuser/update/{id}', [UserController::class, 'detailupdate'])->name('detail.update');
 
-Route::post('keranjang', [CartController::class, 'addToCart'])->name('front.cart');
+Route::put('/tambakekeranjang', [CartController::class, 'addToCart'])->name('front.cart');
 Route::post('/keranjang/update', [CartController::class, 'updateCart'])->name('front.update_cart');
 
 Route::get('/new-store',[StoreController::class, 'create'])->name('create.seller');
 Route::post('new-store',[StoreController::class, 'store'])->name('store.seller');
+
+Route::get('/inbox', [InboxPubController::class, 'index'])->name('inbox');
+Route::get('/inbox/{id}', [InboxPubController::class, 'show'])->name('inbox.show');
 
 Auth::routes(['verify' => true]);
 
@@ -87,7 +91,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function ()
     Route::get('/services/seller',[PenjualController::class,'index'] )->name('service.seller.index');
     Route::get('/services/produk',[ProdukSellerController::class,'index'] )->name('service.produk');
     Route::get('/services/produk/{id}',[ProdukSellerController::class,'show'] )->name('service.produk.show');
-     Route::get('/services/servicesellershow/{id}',[PenjualController::class,'show'] )->name('service.seller.show');
+    Route::get('/services/servicesellershow/{id}',[PenjualController::class,'show'] )->name('service.seller.show');
     Route::put('/services/seller/{id}/editstatus',[PenjualController::class,'editstatus'] )->name('service.seller.show.editstatus');
 });
 Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {

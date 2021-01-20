@@ -3,7 +3,9 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Facades\Cart;
+// use App\Facades\Cart;
+use App\Models\Cart;
+use Auth;
 
 class Navbar extends Component
 {
@@ -14,20 +16,13 @@ class Navbar extends Component
         'productRemoved' => 'updateCartTotal',
     ];
 
-    private function getCarts()
-    {
-        $carts = json_decode(request()->cookie('carts'), true);
-        $carts = $carts != '' ? $carts:[];
-        return $carts;
-    }
+    
 
     public function mount()
     {
-        $carts = $this->getCarts();
-        $brgtotal = collect($carts)->sum(function($q) {
-            return $q['qty'];
-        });
-        $this->cartTotal = $brgtotal;
+        $carts = Cart::where('user_id', auth()->id())->where('status', 1)->get()->sum('qty');
+        
+        $this->cartTotal = $carts;
     }
 
     public function render()
@@ -35,14 +30,5 @@ class Navbar extends Component
         return view('livewire.navbar');
     }
 
-    public function updateCartTotal()
-    {
-        $carts = $this->getCarts();
-        $brgtotal = collect($carts)->sum(function($q) {
-            return $q['qty'];
-        });
-        $this->cartTotal = $brgtotal;
-        
-
-    }
+    
 }

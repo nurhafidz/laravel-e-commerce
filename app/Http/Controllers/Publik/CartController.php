@@ -8,11 +8,13 @@ use App\Models\Product;
 use App\Models\Province;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Cart;
 use App\Models\OrderDetail;
 use Xendit\Xendit;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
+use Auth;
 
 
 class CartController extends Controller
@@ -29,65 +31,152 @@ class CartController extends Controller
             'product_id' => 'required|exists:products,id',
             'qty' => 'required|integer'
         ]);
-
-        $carts = $this->getCarts();
-        if ($carts && array_key_exists($request->product_id, $carts)) {
-            $carts[$request->product_id]['qty'] += $request->qty;
+        $ker2 = Cart::where('product_id', $request->product_id)->first();
+        
+        $product = Product::find($request->product_id);
+        $ker = Cart::where('user_id', auth()->id())->first();
+        if ($ker != NULL) {
+            $ker2 = Cart::where('product_id', $request->product_id)->first();
+            if ($ker2 != NULL) {
+                
+                if ($ker2 != "2") {
+                    
+                    $jml=$ker2->qty+$request->qty;
+                    $keranjang=Cart::findorFail($ker2->id);
+                    
+                    $keranjang->user_id= auth()->id();
+                    $keranjang->product_id= $request->product_id;
+                    $keranjang->qty = $jml;
+                    $keranjang->note = $request->note;
+                    $keranjang->weight = $product->weight;
+                    $keranjang->status = 1;
+                    $keranjang->save();
+                    
+                } else {
+                    $keranjang=Cart::create([
+                    'user_id'=> auth()->id(),
+                    'product_id'=> $product->id,
+                    'qty'=> $request->qty,
+                    'note'=> $request->note,
+                    'weight'=> $product->weight,
+                    'status'=> 1,
+                    ]);
+                    
+                    $keranjang->save();
+                }
+            } else {
+                $keranjang=Cart::create([
+                    'user_id'=> auth()->id(),
+                    'product_id'=> $product->id,
+                    'qty'=> $request->qty,
+                    'note'=> $request->note,
+                    'weight'=> $product->weight,
+                    'status'=> 1,
+                    ]);
+                    $keranjang->save();
+            }
+            
+            
+            
         } else {
-            $product = Product::find($request->product_id);
-            $carts[$request->product_id] = [
-                'qty' => $request->qty,
-                'note' => $request->note,
-                'product_id' => $product->id,
-                'product_store' => $product->store_id,
-                'product_store_name' => $product->store->name,
-                'product_name' => $product->name,
-                'product_price' => $product->harga,
-                'product_image' => $product->image,
-                'product_place' => $product->store->district_id,
-                'weight' => $product->weight
-            ];
+            $keranjang=Cart::create([
+            'user_id'=> auth()->id(),
+            'product_id'=> $product->id,
+            'qty'=> $request->qty,
+            'note'=> $request->note,
+            'weight'=> $product->weight,
+            'status'=> 1,
+            ]);
+            
+            $keranjang->save();
         }
+        
+        // $carts = $this->getCarts();
+        // if ($carts && array_key_exists($request->product_id, $carts)) {
+        //     $carts[$request->product_id]['qty'] += $request->qty;
+        // } else {
+            
+        //     // $carts[$request->product_id] = [
+        //     //     'qty' => $request->qty,
+        //     //     'note' => $request->note,
+        //     //     'product_id' => $product->id,
+        //     //     'product_store' => $product->store_id,
+        //     //     'product_store_name' => $product->store->name,
+        //     //     'product_name' => $product->name,
+        //     //     'product_price' => $product->harga,
+        //     //     'product_image' => $product->image,
+        //     //     'product_place' => $product->store->district_id,
+        //     //     'weight' => $product->weight
+        //     // ];
+            
+            
+        // }
 
-        $cookie = cookie('carts', json_encode($carts), 2880);
-        return redirect()->back()->with(['success' => 'Produk Ditambahkan ke Keranjang'])->cookie($cookie);
+        
+         return redirect()->back()->with(['success' => 'Produk Ditambahkan ke Keranjang']);
     }
     public function listCart()
     {
-        $carts = $this->getCarts();
-        $subtotal = collect($carts)->sum(function($q) {
-            return $q['qty'] * $q['product_price'];
-        });
-        $brgtotal = collect($carts)->sum(function($q) {
-            return $q['qty'];
-        });
+        
+        $carts = Cart::where('user_id', auth()->id())->where('status', 1)->get();
+
+        $subtotal = 0;
+        foreach($carts as $key=>$value)
+        {
+            
+            $qty=$value->qty;
+            $harga=$value->product->harga;
+            $a=$qty*$harga;
+            $subtotal+= $a;
+        }
+        
+        $brgtotal = Cart::where('user_id', auth()->id())->where('status', 1)->get()->sum('qty');
+        
+        // dd($keranjang);
+        // $subtotal = $keranjang->qty * $keranjang->product->harga;
+        // $brgtotal = collect($carts)->sum(function($q) {
+        //     return $q['qty'];
+        // });
         return view('publik.orderlist', compact('carts', 'subtotal','brgtotal'));
     }
 
     public function updateCart(Request $request)
     {
-        $carts = $this->getCarts();
-        foreach ($request->product_id as $key => $row) {
+        
+        foreach($request->product_id as $key=>$item){
             if ($request->qty[$key] == 0) {
-                unset($carts[$row]);
+                $carts=Cart::findorFail($request->id[$key]);
+                $carts->delete();
             } else {
-                $carts[$row]['qty'] = $request->qty[$key];
+                $carts=Cart::findorFail($request->id[$key]);
+                $carts->qty = $request->qty[$key];
+                $carts->save();
             }
         }
-        $cookie = cookie('carts', json_encode($carts), 2880);
-        return redirect()->back()->cookie($cookie);
+        return redirect()->back();
     }
 
     public function checkout()
     {
     $provinces = Province::pluck("name", "id");
-        $carts = $this->getCarts();
-        $subtotal = collect($carts)->sum(function($q) {
-            return $q['qty'] * $q['product_price'];
-        });
-        $weight = collect($carts)->sum(function($q) {
-            return $q['qty'] * $q['weight'];
-        });
+
+    $carts = Cart::where('user_id', auth()->id())->where('status', 1)->get();
+
+    $subtotal = 0;
+    $weight = 0;
+    foreach($carts as $key=>$value)
+    {
+        
+        $qty=$value->qty;
+        $harga=$value->product->harga;
+        $a=$qty*$harga;
+        $subtotal+= $a;
+
+        $we=$value->weight;
+        $w = $we * $qty;
+        $weight+= $w;
+    }
+    
         
     return view('publik.checkout', compact('provinces', 'carts', 'subtotal', 'weight'));
     }
@@ -148,10 +237,17 @@ class CartController extends Controller
         $this->validate($request, [
             'courier' => 'required'
         ]);
-        $carts = $this->getCarts();
-        $subtotal = collect($carts)->sum(function ($q) {
-            return $q['qty'] * $q['product_price'];
-        });
+        $carts = Cart::where('user_id', auth()->id())->where('status', 1)->get();
+
+        $subtotal = 0;
+        foreach($carts as $key=>$value)
+        {
+            
+            $qty=$value->qty;
+            $harga=$value->product->harga;
+            $a=$qty*$harga;
+            $subtotal+= $a;
+        }
         $shipping = explode('-', $request->courier);
         if(count($shipping) == 3){
             $total = $subtotal+$shipping[2];
@@ -186,27 +282,30 @@ class CartController extends Controller
                 'subtotal' => $subtotal,
             ]);
             
-        foreach ($carts as $row) {
-            $product = Product::find($row['product_id']);
+        foreach ($carts as $key=>$row) {
+            $product = Product::find($row->product->id);
             if(count($shipping) == 3){
             $a =$shipping[1];
             $b =strtolower($shipping[0]);
             $productqty=$product->stock;
-            $jumlahqty=$productqty - $row['qty'];
+            $jumlahqty=$productqty - $row->qty;
             $product->stock=$jumlahqty;
+            $keranjang=Cart::findorFail($row->id);
+            $keranjang->status=2;
+            $keranjang->update();
             $orderdetail=OrderDetail::create([
                     'order_id' => $order->id,
-                    'product_id' => $row['product_id'],
+                    'product_id' => $row->product->id,
                     'user_id' => $request->user_id,
                     'store_id' => $product->store_id,
-                    'price' => $row['product_price'],
-                    'qty' => $row['qty'],
+                    'price' => $row->product->harga,
+                    'qty' => $row->qty,
                     'shipping' => $b,
                     'shipping_detail' => $a,
                     'cost' => $shipping[2],
                     'status' => 1,
                     'weight' => $product->weight,
-                    'note'=>$row['note']
+                    'note'=>$row->note
                 ]);
                 $orderdetail->save();
                 $product->update();
@@ -215,21 +314,24 @@ class CartController extends Controller
             $a =$shipping[2].'-'.$shipping[1];
             $b =strtolower($shipping[0]);
             $productqty=$product->stock;
-            $jumlahqty=$productqty - $row['qty'];
+            $jumlahqty=$productqty - $row->qty;
             $product->stock=$jumlahqty;
+            $keranjang=Cart::findorFail($row->id);
+            $keranjang->status=2;
+            $keranjang->update();
             $orderdetail=OrderDetail::create([
                     'order_id' => $order->id,
-                    'product_id' => $row['product_id'],
+                    'product_id' => $row->product->id,
                     'user_id' => $request->user_id,
                     'store_id' => $product->store_id,
-                    'price' => $row['product_price'],
-                    'qty' => $row['qty'],
+                    'price' => $row->product->harga,
+                    'qty' => $row->qty,
                     'shipping' => $b,
                     'shipping_detail' => $a,
                     'cost' => $shipping[3],
                     'status' => 1,
                     'weight' => $product->weight,
-                    'note'=>$row['note']
+                    'note'=>$row->note
                 ]);
                 
                 $orderdetail->save();

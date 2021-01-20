@@ -12,42 +12,43 @@
                     <!-- Column Content -->
                     <div class="mt-6">
                     @forelse ($carts as $key=>$row)
-                    <input type="hidden" value="{{ $row['product_store'] }}" name="toko">
+                    <input type="hidden" value="{{ $row->product->id }}" name="toko">
                     <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
                     
                     <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
                         <div class="sm:w-32 sm:h-32 h-20 w-20 sm:mr-10 inline-flex items-center justify-center rounded-full bg-red-100 text-red-500 flex-shrink-0">
                             @php
-                                $ex = count(explode('|', $row['product_image']));
+                                $ex = count(explode('|', $row->product->image));
                             @endphp
                             @if ($ex != 1)
                             @php
-                                $x =explode('|', $row['product_image'],$ex);
+                                $x =explode('|', $row->product->image,$ex);
                             @endphp
                             <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$x[0])}}">
                             @else
-                            <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$row['product_image'])}}">
+                            <img class="hover:grow hover:shadow-lg" src="{{asset('image/product/'.$row->product->image)}}">
                             @endif
                         </div>
                             <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
-                                <h2 class="text-gray-900 text-lg title-font font-medium mb-2">{{$row['product_name']}}</h2>
+                                <h2 class="text-gray-900 text-lg title-font font-medium mb-2">{{$row->product->name}}</h2>
                                 <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2">
                                     
-                                    <p class="leading-relaxed text-base">Jumlah barang : {{$row['qty']}}</p>
+                                    <p class="leading-relaxed text-base">Jumlah barang : {{$row->qty}}</p>
                                 </div>
                                 <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2 ">
-                                    <p class="leading-relaxed text-base">Harga : Rp {{ number_format($row['product_price'] * $row['qty']) }}</p>
+                                    <p class="leading-relaxed text-base">Harga : Rp {{ number_format($row->product->harga * $row->qty) }}</p>
                                 </div>
                                 <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2 ">
-                                    <p class="leading-relaxed text-base">Berat : {{ number_format($row['weight'] * $row['qty']) }} g</p>
+                                    <p class="leading-relaxed text-base">Berat : {{ number_format($row->weight * $row->qty) }} g</p>
                                 </div>
-                                
-                                <input type="hidden" name="origin_id" id="origin_id" value="{{$row['product_place']}}">
+                                <input type="hidden" name="origin_id" id="origin_id" value="{{$row->product->store->district_id}}">
                                 
                                 <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->id}}">
                                 <input type="hidden" name="district_id" id="district_id" value="{{Auth::user()->district_id}}">
                                 <input type="hidden" name="weight" id="weight" value="{{ $weight }}">
                                 <select class="form-select text-gray-700 mt-1 block w-full"  name="courier" id="courier" required>
+                                    
+
                                     <option>pilih kurir</option>
                                 </select>
                             </div>

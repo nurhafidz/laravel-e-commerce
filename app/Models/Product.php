@@ -19,6 +19,10 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Store');
     }
+    public function cart()
+    {
+        return $this->hasMany('App\Models\Cart');
+    }
     public function order()
     {
         return $this->hasMany('App\Models\Order');
