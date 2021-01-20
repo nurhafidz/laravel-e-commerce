@@ -65,7 +65,11 @@
                     <img src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="" class="w-10 sm:w-16 h-10 sm:h-16 rounded-full">
                     <div class="flex flex-col leading-tight">
                         <div class="text-2xl mt-1 flex items-center">
-                        <span class="text-gray-700 mr-3">{{ $sender->first_name }}</span>
+                        <span class="text-gray-700 mr-3">@if (Auth::user()->role_id == 3)
+                            {{ $sender->first_name}}
+                        @else
+                            {{ $store->name }}
+                        @endif</span>
                         <span class="text-green-500">
                             <svg width="10" height="10">
                                 <circle cx="5" cy="5" r="5" fill="currentColor"></circle>
@@ -93,7 +97,7 @@
                     </button>
                 </div>
             </div>
-            <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" wire:poll.10ms="mount">
+            <div id="messages2" class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch" wire:poll.keep-alive="mount">
                 
                     @if(filled($messages))
                         @foreach($messages as $message)
@@ -126,6 +130,8 @@
                     @else
                         No messages to show
                     @endif
+            </div>
+                    
             
                 
                 
@@ -159,9 +165,6 @@
     </div>
 
 </div>
-    
-
-    
 
 <style>
             .scrollbar-w-2::-webkit-scrollbar {
@@ -185,9 +188,14 @@
             border-radius: 0.25rem;
             }
             </style>
+            
+
 
 <script>
-	const el = document.getElementById('messages')
-	el.scrollTop = el.scrollHeight
+window.setInterval(function(){
+  var elem = document.getElementById('messages2');
+  elem.scrollTop = elem.scrollHeight;
+}, 1000);
 </script>
+
 </div>

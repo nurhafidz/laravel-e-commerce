@@ -12,21 +12,24 @@ class Show extends Component
     public $sender;
     public $message;
     public $not_seen;
+    public $store;
 
     public function render()
     {
         return view('livewire.show', [
             'users' => $this->users,
             'messages' => $this->messages,
-            'sender' => $this->sender
+            'sender' => $this->sender,
+            'store' => $this->store
         ]);
+        
     }
 
     public function mount() {
         if (auth()->user()->is_admin == 3) {
-            $this->messages = \App\Models\Message::where('user_id', auth()->id())->orWhere('receiver', auth()->id())->orderBy('id', 'DESC')->get();
+            $this->messages = \App\Models\Message::where('user_id', auth()->id())->orWhere('receiver', auth()->id())->orderBy('id', 'ASC')->get();
         } else {
-            $this->messages = \App\Models\Message::where('user_id', $this->sender->id)->orWhere('receiver', $this->sender->id)->orderBy('id', 'DESC')->get();
+            $this->messages = \App\Models\Message::where('user_id', $this->sender->id)->orWhere('receiver', $this->sender->id)->orderBy('id', 'ASC')->get();
         }
         $not_seen = \App\Models\Message::where('user_id', $this->sender->id)->where('receiver', auth()->id());
         $not_seen->update(['is_seen' => true]);

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Message;
+use App\Models\Store;
 use Auth;
 
 class InboxPubController extends Controller
@@ -90,10 +91,11 @@ class InboxPubController extends Controller
 
         
 
-        if (auth()->user()->role_id == 2) {
-            $messages = Message::where('user_id', auth()->id())->orWhere('receiver', auth()->id())->orderBy('id', 'DESC')->get();
+        if (auth()->user()->role_id == 3) {
+            $messages = Message::where('user_id', auth()->id())->orWhere('receiver', auth()->id())->orderBy('id', 'ASC')->get();
         } else {
-            $messages = Message::where('user_id', $sender)->orWhere('receiver', $sender)->orderBy('id', 'DESC')->get();
+            $messages = Message::where('user_id', $sender)->orWhere('receiver', $sender)->orderBy('id', 'ASC')->get();
+            $store=Store::where('user_id',$sender->id)->first();
         }
         
 
@@ -101,6 +103,7 @@ class InboxPubController extends Controller
             'users' => $users,
             'messages' => $messages,
             'sender' => $sender,
+            'store' => $store ?? null,
         ]);
     }
 }
