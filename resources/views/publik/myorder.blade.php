@@ -45,13 +45,15 @@
                                 @php
                                 $s = $getinvoice[$key]['status'];
                                 $s2 = $item->status;
+                                
                             @endphp
+
                             @if ($s == "PENDING")
                             <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:bg-orange-700 dark:text-orange-100">
                                 Menunggu pembayaran
                             </span>
                             @endif
-                            @if ($s == "PAID")
+                            @if ($s == "PAID" || $s=="SETTLED")
                             @switch($s2)
                                 @case(1)
                                     <span class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-blue-700 dark:text-blue-100">

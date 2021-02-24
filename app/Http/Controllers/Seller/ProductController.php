@@ -42,7 +42,7 @@ class ProductController extends Controller
         $checkuser = Auth::user()->store->name;
         $c =str_replace('-', ' ', $storename);
         if($checkuser == $c){
-            $data['category'] = Category::all();
+            $data['category'] = Category::with('children')->whereNull('parent_id')->get();
             return view('seller.product.create',$data);
         }
         else{

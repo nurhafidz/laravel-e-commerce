@@ -18,7 +18,7 @@ use App\Http\Controllers\Admin\SaldoAdminController;
 */
 Route::get('city',[CartController::class, 'getCity']);
 Route::get('district',[CartController::class, 'getDistrict']);
-Route::post('cost', [CartController::class, 'getCourier']);
+Route::get('cost/{id}', [CartController::class, 'getCourier']);
 Route::post('cekresi', [CartController::class, 'waybill']);
 Route::post('getinvoice', [UserController::class, 'getinvoice']);
 

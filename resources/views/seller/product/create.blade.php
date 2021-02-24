@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <livewire:navbar>
 <!-- component -->
 <div x-data="{ open: false }" @click.away="open = false">
@@ -35,7 +36,7 @@
                     </div>
 
                     <!-- scroll area -->
-                    <section class="h-full overflow-auto p-8 w-full h-full flex flex-col">
+                    <section class="h-full overflow-auto p-8 w-full flex flex-col">
                       <header class="border-dashed border-2 border-gray-400 py-12 flex flex-col justify-center items-center">
                         <p class="mb-3 font-semibold text-gray-900 flex flex-wrap justify-center">
                           <span>Drag and drop your</span>&nbsp;<span>files anywhere or</span>
@@ -51,7 +52,7 @@
                       </h1>
 
                       <ul id="gallery" class="flex flex-1 flex-wrap -m-1">
-                        <li id="empty" class="h-full w-full text-center flex flex-col items-center justify-center items-center">
+                        <li id="empty" class="h-full w-full text-center flex flex-col justify-center items-center">
                             <img class="mx-auto w-32" src="https://user-images.githubusercontent.com/507615/54591670-ac0a0180-4a65-11e9-846c-e55ffce0fe7b.png" alt="no data" />
                             <span class="text-small text-gray-500">No files selected</span>
                         </li>
@@ -72,6 +73,7 @@
               </div>
             </div>
           </div>
+          
 
           <div class="my-2 px-2 w-full overflow-hidden">
             <div class="p-4 w-full">
@@ -86,16 +88,21 @@
 
                     <div class="my-2 px-2 w-full overflow-hidden">
                       <p>Kategori product</p>
-                      <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline select2 " name="category" >
+                      <select class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline select2 js-states form-control" name="category2" multiple>
                         <option value="">Kategori</option>
                         @foreach ($category as $value)
                         <option value="{{ $value->id }}">{{ $value->name }}</option>
+                          @if ($value->children)
+                          @foreach ($value->children as $child)
+                          <option class="ml-3" value="{{ $child->id }}">⊚ {{ $child->name }}</option>
+                          @endforeach
+                          @endif
                         @endforeach
                       </select>
                     </div>
                     <div class="my-2 px-2 w-full overflow-hidden">
                       <p>kondisi product</p>
-                      <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline select2 " name="status_product" >
+                      <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline " name="status_product" >
                         <option value="">kondisi</option>
                         <option value="1">Baru</option>
                         <option value="2">Bekas</option>
@@ -346,6 +353,11 @@ i {
         .catch( error => {
             console.error( error );
         } );
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
 </script>
 @endpush
 <livewire:footer>

@@ -29,15 +29,15 @@
                     <div class="px-6 mb-3">
                         <span class="inline-block text-sm font-semibold text-gray-700 mr-2 mb-2">Status pembayaran :</span>
                         @if ($invoice['status'] == "PENDING")
-                            <span class="inline-block text-orange-600 bg-orange-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{$invoice['status']}}</span>
+                            <span class="inline-block text-orange-600 bg-orange-200 rounded-full px-3 py-1 text-sm font-semibold  mr-2 mb-2">{{$invoice['status']}}</span>
                             <span class="inline-block text-sm font-semibold text-gray-700 mr-2 mb-2">Batas pembayaran :</span>
                     <span class="inline-block text-sm font-semibold text-gray-700 mr-2 mb-2">{{Str::limit($invoice['expiry_date'],10,'')}} pukul : {{substr($invoice['expiry_date'], 11, -8)}}</span>
                         @endif
-                        @if ($invoice['status'] == "PAID")
-                            <span class="inline-block text-green-600 bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{$invoice['status']}}</span>
+                        @if ($invoice['status'] == "PAID" || $invoice['status']=="SETTLED")
+                            <span class="inline-block text-green-600 bg-green-200 rounded-full px-3 py-1 text-sm font-semibold  mr-2 mb-2">{{$invoice['status']}}</span>
                         @endif
                         @if ($invoice['status'] == "EXPIRED")
-                            <span class="inline-block text-red-600 bg-red-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{$invoice['status']}}</span>
+                            <span class="inline-block text-red-600 bg-red-200 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">{{$invoice['status']}}</span>
                         @endif
                     </div>
                     @if ($invoice['status'] == "PAID")
@@ -61,7 +61,7 @@
                     @endif
                     <div class="px-6 mb-3">
                         @if ($invoice['status'] == "PENDING")
-                            <a class="inline-block text-center text-sm font-semibold w-full mr-2 mb-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" href="{{url('https://checkout-staging.xendit.co/web/'.$order_detail->order->invoice)}}">Bayar</a>
+                            <a class="inline-block text-center text-sm font-semibold w-full mr-2 mb-2 bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-full" href="{{url('https://checkout-staging.xendit.co/web/'.$order_detail->order->invoice)}}">Bayar</a>
                         @endif
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                                         <div class="my-1 px-2 w-full overflow-hidden">
                                             <div class="flex flex-wrap -mx-2 overflow-hidden">
                                             <div class=" px-2 w-1/2 overflow-hidden">
-                                                @if ($invoice['status'] =="PAID" )
+                                                @if ($invoice['status'] =="PAID" || $invoice['status']=="SETTLED")
                                                     @if ($order_detail->tracking_number!=Null)
                                                     <p class="text-gray-700 text-base">No resi : {{$order_detail->tracking_number}}</p>
                                                     </div>
@@ -125,6 +125,7 @@
                                             <div class="mt-3 px-2 w-1/2 overflow-hidden">
                                                 @php
                                                     $data=Auth::user()->id;
+                                                    
                                                     $idorder=$order_detail->id;
                                                 @endphp
                                                 <form action="{{url('/myorder/'.\Crypt::encrypt($data).'/detail/'.$idorder.'/changestatus')}}" method="post">
@@ -153,6 +154,7 @@
                         </div>
                     </div>
                     @if ($order_detail->tracking_number != NUll)
+                    
                     <div class="col-span-3">
                         <div class="rounded overflow-hidden shadow-lg mb-5 w-full lg:max-w-full lg:flex">
                             <div class="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">

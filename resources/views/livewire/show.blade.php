@@ -65,7 +65,8 @@
                     <img src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="" class="w-10 sm:w-16 h-10 sm:h-16 rounded-full">
                     <div class="flex flex-col leading-tight">
                         <div class="text-2xl mt-1 flex items-center">
-                        <span class="text-gray-700 mr-3">@if (Auth::user()->role_id == 3)
+                        <span class="text-gray-700 mr-3">
+                        @if (Auth::user()->role_id == 3)
                             {{ $sender->first_name}}
                         @else
                             {{ $store->name }}
@@ -110,7 +111,7 @@
                                     <img src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" class="w-6 h-6 rounded-full order-1">
                                 </div>
                                 <div class="flex items-end">
-                                    <p class="text-xs italic">Sent {{ $message->created_at }}</p>
+                                    <p class="text-xs italic">Sent {{ Str::limit(date("d-m-y H:i:s", strtotime($message->created_at)),14,'') }}</p>
                                 </div>
                             </div>
                             @else
@@ -122,7 +123,7 @@
                                     <img src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" class="w-6 h-6 rounded-full order-2">
                                 </div>
                                 <div class="flex items-end justify-end">
-                                <p class="text-xs italic">Sent {{ $message->created_at }}</p>
+                                <p class="text-xs italic">Sent {{ Str::limit(date("d-m-y H:i:s", strtotime($message->created_at)),14,'') }}</p>
                                 </div>
                             </div>
                             @endif
@@ -137,7 +138,8 @@
                 
                 
             {{-- @if(auth()->user()->is_admin == 1) --}}
-            <form wire:submit.prevent="SendMessage">
+            <form wire:submit.prevent="SendMessage" >
+                
                 <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
                     <div class="relative flex">
 
@@ -148,7 +150,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </button>
-                            <button type="submit" class="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
+                            <button type="submit" data-turbolinks-track="true" class="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 transform rotate-90">
                                 <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
                                 </svg>
@@ -166,36 +168,13 @@
 
 </div>
 
-<style>
-            .scrollbar-w-2::-webkit-scrollbar {
-            width: 0.25rem;
-            height: 0.25rem;
-            }
-
-            .scrollbar-track-blue-lighter::-webkit-scrollbar-track {
-            --bg-opacity: 1;
-            background-color: #f7fafc;
-            background-color: rgba(247, 250, 252, var(--bg-opacity));
-            }
-
-            .scrollbar-thumb-blue::-webkit-scrollbar-thumb {
-            --bg-opacity: 1;
-            background-color: #edf2f7;
-            background-color: rgba(237, 242, 247, var(--bg-opacity));
-            }
-
-            .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
-            border-radius: 0.25rem;
-            }
-            </style>
-            
 
 
 <script>
-window.setInterval(function(){
-  var elem = document.getElementById('messages2');
-  elem.scrollTop = elem.scrollHeight;
-}, 1000);
+// window.setInterval(function(){
+//     var elem = document.getElementById('messages2');
+//     elem.scrollTop = elem.scrollHeight;
+// }, 1000);
 </script>
 
 </div>

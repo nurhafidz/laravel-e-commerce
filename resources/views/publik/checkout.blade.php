@@ -12,8 +12,6 @@
                     <!-- Column Content -->
                     <div class="mt-6">
                     @forelse ($carts as $key=>$row)
-                    <input type="hidden" value="{{ $row->product->id }}" name="toko">
-                    <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
                     
                     <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
                         <div class="sm:w-32 sm:h-32 h-20 w-20 sm:mr-10 inline-flex items-center justify-center rounded-full bg-red-100 text-red-500 flex-shrink-0">
@@ -41,15 +39,14 @@
                                 <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2 ">
                                     <p class="leading-relaxed text-base">Berat : {{ number_format($row->weight * $row->qty) }} g</p>
                                 </div>
-                                <input type="hidden" name="origin_id" id="origin_id" value="{{$row->product->store->district_id}}">
                                 
-                                <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->id}}">
-                                <input type="hidden" name="district_id" id="district_id" value="{{Auth::user()->district_id}}">
-                                <input type="hidden" name="weight" id="weight" value="{{ $weight }}">
-                                <select class="form-select text-gray-700 mt-1 block w-full"  name="courier" id="courier" required>
+                                <select class="form-select text-gray-700 mt-1 block w-full" required name="courier[]" id="courier{{$key}}" required>
+                                    <option value="">Pilih kurir</option>
+                                    @foreach ($kurir[$key] as $item)
+                                    <option value="{{$item['courier']}}-{{$item['service']}}-{{$item['cost']}}">{{$item['courier']}} - {{$item['service']}} - RP {{number_format($item['cost'])}}</option>
                                     
-
-                                    <option>pilih kurir</option>
+                                    @endforeach
+                                    {{-- <option value="">{{dd($item->courier)}} - {{$item->service}} - {{$item->cost}}</option> --}}
                                 </select>
                             </div>
                             
@@ -105,48 +102,45 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+<script>
+    
+</script>
 <script type="text/javascript">
-    
-    
-    $.ajax({
-        
-        url: "{{ url('/api/cost') }}",
-        type: "POST",
-        data: { origin: $('#origin_id').val(), destination: $('#district_id').val(), weight: $('#weight').val() },
-        success: function(html){
-            console.log(html);
-            $('#courier').empty()
-            $('#courier').append('<option value="">Pilih Kurir</option>')
-            $.each(html.data.results, function(key, item) {
-                let courier = item.courier + ' - ' + item.service + ' (Rp '+ item.cost +')'
-                let value = item.courier + '-' + item.service + '-'+ item.cost
-                $('#courier').append('<option value="'+value+'">' + courier + '</option>')
-            })
-        }
-    });
-    
-    $('#courier').on('change', function() {
-    //UPDATE INFORMASI BIAYA PENGIRIMAN
-    let split = $(this).val().split('-')
-    var a =split[2]/2;
-    if(isNaN(a) == true)
-    {
-    $('#ongkir').text('Rp ' + split[3])
-    //UPDATE INFORMASI TOTAL (SUBTOTAL + ONGKIR)
-    let subtotal = "{{ $subtotal }}"
-    let total = parseInt(subtotal) + parseInt(split['3'])
-    $('#total').text('Rp' + total)
+    var a = {!! json_encode($carts) !!}
+    var id = a.map(function (x) {
+            return x.id;
+        });
+    function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
-    else
-    {
-        $('#ongkir').text('Rp ' + split[2])
-
-    //UPDATE INFORMASI TOTAL (SUBTOTAL + ONGKIR)
-    let subtotal = "{{ $subtotal }}"
-    let total = parseInt(subtotal) + parseInt(split['2'])
-    $('#total').text('Rp' + total)
-    }
-})
+    var c = a.length;
+    var data = [];
+    for (i = 0; i < a.length; i++) {
+        (function(index){
+            $('#courier'+i).on('change', function xy() {
+                let split = document.getElementById('courier'+index).value.split('-');
+                
+                var a = split[3];
+                if(a != undefined){
+                    data[index]=Number(split[3]);
+                }
+                else{
+                    data[index]=Number(split[2]);
+                }
+                var total2=0;
+                    for(i = 0; i < data.length; i++) { 
+                        total2 += data[i]; 
+                    }
+                    
+                    $('#ongkir')
+                    //UPDATE INFORMASI TOTAL (SUBTOTAL + ONGKIR)
+                    let subtotal = "{{ $subtotal }}"
+                    let total = parseInt(subtotal) + total2
+                    
+                    $('#total').text('Rp ' + formatNumber(total))
+            });
+        })(i);
+    };
 </script>
 
 

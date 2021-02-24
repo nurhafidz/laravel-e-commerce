@@ -29,7 +29,7 @@ class Show extends Component
         if (auth()->user()->is_admin == 3) {
             $this->messages = \App\Models\Message::where('user_id', auth()->id())->orWhere('receiver', auth()->id())->orderBy('id', 'ASC')->get();
         } else {
-            $this->messages = \App\Models\Message::where('user_id', $this->sender->id)->orWhere('receiver', $this->sender->id)->orderBy('id', 'ASC')->get();
+            $this->messages = \App\Models\Message::where('user_id', auth()->id())->orWhere('receiver', auth()->id())->orderBy('id', 'ASC')->get();
         }
         $not_seen = \App\Models\Message::where('user_id', $this->sender->id)->where('receiver', auth()->id());
         $not_seen->update(['is_seen' => true]);

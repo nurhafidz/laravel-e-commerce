@@ -75,7 +75,7 @@ class UserController extends Controller
             $data['getinvoice'] = $getInvoice2;
         }
         
-        
+        // dd($data);
         return view('publik.myorder',$data);
     }
     public function orderdetail($id,$orderid)
@@ -90,7 +90,7 @@ class UserController extends Controller
         $client = new Client();
         $response = $client->request('POST', $url, [
             'headers' => [
-                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
+                'Authorization' => 'E2RVXwXbh4AODgLOAAaBm6PSDJ5QMVZN6dwZsxgw'
             ],
             'form_params' => [
                 'waybill' => $data['order_detail']->tracking_number,
@@ -141,7 +141,7 @@ class UserController extends Controller
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
         $invoice = $order->invoice;
         $getInvoice = \Xendit\Invoice::retrieve($invoice);
-         $data = ['title' => 'Welcome to belajarphp.net'];
+        $data = ['title' => 'Welcome to belajarphp.net'];
         $pdf = PDF::loadView('publik.nota', compact('data'));
         return $pdf->stream();
     

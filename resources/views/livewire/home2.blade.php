@@ -19,7 +19,7 @@
             $slug = str_replace(' ','-',$get);
             $storename = str_replace(' ','-',$b);
         @endphp
-        <a href="{{url('/shop/'.$storename.'/'.$slug)}}">
+        <a href="{{url('/shop/'.$storename.'/'.$slug)}}" data-turbolinks="true">
             @php
                 $ex = count(explode('|', $product->image));
             @endphp

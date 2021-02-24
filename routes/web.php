@@ -6,6 +6,8 @@ use App\Http\Controllers\Publik\HomeController;
 use App\Http\Controllers\Publik\UserController;
 use App\Http\Controllers\Publik\CartController;
 use App\Http\Controllers\Publik\InboxPubController;
+use App\Http\Controllers\Publik\InboxPubUController;
+use App\Http\Controllers\Publik\OTPController;
 use App\Http\Controllers\Seller\StoreController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Service\ServiceController;
@@ -40,9 +42,11 @@ Route::post('/processCheckout', [CartController::class, 'processCheckout'])->nam
 Route::get('/myorder/{id}', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::get('/myorder/{id}/detail/{orderid}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
 Route::put('/myorder/{id}/detail/{orderid}/changestatus', [UserController::class, 'changestatus'])->name('myorder.changestatus')->middleware('App\Http\Middleware\SellerandGuestcheck');
-Route::get('/shop', function () {
-    return view('publik.shop');
-})->name('shop');
+Route::get('/search',[HomeController::class, 'search'])->name('pub.search');
+Route::get('/c/{parent}',[HomeController::class, 'catmain'])->name('catmain.search');
+Route::get('/c/{parent}/{child}',[HomeController::class, 'catchild'])->name('catchild.search');
+Route::get('/otp/create',[OTPController::class, 'create']);
+Route::get('/otp',[OTPController::class, 'index']);
 Route::get('/profil', function () {
     return view('publik.profil.profil');
 });
@@ -52,15 +56,18 @@ Route::get('/payment/success', function () {
 Route::get('/payment/fail', function () {
     return view('publik.payment.fail');
 });
-// Route::get('/detail', function () {
-//     return view('publik.profil.detail');
-// });
+Route::get('/test', function () {
+    return view('welcome');
+});
+Route::get('/kertas', function () {
+    return view('publik.print.index');
+});
 Route::get('/detailuser', [UserController::class, 'detail'])->name('detail.user');
 Route::get('/detailuser/getcity/{id}', [UserController::class, 'getCity'] );
 Route::get('/detailuser/getdistrict/{id}', [UserController::class, 'getDistrict'] );
 Route::post('/detailuser/update/{id}', [UserController::class, 'detailupdate'])->name('detail.update');
 
-Route::put('/tambakekeranjang', [CartController::class, 'addToCart'])->name('front.cart');
+
 Route::post('/keranjang/update', [CartController::class, 'updateCart'])->name('front.update_cart');
 
 Route::get('/new-store',[StoreController::class, 'create'])->name('create.seller');
@@ -69,7 +76,15 @@ Route::post('new-store',[StoreController::class, 'store'])->name('store.seller')
 Route::get('/inbox', [InboxPubController::class, 'index'])->name('inbox');
 Route::get('/inbox/{id}', [InboxPubController::class, 'show'])->name('inbox.show');
 
+
 Auth::routes(['verify' => true]);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/inboxpub', [InboxPubUController::class, 'index'])->name('inbox2');
+    Route::get('/inboxpub/{id}', [InboxPubUController::class, 'show'])->name('inbox.show2');
+    Route::put('/tambakekeranjang', [CartController::class, 'addToCart'])->name('front.cart');
+    //
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {

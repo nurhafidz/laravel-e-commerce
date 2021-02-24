@@ -16,7 +16,7 @@
 								</svg>
 							</div>
 							<div>
-								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Total clients</p>
+								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Jumlah Pesanan</p>
 								<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">6389</p>
 							</div>
 						</div>
@@ -29,7 +29,7 @@
 								</svg>
 							</div>
 							<div>
-								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Account balance</p>
+								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Saldo</p>
 								<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">$ 46,760.89</p>@php $a = Auth::user()->store->name; $storename = str_replace(' ','-',$a) @endphp
 								<div class=" text-xs font-medium text-gray-600 dark:text-gray-400"><a href="{{url('seller/'.$storename.'/saldo')}}">tarik</a>
 								</div>
@@ -44,7 +44,7 @@
 								</svg>
 							</div>
 							<div>
-								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">New sales</p>
+								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"></p>
 								<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">376</p>
 							</div>
 						</div>

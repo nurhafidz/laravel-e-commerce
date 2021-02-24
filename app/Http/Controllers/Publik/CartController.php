@@ -14,6 +14,7 @@ use Xendit\Xendit;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 use Auth;
 
 
@@ -164,45 +165,55 @@ class CartController extends Controller
 
     $subtotal = 0;
     $weight = 0;
+
+    $kurir = array();
+    $url = 'https://ruangapi.com/api/v1/shipping';
+    $client = new Client();
     foreach($carts as $key=>$value)
     {
-        
         $qty=$value->qty;
         $harga=$value->product->harga;
         $a=$qty*$harga;
         $subtotal+= $a;
-
         $we=$value->weight;
         $w = $we * $qty;
         $weight+= $w;
-    }
-    
-        
-    return view('publik.checkout', compact('provinces', 'carts', 'subtotal', 'weight'));
-    }
 
-    public function getCourier(Request $request)
-    {
-        $this->validate($request, [
-            'destination' => 'required',
-            'weight' => 'required|integer'
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Authorization' => 'E2RVXwXbh4AODgLOAAaBm6PSDJ5QMVZN6dwZsxgw'
+            ],
+            'form_params' => [
+                'origin' => $value->product->store->district_id,
+                'destination' => $value->user->district_id,
+                'weight' => $value->weight*$qty,
+                'courier' => 'jnt,tiki,sicepat'
+            ]
         ]);
+        $kurir[]=json_decode($response->getBody(), true)['data']['results'];
+        
+        // dd($kurir[0]['data']['results']);
+        
+    }
+    return view('publik.checkout', compact('provinces', 'carts', 'subtotal', 'weight','kurir'));
+    }
 
-
+    public function getCourier($id)  
+    {
+        $data = Cart::findorfail($id);
         $url = 'https://ruangapi.com/api/v1/shipping';
         $client = new Client();
         $response = $client->request('POST', $url, [
             'headers' => [
-                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
+                'Authorization' => 'E2RVXwXbh4AODgLOAAaBm6PSDJ5QMVZN6dwZsxgw'
             ],
             'form_params' => [
-                'origin' => $request->origin,
-                'destination' => $request->destination,
-                'weight' => $request->weight,
+                'origin' => $data->product->store->district_id,
+                'destination' => $data->user->district_id,
+                'weight' => $data->weight,
                 'courier' => 'jnt,tiki,sicepat'
             ]
         ]);
-
         $body = json_decode($response->getBody(), true);
         return $body;
     }
@@ -213,18 +224,15 @@ class CartController extends Controller
         //     'destination' => 'required',
         //     'weight' => 'required|integer'
         // ]);
-
-
         $url = 'https://ruangapi.com/api/v1/waybill';
         $client = new Client();
         $response = $client->request('POST', $url, [
             'headers' => [
-                'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
+                'Authorization' => 'E2RVXwXbh4AODgLOAAaBm6PSDJ5QMVZN6dwZsxgw'
             ],
             'form_params' => [
                 'waybill' => 'JP8786802938',
                 'courier' => 'jnt',
-                
             ]
         ]);
 
@@ -234,12 +242,11 @@ class CartController extends Controller
     
     public function processCheckout(Request $request)
     {
-        $this->validate($request, [
-            'courier' => 'required'
-        ]);
+        
         $carts = Cart::where('user_id', auth()->id())->where('status', 1)->get();
 
         $subtotal = 0;
+        $ongkir2 = 0;
         foreach($carts as $key=>$value)
         {
             
@@ -248,16 +255,31 @@ class CartController extends Controller
             $a=$qty*$harga;
             $subtotal+= $a;
         }
-        $shipping = explode('-', $request->courier);
-        if(count($shipping) == 3){
-            $total = $subtotal+$shipping[2];
-        }
-        if(count($shipping) == 4){
-            $total = $subtotal+$shipping[3];
+        foreach($request->courier as $kurir){
+            $shipping = explode('-', $kurir);
+            if(count($shipping) == 3){
+                $ongkir = $shipping[2];
+            }
+            if(count($shipping) == 4){
+                $ongkir = $shipping[3];
+                
+            }
+            $shipping2[]=$shipping;
+            $ongkir2 += $ongkir;
         }
         
         
-        $user = User::findorFail($request->user_id);
+        $total = $subtotal + $ongkir2;
+        
+        // $shipping = explode('-', $request->courier);
+        // if(count($shipping) == 3){
+        //     $total = $subtotal+$shipping[2];
+        // }
+        // if(count($shipping) == 4){
+        //     $total = $subtotal+$shipping[3];
+        // }
+        
+        $user = User::findorFail(Auth::user()->id);
         $email = $user->email;
         
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
@@ -271,6 +293,7 @@ class CartController extends Controller
             'failure_redirect_url'=>'http://localhost:8000/payment/fail',
             'success_redirect_url'=>'http://localhost:8000/payment/success'
         ];
+        
 
         $createInvoice = \Xendit\Invoice::create($params);
 
@@ -284,9 +307,9 @@ class CartController extends Controller
             
         foreach ($carts as $key=>$row) {
             $product = Product::find($row->product->id);
-            if(count($shipping) == 3){
-            $a =$shipping[1];
-            $b =strtolower($shipping[0]);
+            if(count($shipping2[$key]) == 3){
+            $a =$shipping2[$key][1];
+            $b =strtolower($shipping2[$key][0]);
             $productqty=$product->stock;
             $jumlahqty=$productqty - $row->qty;
             $product->stock=$jumlahqty;
@@ -296,23 +319,23 @@ class CartController extends Controller
             $orderdetail=OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $row->product->id,
-                    'user_id' => $request->user_id,
+                    'user_id' => Auth::user()->id,
                     'store_id' => $product->store_id,
                     'price' => $row->product->harga,
                     'qty' => $row->qty,
                     'shipping' => $b,
                     'shipping_detail' => $a,
-                    'cost' => $shipping[2],
+                    'cost' => $shipping2[$key][2],
                     'status' => 1,
                     'weight' => $product->weight,
                     'note'=>$row->note
                 ]);
-                $orderdetail->save();
-                $product->update();
+                // $orderdetail->save();
+                // $product->update();
             }
-            if(count($shipping) == 4){
-            $a =$shipping[2].'-'.$shipping[1];
-            $b =strtolower($shipping[0]);
+            if(count($shipping2[$key]) == 4){
+            $a =$shipping2[$key][2].'-'.$shipping2[$key][1];
+            $b =strtolower($shipping2[$key][0]);
             $productqty=$product->stock;
             $jumlahqty=$productqty - $row->qty;
             $product->stock=$jumlahqty;
@@ -322,13 +345,13 @@ class CartController extends Controller
             $orderdetail=OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $row->product->id,
-                    'user_id' => $request->user_id,
+                    'user_id' => Auth::user()->id,
                     'store_id' => $product->store_id,
                     'price' => $row->product->harga,
                     'qty' => $row->qty,
                     'shipping' => $b,
                     'shipping_detail' => $a,
-                    'cost' => $shipping[3],
+                    'cost' => $shipping2[$key][3],
                     'status' => 1,
                     'weight' => $product->weight,
                     'note'=>$row->note
