@@ -20,6 +20,8 @@ class CreateReviewsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->Integer('score')->nullable();
             $table->text('review');
+            $table->longText('gambar')->nullable();
+            $table->longText('video')->nullable();
             $table->timestamps();
         });
     }

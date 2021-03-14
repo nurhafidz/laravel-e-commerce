@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\DemoCron::class,
     ];
 
     /**
@@ -25,6 +25,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        // $schedule->command('minutes:otp')->everyMinute();
+        // $schedule->command('demo:cron')->everyMinute();
+        $schedule->call('App\Http\Controllers\Publik\OTPController@checkstatus')->everyMinute();
     }
 
     /**

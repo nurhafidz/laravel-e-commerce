@@ -7,41 +7,116 @@
     <div x-data="{ open: false }" @click.away="open = false">
         <div class="flex">
             <div class="md:w-2/12">
-			<livewire:sellerside>
+                <livewire:sellerside>
             </div>
             <div class="w-full md:w-10/12">
 
-			<div class="max-w-xs bg-white shadow-lg rounded-lg overflow-hidden my-10">
-  <div class="px-4 py-2">
-    <h1 class="text-gray-900 font-bold text-3xl uppercase">NIKE AIR</h1>
-    <p class="text-gray-600 text-sm mt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi quos quidem sequi illum facere recusandae voluptatibus</p>
-  </div>
-  <img class="h-56 w-full object-cover mt-2" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="NIKE AIR">
-  <div class="flex items-center justify-between px-4 py-2 bg-gray-900">
-           
-            <a href="#" class="cursor-pointer hover:text-green-600 text-blue-100 py-3/2 px-2 rounded-lg inline-flex items-center">
-    <svg class="h-5 w-5 hover:text-green-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-</svg>
-<span><b>Edit</b></span>
-</a>
-        <a href="#" class="cursor-pointer hover:text-blue-600 text-blue-100 py-3/2 px-2 rounded-lg inline-flex items-center">
-   <svg class="h-5 w-5 hover:text-blue-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-</svg>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+                    <div class="flex flex-col md:flex-row -mx-4">
+                        <div class="md:flex-1 px-4">
+                            <div x-data="{ image: 1 }" x-cloak>
 
-<span><b>Detail</b></span>
-</a>
-            
-  </div>
-</div>
-               
+                                <div class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex flex-nowrap">
+                                    <div class="flex overflow-x-auto pb-10 hide-scroll-bar w-full">
+                                        <div class="flex flex-nowrap">
+                                            @for($b=1;$b<10;$b++)
+                                                <div class="inline-block px-3 ">
+
+                                                    <div x-show="image === {{ $b }}"
+                                                        class=" md:h-80 rounded-lg bg-gray-100 mb-4 items-center justify-center  w-44 h-64 max-w-xs">
+                                                        <span class="text-5xl">{{$b}}</span>
+                                                    </div>
+                                                </div>
+                                            @endfor
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="flex -mx-2 mb-4">
+                                    <template x-for="i in 4">
+                                        <div class="flex-1 px-2">
+                                            <button x-on:click="image = i"
+                                                :class="{ 'ring-2 ring-indigo-300 ring-inset': image === i }"
+                                                class="focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center">
+                                                <span x-text="i" class="text-2xl"></span>
+                                            </button>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:flex-1 px-4">
+                            <h2 class="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">
+                                {{ $product->name }}</h2>
+                            <div class="flex items-center space-x-4 my-4">
+                                <div>
+                                    <div class="rounded-lg bg-gray-100 flex py-2 px-3">
+                                        <span class="text-indigo-400 mr-1 mt-1">Rp</span>
+                                        <span class=" text-red-500 text-3xl">{{ $product->harga }}</span>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-green-500 text-xl font-bold">@if ($product->status==1)
+                                        Dijual
+                                    @else
+                                        Tidak Dijual
+                                        @endif
+                                      </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap -mx-2 overflow-hidden">
+
+                                <div class="my-2 px-2 w-1/2 overflow-hidden">
+                                    <p class="text-gray-500 text-md font-bold">Kategori:
+                                        {{ $product->category->name }}</p>
+
+                                </div>
+                                <div class="my-2 px-2 w-1/2 overflow-hidden">
+                                    <p class="text-gray-500 text-md font-bold">Berat Barang: {{ $product->weight }}gr
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap -mx-2 overflow-hidden">
+
+                                <div class="my-2 px-2 w-1/2 overflow-hidden">
+                                    <p class="text-gray-500 text-md font-bold">Kondisi Barang:
+                                        @if($product->status_product==1)
+                                        Baru
+                                    @else
+                                        Bekas
+                                        @endif</p>
+                                </div>
+
+                                <div class="my-2 px-2 w-1/2 overflow-hidden">
+                                    <p class="text-gray-500 text-md font-bold">Stok Barang: {{ $product->stock }}</p>
+                                </div>
+                            </div>
+
+                            <p class="text-gray-500">{{ $product->description }}</p>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
-    </div>
+
     </div>
 
+    <script src='https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js'></script>
+    <style>
+        .hide-scroll-bar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .hide-scroll-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+    </style>
 
     <livewire:footer>
         @endsection

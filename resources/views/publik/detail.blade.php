@@ -51,10 +51,10 @@
             </div>
         
         <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-            <h2 class="text-sm title-font text-gray-500 tracking-widest">{{$product->store->name}}</h2>
+            <a href="{{url('/detail-toko/'.str_replace(' ', '-', $product->store->name))}}" class="text-sm title-font text-gray-500 hover:text-gray-700 tracking-widest">{{$product->store->name}}</a>
             <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">{{$product->name}}</h1>
             <div class="flex mb-4">
-                <span class="flex items-center">
+            <span class="flex items-center">
                 <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
@@ -202,9 +202,58 @@
             <p class="hidden md:block">{{$product->description}}</p>
         </div>
     </div>
-    </div>
-    
-        
+    <div class="w-full mt-5 bg-white p-4 border-t-2 border-black">
+        <div class="pl-2">
+            REVIEW
+        </div>
+        <!-- component -->
+<div class="flex items-start">
+	<div class="flex-shrink-0">
+		<div class="inline-block relative">
+			<div class="relative w-16 h-16 rounded-full overflow-hidden">
+				<img class="absolute top-0 left-0 w-full h-full bg-cover object-fit object-cover" src="https://picsum.photos/id/646/200/200" alt="Profile picture">
+					<div class="absolute top-0 left-0 w-full h-full rounded-full shadow-inner"></div>
+				</div>
+			</div>
+		</div>
+		<div class="ml-6">
+			<p class="flex items-baseline">
+				<span class="text-gray-600 font-bold">Mary T.</span>
+			</p>
+			<div class="flex items-center mt-1">
+				<span class="flex items-center">
+                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                </span>
+			</div>
+			
+			<div class="mt-3">
+				<span class="font-bold">Sapien consequat eleifend!</span>
+				<p class="mt-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+			</div>
+			<div class="flex items-center justify-end mt-4 text-sm text-gray-600 fill-current">
+				<div class="flex items-center">
+					<button type="button" class="text-blue-500 hover:text-blue-800">Balas Review</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 </section>
 

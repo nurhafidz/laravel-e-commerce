@@ -7,6 +7,7 @@ use App\Http\Controllers\Publik\UserController;
 use App\Http\Controllers\Publik\CartController;
 use App\Http\Controllers\Publik\InboxPubController;
 use App\Http\Controllers\Publik\InboxPubUController;
+use App\Http\Controllers\WishlistsController;
 use App\Http\Controllers\Publik\OTPController;
 use App\Http\Controllers\Seller\StoreController;
 use App\Http\Controllers\Seller\ProductController;
@@ -37,27 +38,22 @@ use App\Http\Controllers\Service\ProdukSellerController;
 Route::get('/', [HomeController::class, 'index'])->name('home.guest');
 Route::get('/shop/{storename}/{slug}', [HomeController::class, 'show'])->name('shop.product');
 Route::get('/keranjang', [CartController::class, 'listCart']);
-Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout')->middleware('App\Http\Middleware\SellerandGuestcheck');
-Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('processCheckout')->middleware('App\Http\Middleware\SellerandGuestcheck');
-Route::get('/myorder/{id}', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
-Route::get('/myorder/{id}/detail/{orderid}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
-Route::put('/myorder/{id}/detail/{orderid}/changestatus', [UserController::class, 'changestatus'])->name('myorder.changestatus')->middleware('App\Http\Middleware\SellerandGuestcheck');
+
 Route::get('/search',[HomeController::class, 'search'])->name('pub.search');
+Route::get('/detail-toko/{storename}',[HomeController::class, 'homestore'])->name('det.store');
 Route::get('/c/{parent}',[HomeController::class, 'catmain'])->name('catmain.search');
 Route::get('/c/{parent}/{child}',[HomeController::class, 'catchild'])->name('catchild.search');
 Route::get('/otp/create',[OTPController::class, 'create']);
+Route::get('/otp/test',[OTPController::class, 'test']);
+Route::get('/otp/cek',[OTPController::class, 'checkstatus']);
 Route::get('/otp',[OTPController::class, 'index']);
-Route::get('/profil', function () {
-    return view('publik.profil.profil');
-});
-Route::get('/payment/success', function () {
-    return view('publik.payment.success');
-});
-Route::get('/payment/fail', function () {
-    return view('publik.payment.fail');
-});
+
+
 Route::get('/test', function () {
     return view('welcome');
+});
+Route::get('/test2', function () {
+    return view('index');
 });
 Route::get('/kertas', function () {
     return view('publik.print.index');
@@ -83,11 +79,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/inboxpub', [InboxPubUController::class, 'index'])->name('inbox2');
     Route::get('/inboxpub/{id}', [InboxPubUController::class, 'show'])->name('inbox.show2');
     Route::put('/tambakekeranjang', [CartController::class, 'addToCart'])->name('front.cart');
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout')->middleware('App\Http\Middleware\SellerandGuestcheck');
+    Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('processCheckout')->middleware('App\Http\Middleware\SellerandGuestcheck');
+    Route::get('/myorder/{id}', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
+    Route::get('/myorder/{id}/detail/{orderid}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
+    Route::put('/myorder/{id}/detail/{orderid}/changestatus', [UserController::class, 'changestatus'])->name('myorder.changestatus')->middleware('App\Http\Middleware\SellerandGuestcheck');
+    Route::get('/profil', function () {
+    return view('publik.profil.profil');
+    });
+    Route::get('/payment/success', function () {
+    return view('publik.payment.success');
+    });
+    Route::get('/payment/fail', function () {
+        return view('publik.payment.fail');
+    });
     //
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
+Route::group(['middleware' => 'App\Http\Middleware\Sellercheck','middleware' =>'auth'], function () {
     Route::get('/dashboard/{storename}',[StoreController::class, 'index'])->name('dashboard.seller');
     Route::get('/seller/{storename}/product',[ProductController::class,'index'])->name('product.index');
     Route::get('/seller/{storename}/product/create',[ProductController::class,'create'])->name('product.create');
@@ -95,11 +105,13 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck'], function () {
     Route::get('/seller/{storename}/product/{brandname}',[ProductController::class,'show'])->name('product.show');
     Route::put('/seller/{storename}/product/{id}/changestatus',[ProductController::class,'changestatus'])->name('product.changestatus');
     Route::get('/seller/{storename}/saldo',[SaldoController::class,'index'])->name('seller.saldo');
+    Route::post('/seller/{storename}/saldo/create',[SaldoController::class,'create']);
     Route::get('/seller/{storename}/pesanan',[PesananController::class,'index'])->name('seller.pesanan');
     Route::get('/seller/{storename}/pesanan/{orderid}',[PesananController::class,'show'])->name('seller.pesanan.show');
     Route::get('/seller/{storename}/product/{brandname}/editproduk',[ProductController::class,'edit'])->name('product.editproduk');
+    Route::post('/storereview/{iduser}',[UserController::class, 'storereview']);
 });
-Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function () {
+Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck','middleware' =>'auth'], function () {
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');
     Route::get('/services/pengguna',[PenggunaController::class,'index'] )->name('service.pengguna');
     Route::get('/services/pengguna/{id}',[PenggunaController::class,'show'] )->name('service.pengguna.show');
@@ -109,7 +121,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck'], function ()
     Route::get('/services/servicesellershow/{id}',[PenjualController::class,'show'] )->name('service.seller.show');
     Route::put('/services/seller/{id}/editstatus',[PenjualController::class,'editstatus'] )->name('service.seller.show.editstatus');
 });
-Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
+Route::group(['middleware' => 'App\Http\Middleware\Admincheck','middleware' =>'auth'], function () {
     Route::get('/admin/dashboard',[AdminController ::class, 'index'] )->name('admin.dashboard');
     Route::get('/admin/create',[AdminController ::class, 'create'] )->name('admin.create');
     Route::post('/admin/store',[AdminController ::class, 'store'] )->name('admin.store');
@@ -137,4 +149,22 @@ Route::group(['middleware' => 'App\Http\Middleware\Admincheck'], function () {
     Route::put('/admin/service/{id}/edit-status',[AdminServiceController::class, 'editstatus'])->name('admin.service.edit.status');
     Route::get('/admin/service/{id}/edit',[AdminServiceController::class, 'edit'])->name('admin.service.edit');
     Route::delete('/admin/service/{id}/delete',[AdminServiceController::class, 'destroy'])->name('admin.service.destroy');
+});
+Route::group([
+    'prefix' => 'wishlists',
+], function () {
+    Route::get('/',[WishlistsController::class,'index'])
+         ->name('wishlists.wishlist.index');
+    Route::get('/create',[WishlistsController::class,'create'])
+         ->name('wishlists.wishlist.create');
+    Route::get('/show/{wishlist}',[WishlistsController::class,'show'])
+         ->name('wishlists.wishlist.show')->where('id', '[0-9]+');
+    Route::get('/{wishlist}/edit',[WishlistsController::class,'edit'])
+         ->name('wishlists.wishlist.edit')->where('id', '[0-9]+');
+    Route::post('/',[WishlistsController::class,'store'])
+         ->name('wishlists.wishlist.store');
+    Route::put('wishlist/{wishlist}',[WishlistsController::class,'update'])
+         ->name('wishlists.wishlist.update')->where('id', '[0-9]+');
+    Route::delete('/wishlist/{wishlist}',[WishlistsController::class,'destroy'])
+         ->name('wishlists.wishlist.destroy')->where('id', '[0-9]+');
 });

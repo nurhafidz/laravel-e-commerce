@@ -56,4 +56,34 @@ class HomeController extends Controller
         $data['product'] =Product::where('category_id',[$b->id])->paginate(20);
         return view('publik.category.show',$data);
     }
+    public function homestore($storename)
+    {
+        $c =str_replace('-', ' ', $storename);
+        $data['store'] = Store::where('name',$c)->firstOrFail();
+        $data['product'] =Product::where('store_id',[$data['store']->id])->paginate(20);
+        foreach($data['product'] as $x){
+            $v[]=$x->category_id;
+        }
+        
+        $l=0;
+        foreach(array_unique($v) as $h){
+
+            $data['productcat'.$l] =Product::where('store_id',[$data['store']->id])->where('category_id',$h)->paginate(15);
+            $b = Category::findorfail($h);
+            $n[]=$data['productcat'.$l];
+            $k[]=$b;
+            $result[$l]=array(
+                'categori'=>array($b),
+                'produkcat'=>array($data['productcat'.$l])
+            );
+            
+            $l++;
+        }
+        $data['result']=$result;
+        
+        // foreach($result[0]['produkcat'][0] as $produk){
+        //     dd($produk->harga);
+        // }
+        return view('publik.store.detail',$data);
+    }
 }

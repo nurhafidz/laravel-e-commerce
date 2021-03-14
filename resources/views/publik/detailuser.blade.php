@@ -12,7 +12,7 @@
             <div class="mb-4">
                 
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="last_name">
-                    {{ __('Gender') }}
+                    {{ __('Jenis Kelamin') }}
                 </label>
                 <div class="py-1">
                     <label for="gender1">
@@ -106,7 +106,7 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                     {{ __('Alamat lengkap') }}
                 </label>
-                <textarea class="autoexpand tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full  border shadow rounded leading-tight focus:outline-none focus:shadow-outline  @error('alamat') is-invalid @enderror" name="alamat" id="alamat" type="text" placeholder="Alamat lengkap" value="{{ old('alamat') }}" required></textarea>
+                <textarea class="autoexpand tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full  border shadow rounded focus:outline-none focus:shadow-outline  @error('alamat') is-invalid @enderror" name="alamat" id="alamat" type="text" placeholder="Alamat lengkap" value="{{ old('alamat') }}" required></textarea>
             </div>
             
             <div class="flex items-center justify-between">

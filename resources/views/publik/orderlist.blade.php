@@ -37,7 +37,7 @@
                                 <div class="flex bg-transparent w-32">
                                     <input type="hidden" name="id[]" value="{{ $row->id }}" class="form-control">
                                     <input type="hidden" name="product_id[]" value="{{ $row->product_id }}" class="form-control">
-                                <button onclick="var result = document.getElementById('sst{{$key}}'); var sst{{$key}} = result.value; if( !isNaN( sst{{$key}} ) &amp;&amp; sst{{$key}} > 0 ) result.value--;return false;" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer outline-none">
+                                    <button onclick="var result = document.getElementById('sst{{$key}}'); var sst{{$key}} = result.value; if( !isNaN( sst{{$key}} ) &amp;&amp; sst{{$key}} > 0 ) result.value--;return false;" class=" text-gray-600 hover:text-gray-700 hover:bg-gray-100 h-full w-20 rounded-l cursor-pointer outline-none">
                                     <span class="m-auto text-2xl font-thin">−</span>
                                     </button>
                                     <input type="number" class=" focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="qty[]" id="sst{{$key}}" value="{{ $row->qty }}" title="Quantity:"></input>

@@ -10,6 +10,7 @@ use App\Models\City;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Store;
+use App\Models\Phonecode;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Xendit\Xendit;
@@ -24,7 +25,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
- 
+
     public function index()
     {
         //
@@ -38,7 +39,8 @@ class UserController extends Controller
         if($check == Null){
             // $data['province']= Province::all();
             $province = Province::pluck("name", "id");
-            return view('publik.profil.detail',compact('province'));
+            $phone=Phonecode::all();
+            return view('publik.profil.detail',compact('province','phone'));
         }
         else{
             return abort(404);
@@ -46,7 +48,7 @@ class UserController extends Controller
     }
     public function getCity($id)
     {
-        $city = City::where("province_id", $id)->pluck("name", "id","type");
+        $city = City::where("province_id", $id)->get();
         return json_encode($city);
     }
     public function getDistrict($id)
@@ -147,11 +149,6 @@ class UserController extends Controller
     
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
@@ -163,9 +160,25 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storereview(Request $request,$iduser)
     {
-        //
+        $validated = $request->validate([
+        'rating' => 'required',
+        'reviewtext' => 'required',
+        // 'gambarrev' => 'size:20000',
+        ]);
+    
+        $userid=Crypt::decryptString($iduser);
+        $x1=$request->rating;
+        $x2=$request->reviewtext;
+        $x3=$request->gambarrev;
+        $y=array(
+            'userid'=>$userid,
+            'rate'=>$x1,
+            'rev'=>$x2,
+            'gambar'=>$x3,
+        );
+        dd($x3);
     }
 
     /**

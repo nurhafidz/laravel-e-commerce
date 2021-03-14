@@ -41,8 +41,6 @@
             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
             <label class="form-check-label" for="remember">{{ __('Remember Me') }}</label>
             </div>
-            <input type="" name="_token" value="<?php echo csrf_token(); ?>">
-            
             <div class="flex items-center justify-between">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" data-turbolinks="true">
                 Masuk

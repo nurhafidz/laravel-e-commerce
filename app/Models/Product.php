@@ -31,4 +31,8 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\OrderDetail');
     }
+    public function review()
+    {
+        return $this->hasMany("App\Models\Review");
+    }
 }

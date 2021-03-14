@@ -2,161 +2,176 @@
 
 @section('content')
 <livewire:navbar>
-<!-- component -->
-<div x-data="{ open: false }" @click.away="open = false">
-	<div class="w-full container mx-auto grid grid-cols-1 md:grid-cols-7 items-center mt-0 px-6 py-3">
-		<livewire:sidebarseller>
-			<div class="col-span-1 md:col-span-5 text-gray-700 px-4 py-2 m-2">
-				<div class="flex flex-wrap -mx-3 overflow-hidden">
-					<div class="my-3 px-3 w-full overflow-hidden lg:w-1/3 xl:w-1/3">
-						<div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
-							<div class="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500">
-								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-									<path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
-								</svg>
-							</div>
-							<div>
-								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Jumlah Pesanan</p>
-								<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">6389</p>
-							</div>
-						</div>
-					</div>
-					<div class="my-3 px-3 w-full overflow-hidden lg:w-1/3 xl:w-1/3">
-						<div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
-							<div class="p-3 mr-4 text-green-500 bg-green-100 rounded-full dark:text-green-100 dark:bg-green-500">
-								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-									<path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-								</svg>
-							</div>
-							<div>
-								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Saldo</p>
-								<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">$ 46,760.89</p>@php $a = Auth::user()->store->name; $storename = str_replace(' ','-',$a) @endphp
-								<div class=" text-xs font-medium text-gray-600 dark:text-gray-400"><a href="{{url('seller/'.$storename.'/saldo')}}">tarik</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="my-3 px-3 w-full overflow-hidden lg:w-1/3 xl:w-1/3">
-						<div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
-							<div class="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
-								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-									<path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
-								</svg>
-							</div>
-							<div>
-								<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"></p>
-								<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">376</p>
-							</div>
-						</div>
-					</div>
-					<!-- New Table -->
-					<div class="w-full overflow-hidden rounded-lg shadow-xs">
-						<div class="w-full overflow-x-auto">
-							<table class="w-full whitespace-no-wrap">
-								<thead>
-									<tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-										<th class="px-4 py-3">Invoice</th>
-										<th class="px-4 py-3">Nama</th>
-										<th class="px-4 py-3">Alamat</th>
-										<th class="px-4 py-3">Produk</th>
-										<th class="px-4 py-3">Status</th>
-									</tr>
-								</thead>
-								<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-									<tr class="text-gray-700 dark:text-gray-400">
-										<td class="px-4 py-3 text-sm">$ 863.45</td>
-										<td class="px-4 text-sm">Muhammad Hilmi Fahrezi</td>
-										<td class="px-4 py-3 text-xs"> <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                          Approved
-                        </span>
-										</td>
-										<td class="px-4 py-3 text-sm">6/10/2020</td>
-										<td> <a class="bg-green-500 hover:bg-green-700 text-white  px-4 rounded-full">
-                        Confirm
-                      </a> 
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"> <span class="flex items-center col-span-3">
-                  Showing 21-30 of 100
-                </span>
-							<span class="col-span-2"></span>
-							<!-- Pagination --> <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-                  <nav aria-label="Table navigation">
-                    <ul class="inline-flex items-center">
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
-                          aria-label="Previous"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="w-4 h-4 fill-current"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                              clip-rule="evenodd"
-                              fill-rule="evenodd"
-                            ></path>
-                          </svg>
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          1
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          2
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 text-white transition-colors duration-150 bg-red-500 border border-r-0 border-red-500 rounded-md focus:outline-none focus:shadow-outline-orange"
-                        >
-                          3
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          4
-                        </button>
-                      </li>
-                      <li>
-                        <span class="px-3 py-1">...</span>
-							</li>
-							<li>
-								<button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">8</button>
-							</li>
-							<li>
-								<button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">9</button>
-							</li>
-							<li>
-								<button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-									<svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-										<path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-									</svg>
-								</button>
-							</li>
-							</ul>
-							</nav>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-	</div>
+
+    <!-- component -->
+    <div x-data="{ open: false }" @click.away="open = false">
+        <div class="flex">
+            <div class="md:w-2/12">
+                <livewire:sellerside>
+            </div>
+
+
+            <div class="md:w-10/12">
+                <div class="flex flex-wrap -mx-3 overflow-hidden">
+                    <div class=" w-full overflow-hidden">
+                        <div class=" px-3 w-full overflow-hidden">
+                            <div class=" max-h-56 w-full bg-cover bg-no-repeat bg-center"
+                                style=" background-image: url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200);">
+                                <img class="opacity-0 w-full h-full"
+                                    src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200" alt="">
+                            </div>
+                            <div class="p-4">
+                                <div class="relative flex w-full">
+                                    <!-- Avatar -->
+                                    <div class="flex flex-1">
+                                        <div style="margin-top: -6rem;">
+                                            <div style="height:9rem; width:9rem;" class="md rounded-full relative avatar">
+                                                <img style="height:9rem; width:9rem;"
+                                                    class="md rounded-full relative border-4 border-gray-900"
+                                                    src="https://pbs.twimg.com/profile_images/1254779846615420930/7I4kP65u_400x400.jpg"
+                                                    alt="">
+                                                <div class="absolute"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Follow Button -->
+                                    <div class="flex flex-col text-right">
+                                        <button
+                                            class="flex justify-center  max-h-max whitespace-nowrap focus:outline-none  focus:ring  rounded-full border bg-transparent border-red-500 text-red-500 hover:border-red-800 hover:border-red-800 flex items-center hover:shadow-lg py-2 px-4 rounded-full mr-0 ml-auto">
+                                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            <span>Edit</span>
+                                        </button>
+                                    </div>
+                                </div>
+    
+                                <!-- Profile info -->
+                                <div class="space-y-1 justify-center w-full mt-3 ml-3">
+                                    <!-- User basic-->
+                                    <div>
+                                        <h2 class="text-xl leading-6 font-bold">NAMA TOKO</h2>
+                                        <p class="text-sm leading-5 font-medium text-gray-600">@NAMA USER</p>
+                                    </div>
+                                    <!-- Description and others -->
+                                    <div class="mt-3">
+                                        <p class="leading-tight mb-2">MAKANAN / FASHION / ELEKTRONIK <br>Toko yang bersedia
+                                            melakukan apapun <b>YOI</b> </p>
+                                        <div class="text-gray-600 flex">
+                                            <span class="flex mr-2"><svg class="h-5 w-5 text-gray-700" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+                                                <g>
+                                                    <path
+                                                        d="M11.96 14.945c-.067 0-.136-.01-.203-.027-1.13-.318-2.097-.986-2.795-1.932-.832-1.125-1.176-2.508-.968-3.893s.942-2.605 2.068-3.438l3.53-2.608c2.322-1.716 5.61-1.224 7.33 1.1.83 1.127 1.175 2.51.967 3.895s-.943 2.605-2.07 3.438l-1.48 1.094c-.333.246-.804.175-1.05-.158-.246-.334-.176-.804.158-1.05l1.48-1.095c.803-.592 1.327-1.463 1.476-2.45.148-.988-.098-1.975-.69-2.778-1.225-1.656-3.572-2.01-5.23-.784l-3.53 2.608c-.802.593-1.326 1.464-1.475 2.45-.15.99.097 1.975.69 2.778.498.675 1.187 1.15 1.992 1.377.4.114.633.528.52.928-.092.33-.394.547-.722.547z">
+                                                    </path>
+                                                    <path
+                                                        d="M7.27 22.054c-1.61 0-3.197-.735-4.225-2.125-.832-1.127-1.176-2.51-.968-3.894s.943-2.605 2.07-3.438l1.478-1.094c.334-.245.805-.175 1.05.158s.177.804-.157 1.05l-1.48 1.095c-.803.593-1.326 1.464-1.475 2.45-.148.99.097 1.975.69 2.778 1.225 1.657 3.57 2.01 5.23.785l3.528-2.608c1.658-1.225 2.01-3.57.785-5.23-.498-.674-1.187-1.15-1.992-1.376-.4-.113-.633-.527-.52-.927.112-.4.528-.63.926-.522 1.13.318 2.096.986 2.794 1.932 1.717 2.324 1.224 5.612-1.1 7.33l-3.53 2.608c-.933.693-2.023 1.026-3.105 1.026z">
+                                                    </path>
+                                                </g></svg> <a href="https://ricardoribeirodev.com/personal/" target="#"
+                                                    class="leading-5 ml-1 text-blue-400">www.RicardoRibeiroDEV.com</a>
+                                            </span>
+                                            <span class="flex mr-2"><svg viewBox="0 0 24 24" class="h-5 w-5 paint-icon">
+                                                    <g>
+                                                        <path
+                                                            d="M19.708 2H4.292C3.028 2 2 3.028 2 4.292v15.416C2 20.972 3.028 22 4.292 22h15.416C20.972 22 22 20.972 22 19.708V4.292C22 3.028 20.972 2 19.708 2zm.792 17.708c0 .437-.355.792-.792.792H4.292c-.437 0-.792-.355-.792-.792V6.418c0-.437.354-.79.79-.792h15.42c.436 0 .79.355.79.79V19.71z">
+                                                        </path>
+                                                        <circle cx="7.032" cy="8.75" r="1.285"></circle>
+                                                        <circle cx="7.032" cy="13.156" r="1.285"></circle>
+                                                        <circle cx="16.968" cy="8.75" r="1.285"></circle>
+                                                        <circle cx="16.968" cy="13.156" r="1.285"></circle>
+                                                        <circle cx="12" cy="8.75" r="1.285"></circle>
+                                                        <circle cx="12" cy="13.156" r="1.285"></circle>
+                                                        <circle cx="7.032" cy="17.486" r="1.285"></circle>
+                                                        <circle cx="12" cy="17.486" r="1.285"></circle>
+                                                    </g>
+                                                </svg> <span class="leading-5 ml-1">Joined December, 2019</span></span>
+                                        </div>
+                                    </div>
+    
+                                </div>
+                            </div>
+                            <hr class="border-gray-400">
+                        </div>
+    
+    
+                    </div>
+    
+                    <div class="my-3 px-3 w-full overflow-hidden md:w-1/2">
+                        <div class="w-screen bg-white flex flex-row flex-wrap">
+                            <div class="w-full md:w-5/12">
+                                <div class="bg-white rounded shadow">
+                                    <div class="border-b p-3">
+                                        <h5 class="font-bold uppercase text-gray-600">Grafik penghasilan</h5>
+                                    </div>
+                                    <div class="p-5">
+                                        <canvas id="chartjs-0" class="chartjs" width="undefined"
+                                            height="undefined"></canvas>
+                                        <script>
+                                            new Chart(document.getElementById("chartjs-0"), {
+                                                "type": "line",
+                                                "data": {
+                                                    "labels": ["January", "February", "March", "April", ],
+                                                    "datasets": [{
+                                                        "label": "Views",
+                                                        "data": [65, 59, 80, 81, ],
+                                                        "fill": false,
+                                                        "borderColor": "rgb(239, 68, 68)",
+                                                        "lineTension": 0.1
+                                                    }]
+                                                },
+                                                "options": {}
+                                            });
+    
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-3 px-3 w-full overflow-hidden md:w-1/2">
+                        <div class="w-screen bg-white flex flex-row flex-wrap">
+                            <div class=" w-full md:w-5/12">
+                                <!--Graph Card-->
+                                <div class="bg-white rounded">
+                                    <div class="border-b p-3">
+                                        <h5 class="font-bold uppercase text-gray-600">Graph</h5>
+                                    </div>
+                                    <div class="p-1"><canvas id="chartjs-4" class="chartjs" width="200px"></canvas>
+                                        <script>
+                                            new Chart(document.getElementById("chartjs-4"), {
+                                                "type": "doughnut",
+                                                "data": {
+                                                    "labels": ["fashion", "makanan", "elektronik"],
+                                                    "datasets": [{
+                                                        "label": "Issues",
+                                                        "data": [300, 50, 100],
+                                                        "backgroundColor": ["rgb(255, 99, 132)",
+                                                            "rgb(54, 162, 235)", "rgb(255, 205, 86)"
+                                                        ]
+                                                    }]
+                                                }
+                                            });
+    
+                                        </script>
+                                    </div>
+                                </div>
+                                <!--/Graph Card-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<livewire:footer>
-@endsection
+
+
+
+    <livewire:footer>
+        @endsection
