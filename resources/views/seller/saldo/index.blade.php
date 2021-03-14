@@ -2,76 +2,58 @@
 
 @section('content')
 <livewire:navbar>
-<!-- component -->
-<div x-data="{ open: false }" @click.away="open = false">
-    <div class="w-full container mx-auto grid grid-cols-1 md:grid-cols-7 items-center mt-0 px-6 py-3">
-        <livewire:sidebarseller>
-        <div class="col-span-1 md:col-span-5 text-gray-700 px-4 py-2 m-2">
-        <div
-                class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-              >
-                <div
-                  class="p-3 mr-4 text-green-500 bg-green-100 rounded-full dark:text-green-100 dark:bg-green-500"
-                >
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fill-rule="evenodd"
-                      d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </div>
-                <div>
-                  <p
-                    class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
-                  >
-                    Account balance
-                  </p>
-                  <p
-                    class="text-lg font-semibold text-gray-700 dark:text-gray-200"
-                  >
-                    $ 46,760.89
-                  </p>
-                </div>
-              </div>
 
-        <form class="w-full max-w-lg">
-      
-        <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-        nama rekening
-      </label>
-      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
-    </div>
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-        no rekening
-      </label>
-      <input class="shadow appearance-none border rounded w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="text" placeholder="no rek">
-    </div>
-  </div>
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-        jumlah uang
-      </label>
-      <input class="shadow appearance-none border rounded w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-jumlah" type="text" placeholder="Rp10,000">
-    </div>
-  </div>
-  
-              
-              <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-               Tarik
-              </a>
-   </form>
-   </div>
-
-
+    <!-- component -->
+    <div x-data="{ open: false }" @click.away="open = false">
+    <div class="flex">
+    <div class="md:w-2/12"> <livewire:sellerside></div>
+        <div class="w-full md:w-10/12">
+       
+            
+    <div class="md:p-12 bg-indigo-100 flex flex-row flex-wrap">
+  <form class="md:w-1/2-screen m-0 p-5 bg-white w-full tw-h-full shadow md:rounded-lg">
+    
+  <div class="col-span-12 sm:col-span-6 md:col-span-3">
+        <div class="flex flex-row bg-white shadow-sm rounded p-4">
+          <div class="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-green-100 text-green-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          </div>
+          <div class="flex flex-col flex-grow ml-4">
+            <div class="text-sm text-gray-500">Saldo</div>
+            <div class="font-bold text-lg">Rp 32k</div>
+          </div>
         </div>
+      </div>
+
+    <div class="flex-col flex py-3">
+      <label class="pb-2 text-gray-700 font-semibold">Nominal</label>
+      <input type="n.a umber" class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200" placeholder="200000">
+    </div>
+    
+    <div class="flex-col flex py-3">
+      <label class="pb-2 text-gray-700 font-semibold">Kode bank</label>
+      <input type="text" class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200" placeholder="BCA">
+    </div>
+    
+    <div class="flex-col flex py-3">
+      <label class="pb-2 text-gray-700 font-semibold">Alias</label>
+      <input type="text" class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200" placeholder="Rojali Anwar">
+    </div>
+    
+    <div class="flex-col flex py-3">
+      <label class="pb-2 text-gray-700 font-semibold">Nomor Rekening</label>
+      <input type="number" class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200" placeholder="xxxx-xx">
+    
+    <div class="mt-2">
+      <button class="p-3 bg-indigo-400 text-white w-full hover:bg-indigo-300">Submit Form</button>
+    </div>
+  </form>
+</div>
+        </div>
+    </div>
     </div>
 </div>
 
 
-<livewire:footer>
-@endsection
+    <livewire:footer>
+        @endsection
