@@ -2,11 +2,13 @@
 
 @section('content')
 <livewire:navbar>
-<!-- component -->
-<div x-data="{ open: false }" @click.away="open = false">
-	<div class="w-full container mx-auto grid grid-cols-1 md:grid-cols-7 items-center mt-0 px-6 py-3">
-		<livewire:sidebarseller>
-			<div class="col-span-1 md:col-span-5 text-gray-700 px-4 py-2 m-2">
+    <!-- component -->
+    <div x-data="{ open: false }" @click.away="open = false">
+        <div class="flex">
+            <div class="md:w-2/12">
+                <livewire:sellerside>
+            </div>
+            <div class="w-full md:w-10/12">
 				<div class="grid grid-rows-3 gap-4">
                @if ($orderdetail->status == "2" || $orderdetail->status == "1")
                

@@ -136,24 +136,32 @@ function myFunction4() {
         y.style.display = "block";
     }
 }
-$(document).ready(function () {
+$(document).ready(function() {
     $(".select2").select2();
 });
 
-jQuery(document).ready(function () {
-    jQuery('select[name="province"]').on('change', function () {
+jQuery(document).ready(function() {
+    jQuery('select[name="province"]').on("change", function() {
         var provinceID = jQuery(this).val();
 
         if (provinceID) {
             jQuery.ajax({
-                url: '/detailuser/getcity/' + provinceID,
+                url: "/detailuser/getcity/" + provinceID,
                 type: "GET",
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     jQuery('select[name="city"]').empty();
-                    jQuery.each(data, function (key, value) {
-                        $('select[name="city"]').append('<option value="' + value.id + '">' + value.type + ' ' + value.name + '</option>');
+                    jQuery.each(data, function(key, value) {
+                        $('select[name="city"]').append(
+                            '<option value="' +
+                                value.id +
+                                '">' +
+                                value.type +
+                                " " +
+                                value.name +
+                                "</option>"
+                        );
                     });
                 }
             });
@@ -162,19 +170,21 @@ jQuery(document).ready(function () {
         }
     });
 });
-jQuery(document).ready(function () {
-    jQuery('select[name="city"]').on('change', function () {
+jQuery(document).ready(function() {
+    jQuery('select[name="city"]').on("change", function() {
         var regencyID = jQuery(this).val();
         if (regencyID) {
             jQuery.ajax({
-                url: '/detailuser/getdistrict/' + regencyID,
+                url: "/detailuser/getdistrict/" + regencyID,
                 type: "GET",
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     jQuery('select[name="district"]').empty();
-                    jQuery.each(data, function (key, value) {
-                        $('select[name="district"]').append('<option value="' + key + '">' + value + '</option>');
+                    jQuery.each(data, function(key, value) {
+                        $('select[name="district"]').append(
+                            '<option value="' + key + '">' + value + "</option>"
+                        );
                     });
                 }
             });

@@ -27,7 +27,6 @@ class OTPController extends Controller
         $phone=Phonecode::all();
         return view('publik.index2',compact('phone'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -38,7 +37,7 @@ class OTPController extends Controller
         $otp = rand(100000, 999999);
         
         $sid    = "AC180d354f6652dd8a1e7d3303dc306a14"; 
-        $token  = "28fa4c05df82565ef01ad3df8ffecaf6"; 
+        $token  = "e38fb477951206aba4485f6c23c63373"; 
         $twilio = new Client($sid, $token);
         $request->pcode;
         $request->pno;
@@ -68,61 +67,35 @@ class OTPController extends Controller
         print($waktu2.'<br>');
         print($waktu1);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store()
+    public function otpcheck(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        // $otp=$request->otp;
+        $a=$request->a;
+        $b=$request->b;
+        $c=$request->c;
+        $d=$request->d;
+        $e=$request->e;
+        $f=$request->f;
+        $otp=$a.$b.$c.$d.$e.$f;
+        $get=Otp::where('otp',$otp)->where('user_id',Auth()->user()['id'])->where('status',1)->get();
+        if( count($get) != 0){
+            foreach($get as $otp2){
+                $x=Otp::findorfail($otp2->id);
+                $x->status=2;
+                $x->save();
+            }
+            $y=array(
+                'message'=>'success',
+                'status'=>'1'
+            );
+        }
+        else{
+            $y=array(
+                'message'=>'otp gagal atau kadaluarsa',
+                'status'=>'0'
+            );
+        }
+        return json_encode($y);
     }
 
     public function checkstatus()
@@ -131,9 +104,10 @@ class OTPController extends Controller
         foreach($x as $y){
             $t=strtotime($y->expire_time)-strtotime(date("Y:m:d h:i:s"));
             
+            
             if($y->type_expire == 0){
                 $v=$y->expire_time;
-                if($v <= date("Y:m:d h:i:s")){
+                if($v > date("Y:m:d h:i:s")){
                     $m=Otp::find($y->id);
                     $m->status=0;
                     $m->save();
@@ -141,13 +115,13 @@ class OTPController extends Controller
             }
             if($y->type_expire==1){
                 $v=$y->expire_time.'am';
-                if($v <= date("Y:m:d h:i:sa")){
+                if($v > date("Y:m:d h:i:sa")){
                     $m=Otp::find($y->id);
                     $m->status=0;
                     $m->save();
-                    dd($y);
                 }
             }
         }
     }
+    
 }

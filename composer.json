@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "azishapidin/indoregion": "^2.2",
+        "barryvdh/laravel-dompdf": "^0.9.0",
         "facade/ignition": "^2.3",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",

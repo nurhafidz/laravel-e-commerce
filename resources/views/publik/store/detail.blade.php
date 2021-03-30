@@ -79,9 +79,9 @@
                                     </div>
                                 </div>
                                     @endforeach
-                                </div>
                             </div>
-                                        </div>
+                        </div>
+                    </div>
                     {{-- <div class="bg-black p-10 text-white">{{$item['categori'][0]->name}}</> --}}
                 @endforeach
             </div>

@@ -36,8 +36,6 @@ class SaldoController extends Controller
         'description' => 'Disbursement from Example',
 
         ];
-        
-
         $createInvoice = \Xendit\Disbursements::create($params);
         dd($createInvoice);
     }

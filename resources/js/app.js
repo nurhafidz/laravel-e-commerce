@@ -5,6 +5,8 @@
  */
 
 require('./bootstrap');
+require("feather-icons");
+
 
 window.Vue = require('vue');
 

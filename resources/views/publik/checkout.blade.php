@@ -64,8 +64,8 @@
                 </div>
             </div>
             <div class="my-2 px-2 md:w-1/3 w-full overflow-hidden">
-                <div class="max-w-xs rounded overflow-hidden shadow-md my-2">
-                    <div class="px-6 py-4 sticky top-0">
+                <div class="rounded overflow-hidden shadow-md my-2">
+                    <div class="px-6 py-4 top-0">
                         <div class="font-bold text-xl mb-2">Alamat tujuan</div>
                         <label class="inline-flex items-center mt-3">
                             <input type="radio" class="form-radio h-5 w-5 text-gray-600" checked><p class="ml-5 text-grey-darker text-base">

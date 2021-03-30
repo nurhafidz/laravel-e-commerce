@@ -252,7 +252,10 @@
                                             <div x-show="isModalOpen" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center">
                                                 <!-- Modal -->
                                                 <div x-show="isModalOpen" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 transform translate-y-1/2" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0  transform translate-y-1/2" @click.away="closeModal" @keydown.escape="closeModal" class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl md:mb-0" role="dialog" id="modal">
-                                                    <form action="{{url('/storereview/'.Crypt::encryptString(Auth::user()->id))}}" method="post" enctype="multipart/form-data">
+                                                    @php
+                                                        $idorder=$order_detail->id;
+                                                    @endphp
+                                                    <form action="{{url('/storereview/'.Crypt::encryptString(Auth::user()->id).'/'.$idorder)}}" method="post" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('POST')
                                                     <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
@@ -269,15 +272,15 @@
                                                         <!-- Modal title -->
                                                         <p class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">Review</p>
                                                         <div class="rating">
-                                                            <input type="radio" name="rating" id="rating-5">
+                                                            <input type="radio" value="5" name="rating" id="rating-5">
                                                                 <label for="rating-5"></label>
-                                                            <input type="radio" name="rating" id="rating-4">
+                                                            <input type="radio" value="4" name="rating" id="rating-4">
                                                                 <label for="rating-4"></label>
-                                                            <input type="radio" name="rating" id="rating-3" required>
+                                                            <input type="radio" value="3" name="rating" id="rating-3" required>
                                                                 <label for="rating-3"></label>
-                                                            <input type="radio" name="rating" id="rating-2">
+                                                            <input type="radio" value="2" name="rating" id="rating-2">
                                                                 <label for="rating-2"></label>
-                                                            <input type="radio" name="rating" id="rating-1">
+                                                            <input type="radio" value="1" name="rating" id="rating-1">
                                                                 <label for="rating-1"></label>
                                                             <div class="emoji-wrapper">
                                                                 <div class="emoji">
@@ -479,8 +482,7 @@
                                                                         <svg class="w-6 h-6 mr-1 text-current-50"
                                                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                                         stroke="currentColor">
-                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                            <polygon points="23 7 16 12 23 17 23 7" />  <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                                                                         </svg>
                                                                         <p class="m-0">Drag your video here or click in this area.</p>
                                                                     </div>
@@ -616,28 +618,7 @@
 </section>
 
 <script src="https://unpkg.com/create-file-list"></script>
-<script>
-    $(document).ready(function() {
-    
-    var x = $("#hitung").val();
-        $("#tombol_hide").click(function() {
-            for(i=0;i<x;i++){
-                $("#box"+i).slideUp("slow");
-            }
-            $("#tombol_hide").hide();
-            $("#tombol_show").show();
-        })
-    
-        $("#tombol_show").click(function() {
-            for(i=0;i<x;i++){
-                $("#box"+i).slideDown("slow");
-            }
-            $("#tombol_hide").show();
-            $("#tombol_show").hide();
-        })
-    
-    });
-</script>
+
 <script>
     $(document).ready(function(){
         $("#hide-gambar").click(function(){

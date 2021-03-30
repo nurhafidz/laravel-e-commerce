@@ -46,6 +46,7 @@ Route::get('/c/{parent}/{child}',[HomeController::class, 'catchild'])->name('cat
 Route::get('/otp/create',[OTPController::class, 'create']);
 Route::get('/otp/test',[OTPController::class, 'test']);
 Route::get('/otp/cek',[OTPController::class, 'checkstatus']);
+Route::post('/otp/check',[OTPController::class, 'otpcheck']);
 Route::get('/otp',[OTPController::class, 'index']);
 
 
@@ -62,7 +63,6 @@ Route::get('/detailuser', [UserController::class, 'detail'])->name('detail.user'
 Route::get('/detailuser/getcity/{id}', [UserController::class, 'getCity'] );
 Route::get('/detailuser/getdistrict/{id}', [UserController::class, 'getDistrict'] );
 Route::post('/detailuser/update/{id}', [UserController::class, 'detailupdate'])->name('detail.update');
-
 
 Route::post('/keranjang/update', [CartController::class, 'updateCart'])->name('front.update_cart');
 
@@ -93,7 +93,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/payment/fail', function () {
         return view('publik.payment.fail');
     });
-    //
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -109,7 +108,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck','middleware' =>'
     Route::get('/seller/{storename}/pesanan',[PesananController::class,'index'])->name('seller.pesanan');
     Route::get('/seller/{storename}/pesanan/{orderid}',[PesananController::class,'show'])->name('seller.pesanan.show');
     Route::get('/seller/{storename}/product/{brandname}/editproduk',[ProductController::class,'edit'])->name('product.editproduk');
-    Route::post('/storereview/{iduser}',[UserController::class, 'storereview']);
+    Route::post('/storereview/{iduser}/{orderid}',[UserController::class, 'storereview']);
 });
 Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck','middleware' =>'auth'], function () {
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');

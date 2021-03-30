@@ -131,14 +131,11 @@
 
 <script type="text/javascript">
      //Select2
-    
-
     //Ajax Wilayah 
     jQuery(document).ready(function ()
     {
         jQuery('select[name="province"]').on('change',function(){
             var provinceID = jQuery(this).val();
-            alert(provinceID);
             if(provinceID)
             {
                 jQuery.ajax({
@@ -147,7 +144,6 @@
                     dataType : "json",
                     success:function(data)
                     {
-                    console.log(data);
                     jQuery('select[name="city"]').empty();
                     jQuery.each(data, function(key,value){
                         $('select[name="city"]').append('<option value="'+ key +'">'+ value +'</option>');
@@ -173,7 +169,6 @@
                     dataType : "json",
                     success:function(data)
                     {
-                    console.log(data);
                     jQuery('select[name="district"]').empty();
                     jQuery.each(data, function(key,value){
                         $('select[name="district"]').append('<option value="'+ key +'">'+ value +'</option>');

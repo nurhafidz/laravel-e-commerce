@@ -18,7 +18,7 @@ mix.js("resources/js/app.js", "public/js")
         require("postcss-nested"),
         require("autoprefixer")
     ])
-    .browserSync("http://localhost:8000");;
+    .browserSync("http://localhost:8000");
 
 if (mix.inProduction()) {
   mix

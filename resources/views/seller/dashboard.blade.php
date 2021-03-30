@@ -37,7 +37,7 @@
                                     <!-- Follow Button -->
                                     <div class="flex flex-col text-right">
                                         <button
-                                            class="flex justify-center  max-h-max whitespace-nowrap focus:outline-none  focus:ring  rounded-full border bg-transparent border-red-500 text-red-500 hover:border-red-800 hover:border-red-800 flex items-center hover:shadow-lg py-2 px-4 rounded-full mr-0 ml-auto">
+                                            class="flex justify-center  max-h-max whitespace-nowrap focus:outline-none  focus:ring  rounded-full border bg-transparent border-red-500 text-red-500 hover:border-red-800 items-center hover:shadow-lg py-2 px-4 mr-0 ml-auto">
                                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

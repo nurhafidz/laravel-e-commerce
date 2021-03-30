@@ -2,7 +2,12 @@
 
 @section('content')
 <livewire:navbar>
-
+<style>
+  .scroll-hidden::-webkit-scrollbar {
+    height: 0px;
+    background: transparent; /* make scrollbar transparent */
+  }
+</style>
 <div class="carousel relative container mx-auto" style="max-width:1600px;">
 
     <div class="carousel-inner relative overflow-hidden w-full">
@@ -72,11 +77,25 @@
     </div>
 </div>
 
-<section class="bg-white py-8">
+<div class="container mx-auto">
+    <div class="w-full p-2">
+        <div class="container mx-auto px-6 py-1">
+            <div class="mt-3 py-3 -mx-3 overflow-y-auto whitespace-no-wrap scroll-hidden">
+                @foreach ($kategori as $item)
+                <a class="text-sm text-gray-700 leading-5 hover:text-red-600 hover:underline mx-4 md:my-0" href="{{url('/c/'.str_replace(' ','-',$item->name))}}">{{$item->name}}</a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="bg-white py-2">
     <livewire:home2>
 </section>
+    
 
 <livewire:footer>
+    
 @endsection
 
 @push('script')

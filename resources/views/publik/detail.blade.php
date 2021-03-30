@@ -207,57 +207,155 @@
             REVIEW
         </div>
         <!-- component -->
-<div class="flex items-start">
-	<div class="flex-shrink-0">
-		<div class="inline-block relative">
-			<div class="relative w-16 h-16 rounded-full overflow-hidden">
-				<img class="absolute top-0 left-0 w-full h-full bg-cover object-fit object-cover" src="https://picsum.photos/id/646/200/200" alt="Profile picture">
-					<div class="absolute top-0 left-0 w-full h-full rounded-full shadow-inner"></div>
-				</div>
-			</div>
-		</div>
-		<div class="ml-6">
-			<p class="flex items-baseline">
-				<span class="text-gray-600 font-bold">Mary T.</span>
-			</p>
-			<div class="flex items-center mt-1">
-				<span class="flex items-center">
-                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                    </svg>
-                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                    </svg>
-                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                    </svg>
-                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                    </svg>
-                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                    </svg>
-                </span>
-			</div>
-			
-			<div class="mt-3">
-				<span class="font-bold">Sapien consequat eleifend!</span>
-				<p class="mt-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-			</div>
-			<div class="flex items-center justify-end mt-4 text-sm text-gray-600 fill-current">
-				<div class="flex items-center">
-					<button type="button" class="text-blue-500 hover:text-blue-800">Balas Review</button>
-					
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+        @forelse ($review as $key=>$reviews)
+        <div class= flex items-start">
+            <div class="flex-shrink-0 ">
+                <div class="inline-block relative">
+                    <div class="relative w-16 h-16 rounded-full overflow-hidden">
+                        <img class="absolute top-0 left-0 w-full h-full bg-cover object-fit object-cover" src="https://picsum.photos/id/646/200/200" alt="Profile picture">
+                            <div class="absolute top-0 left-0 w-full h-full rounded-full shadow-inner"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-6 w-full">
+                    <p class="flex items-baseline">
+                        <span class="text-gray-600 font-bold">{{$reviews->user->last_name}}</span>
+                    </p>
+                    <div class="flex items-center mt-1">
+                        <span class="flex items-center">
+                            @for($i=1;$i<=$reviews->score;$i++)
+                            <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                            @endfor
+                            @for ($i=1;$i<=5-($reviews->score);$i++)
+                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                            @endfor
+                        </span>
+                        
+                    </div>
+                    
+                    <div class="mt-3">
+                        @if (strlen($reviews->review) <= 300)
+                            <p class="mt-1" id="rwcs1{{$key}}">{{ $reviews->review }}</p>
+                        @else
+                            <p class="mt-1" id="rwcs1{{$key}}">{{ Str::limit($reviews->review,300) }} <a class="text-blue-500 hover:text-blue-800" id="btn1{{$key}}">baca selanjutnya ...</a></p>
+                            <p class="mt-1" id="rwcs2{{$key}}" style="display: none;" >{{$reviews->review}} <a class="text-blue-500 hover:text-blue-800" id="btn2{{$key}}">baca lebih sedikit</a></p>
+                        @endif
+                    </div>
+                    
+                    <div class="flex items-center justify-end mt-4 text-sm text-gray-600 fill-current">
+                        <div class="flex items-center">
+                            <button id="btnb1{{$key}}" type="button" class="text-blue-500 hover:text-blue-800">Balas Review</button>
+                            <button id="btnb2{{$key}}" style="display: none;" type="button" class="text-blue-500 hover:text-blue-800">Batal</button>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mb-6" id="brw1{{$key}}" style="display: none;">
+                        <p>Balas review</p>
+                        <div class="relative w-full appearance-none label-floating">
+                            <textarea class="autoexpand tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="message" type="text" placeholder="Message..."></textarea>
+                                <label for="message" class="absolute tracking-wide py-2 px-4 mb-4 opacity-0 leading-tight block top-0 left-0 cursor-text">Message...
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @empty
+            Tidak ada Review
+            @endforelse
+        </div>
+            
+        <div class="border-black border-t-2 container px-5 py-2 mx-auto">
+            <h1 class="text-lg">Rekomendasi</h1>
+            <div class="flex overflow-x-auto pb-10 hide-scroll-bar py-10">
+                <div class="flex flex-nowrap">
+                    @foreach ($produk as $produk)
+                    <div class="inline-block px-3">
+                            <div class=" w-44 h-64 max-w-xs">
+                            @php
+                                $get = $produk->name;
+                                $b = $produk->store->name;
+                                $slug = str_replace(' ','-',$get);
+                                $storename = str_replace(' ','-',$b);
+                            @endphp
+                            <a href="{{ url('/shop/'.$storename.'/'.$slug) }}">
+                                @php
+                                    $ex = count(explode('|', $produk->image));
+                                @endphp
+                                @if($ex != 1)
+                                    @php
+                                        $x =explode('|', $produk->image,$ex);
+                                    @endphp
+                                    <img class="hover:grow hover:shadow-lg"
+                                        src="{{ asset('image/product/'.$x[0]) }}">
+                                @else
+                                    <img class="hover:grow hover:shadow-lg"
+                                        src="{{ asset('image/product/'.$produk->image) }}">
+                                @endif
+                                <div class="pt-3 flex items-center justify-between">
+                                    <p class="">{{ $produk->name }}</p>
+                                    <svg class="h-6 w-6 fill-current text-gray-500 hover:text-black"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12,4.595c-1.104-1.006-2.512-1.558-3.996-1.558c-1.578,0-3.072,0.623-4.213,1.758c-2.353,2.363-2.352,6.059,0.002,8.412 l7.332,7.332c0.17,0.299,0.498,0.492,0.875,0.492c0.322,0,0.609-0.163,0.792-0.409l7.415-7.415 c2.354-2.354,2.354-6.049-0.002-8.416c-1.137-1.131-2.631-1.754-4.209-1.754C14.513,3.037,13.104,3.589,12,4.595z M18.791,6.205 c1.563,1.571,1.564,4.025,0.002,5.588L12,18.586l-6.793-6.793C3.645,10.23,3.646,7.776,5.205,6.209 c0.76-0.756,1.754-1.172,2.799-1.172s2.035,0.416,2.789,1.17l0.5,0.5c0.391,0.391,1.023,0.391,1.414,0l0.5-0.5 C14.719,4.698,17.281,4.702,18.791,6.205z" />
+                                    </svg>
+                                </div>
+                                <p class="pt-1 text-gray-900">Rp {{ number_format($produk->harga) }}</p>
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
 
 
 </section>
 
+<style>
+
+
+    /* FLOATING LABEL */
+    .label-floating input:not(:placeholder-shown),
+    .label-floating textarea:not(:placeholder-shown) {
+        padding-top: 1.4rem;
+    }
+    .label-floating input:not(:placeholder-shown) ~ label,
+    .label-floating textarea:not(:placeholder-shown) ~ label {
+        font-size: 0.8rem;
+        transition: all 0.2s ease-in-out;
+        color: #1f9d55;
+        opacity: 1;
+    }
+    .hide-scroll-bar::-webkit-scrollbar {
+    display: visible;
+    height: 5px;
+    }
+    .hide-scroll-bar::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+    }
+    /* Handle */
+    .hide-scroll-bar::-webkit-scrollbar-thumb {
+        background: #888; 
+    }
+
+    /* Handle on hover */
+    .hide-scroll-bar::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+    }
+
+    @media(max-width: 600px){
+        .hide-scroll-bar::-webkit-scrollbar {
+        display: none;
+    }
+}
+</style>
+
 <livewire:footer>
+
 <script>
     function decrement(e) {
         const btn = e.target.parentNode.parentElement.querySelector(
@@ -303,4 +401,36 @@
         btn.addEventListener("click", increment);
     });
 </script>
+
+<script> 
+  
+// Access the array elements 
+var passedArray =  <?php echo json_encode($review); ?>; 
+    // Display the array elements 
+    for (let i = 0; i < passedArray.length; ++i) {
+    $(document).ready(function(){
+        $("#btn1"+i).click(function(){
+            $("#rwcs1"+i).hide();
+            $("#rwcs2"+i).show();
+        });
+        $("#btn2"+i).click(function(){
+            $("#rwcs1"+i).show();
+            $("#rwcs2"+i).hide();
+        });
+    });
+    $(document).ready(function(){
+        $("#btnb1"+i).click(function(){
+            $("#brw1"+i).slideDown();
+            $("#btnb2"+i).show();
+            $("#btnb1"+i).hide();
+        });
+        $("#btnb2"+i).click(function(){
+            $("#brw1"+i).slideUp();
+            $("#btnb2"+i).hide();
+            $("#btnb1"+i).show();
+        });
+    });
+    }
+
+</script> 
 @endsection

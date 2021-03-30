@@ -51,7 +51,7 @@ class PesananController extends Controller
     $client = new Client();
     $response = $client->request('POST', $url, [
         'headers' => [
-            'Authorization' => 'p4w1NZY2m1Fcqnge6Z6EnSw2pSh837fghNLOke37'
+            'Authorization' => 'E2RVXwXbh4AODgLOAAaBm6PSDJ5QMVZN6dwZsxgw'
         ],
         'form_params' => [
             'waybill' => $data['orderdetail']->tracking_number,
@@ -60,7 +60,7 @@ class PesananController extends Controller
     ]);
 
     $data['respon'] = json_decode($response->getBody(), true);
-    //dd($data['respon']);
+    // dd($data['respon']);
 
     return view('seller.pesanan.show',$data);
     }

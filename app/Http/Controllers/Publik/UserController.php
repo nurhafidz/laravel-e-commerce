@@ -11,12 +11,14 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Store;
 use App\Models\Phonecode;
+use App\Models\Review;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Xendit\Xendit;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class UserController extends Controller
 {
@@ -116,6 +118,8 @@ class UserController extends Controller
         $user->alamat_lengkap = $request->alamat;
         $user->district_id = $request->district;
         $user->kode_pos = $request->kode;
+        $user->phonecode_id = $request->phonecode;
+        $user->telepon = $request->phonenumber;
         $user->update();
         return redirect()->route('home.guest');
     }
@@ -160,25 +164,57 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storereview(Request $request,$iduser)
+    public function storereview(Request $request,$iduser,$orderid)
     {
         $validated = $request->validate([
         'rating' => 'required',
-        'reviewtext' => 'required',
         // 'gambarrev' => 'size:20000',
         ]);
-    
         $userid=Crypt::decryptString($iduser);
+        $data['order_detail'] = OrderDetail::where('id',$orderid)->where('user_id',$userid)->first();
+
         $x1=$request->rating;
         $x2=$request->reviewtext;
-        $x3=$request->gambarrev;
+        if($request->hasfile('gambarrev'))
+            {
+                foreach($request->file('gambarrev') as $key=>$gambar)
+                {
+                    $name1 = $key+time().'.'.$gambar->extension();
+                    $name = Auth::user()->first_name.'-'.$name1;
+                    $resize_image = Image::make($gambar->getRealPath());
+                    $resize_image->save(public_path().'/image/review/'. $name);
+                    $datagambar[] = $name;  
+                }
+            }
+        if($request->hasfile('videorev'))
+            {
+                foreach($request->file('videorev') as $key=>$video)
+                {
+                    $name1 = $key+time().'.'.$video->extension();
+                    
+                    $name = Auth::user()->first_name.'-'.$name1;
+                    $file = $video;
+                    $path = public_path().'/video/review/';
+                    $file->move($path, $name);
+                    $datavideo[] = $name;  
+                }
+            }
+            $imagename = implode("|",$datagambar);
+            $videoname = implode("|",$datavideo);
         $y=array(
-            'userid'=>$userid,
-            'rate'=>$x1,
-            'rev'=>$x2,
-            'gambar'=>$x3,
+            
         );
-        dd($x3);
+        $x = new Review;
+        $x->product_id=$data['order_detail']->product_id;
+        $x->user_id=$userid;
+        $x->score=$x1;
+        $x->review=$x2;
+        $x->gambar=$imagename;
+        $x->video=$videoname;
+        $x->save();
+        
+        return redirect()->back();
+
     }
 
     /**

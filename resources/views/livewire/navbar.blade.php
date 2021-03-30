@@ -129,7 +129,7 @@
                         @endphp
                         @if($verify != Null)
                             <P class="block px-4 py-2 text-sm capitalize text-gray-700">
-                                {{ Auth::user()->first_name }}
+                               <b> {{ Auth::user()->first_name }}</b>
                             </P>
                             <a href="/profil"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
@@ -160,10 +160,6 @@
                                     Create Store
                                 </a>
                             @endif
-                            <a href="#"
-                                class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
-                                Settings
-                            </a>
                             <a href="{{ route('logout') }}"
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
                                 onclick="event.preventDefault();document.getElementById('logout-form').submit();">

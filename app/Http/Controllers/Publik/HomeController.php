@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\Category;
+use App\Models\Review;
 
 
 class HomeController extends Controller
@@ -14,8 +15,9 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::with('children')->whereNull('parent_id')->get();
+        $kategori = Category::with('children')->whereNull('parent_id')->paginate(20);
         
-        return view('publik.home',compact('categories'));
+        return view('publik.home',compact('categories','kategori'));
     }
     
     public function show($storename,$slug)
@@ -24,6 +26,8 @@ class HomeController extends Controller
         $b = Store::where('name',$c)->firstOrFail();
         $get = str_replace('-', ' ', $slug);
         $data['product'] = Product::where('store_id',$b->id)->where('name', $get)->firstOrFail();
+        $data['review'] =Review::where('product_id',$data['product']->id)->with('children')->whereNull('parent_id')->get();
+        $data['produk'] =Product::where('category_id',$data['product']->category_id)->inRandomOrder()->paginate(15);
         
         return view('publik.detail',$data);
     }
