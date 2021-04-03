@@ -12,6 +12,10 @@ class Store extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+    public function district()
+    {
+        return $this->belongsTo('App\Models\District');
+    }
     public function product()
     {
         return $this->hasMany('App\Models\Product');

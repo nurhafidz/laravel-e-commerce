@@ -10,9 +10,7 @@
             <div class="w-full relative">
                 <div class="mb-6">
                     <div class="text-center py-2 ">
-                        <svg class="h-64 w-64 text-black-500 mx-auto"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        <lottie-player src="https://assets6.lottiefiles.com/temp/lf20_QrtGro.json"  background="transparent"  speed="1"  class="w-52 md:w-96"  loop  autoplay></lottie-player>
                     </div>
                     <div class="text-center py-2">
                         <h1 class="text-2xl">Mohon maaf terjadi kesalan</h1>

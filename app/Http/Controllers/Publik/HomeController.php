@@ -25,46 +25,127 @@ class HomeController extends Controller
         $c =str_replace('-', ' ', $storename);
         $b = Store::where('name',$c)->firstOrFail();
         $get = str_replace('-', ' ', $slug);
-        $data['product'] = Product::where('store_id',$b->id)->where('name', $get)->firstOrFail();
+        $data['product'] = Product::where('store_id',$b->id)->whereNotIn('status',[3])->where('name', $get)->firstOrFail();
         $data['review'] =Review::where('product_id',$data['product']->id)->with('children')->whereNull('parent_id')->get();
         $data['produk'] =Product::where('category_id',$data['product']->category_id)->inRandomOrder()->paginate(15);
-        
+        $i=0;
+        $m=0;
+        foreach ($data['review'] as $v) {
+            $n=$v->score;
+            $m+=$n;
+            $i++;
+        }
+        if($i!=0){
+            $o=ceil($m/$i);
+        }
+        else{
+            $o=0;
+        }
+        $data['hasil']=array(
+            0=>$i,
+            1=>$m,
+            2=>$o
+        );
         return view('publik.detail',$data);
     }
     public function search(Request $request)
     {
         $cari = $request->search;
-        $data['result'] = Product::where('name','like',"%".$cari."%")->paginate(20);
+        
+        $get=$request->sortir;
+        switch ($get) {
+                case "Suitable":
+                $data['result'] = Product::where('name','like',"%".$cari."%")->whereNotIn('status',[3,1])->paginate(20);
+                break;
+                case "expensive":
+                    $data['result'] = Product::where('name','like',"%".$cari."%")->whereNotIn('status',[3,1])->orderBy('harga', 'desc')->paginate(20);
+                break;
+                case "Cheapest":
+                $data['result'] = Product::where('name','like',"%".$cari."%")->whereNotIn('status',[3,1])->orderBy('harga', 'asc')->paginate(20);
+                break;
+            
+            default:
+                $data['result'] = Product::where('name','like',"%".$cari."%")->whereNotIn('status',[3,1])->paginate(20);
+            break;
+        }
         return view('publik.shop',$data);
     }
-    public function catmain($parent)
+    public function catmain(Request $request,$parent)
     {
         $v=null;
         $c =str_replace('-', ' ', $parent);
         $b = Category::where('name',$c)->firstOrFail();
         $child = Category::where('parent_id',$b->id)->get();
+        $data['category2']=$b;
         foreach($child as $x){
             $v[]=$x->id;
         }
-        if ($v != Null) {
-            $data['product'] =Product::wherein('category_id',[$b->id,$v])->paginate(20);
-        } else {
-            $data['product'] =Product::wherein('category_id',[$b->id])->paginate(20);
+        
+        $get=$request->sortir;
+        switch ($get) {
+            
+                case "Suitable":
+                if ($v != Null) {
+                $data['product'] =Product::wherein('category_id',[$b->id,$v])->whereNotIn('status',[3,1])->paginate(20);
+                } else {
+                    $data['product'] =Product::wherein('category_id',[$b->id])->whereNotIn('status',[3,1])->paginate(20);
+                }
+                break;
+                case "expensive":
+                if ($v != Null) {
+                $data['product'] =Product::wherein('category_id',[$b->id,$v])->whereNotIn('status',[3,1])->orderBy('harga','desc')->paginate(20);
+                } else {
+                    $data['product'] =Product::wherein('category_id',[$b->id])->whereNotIn('status',[3,1])->orderBy('harga','desc')->paginate(20);
+                }
+                break;
+                case "Cheapest":
+                if ($v != Null) {
+                $data['product'] =Product::wherein('category_id',[$b->id,$v])->whereNotIn('status',[3,1])->orderBy('harga','asc')->paginate(20);
+                } else {
+                    $data['product'] =Product::wherein('category_id',[$b->id])->whereNotIn('status',[3,1])->orderBy('harga','asc')->paginate(20);
+                }
+                break;
+            
+            default:
+                if ($v != Null) {
+                $data['product'] =Product::wherein('category_id',[$b->id,$v])->whereNotIn('status',[3,1])->paginate(20);
+                } else {
+                    $data['product'] =Product::wherein('category_id',[$b->id])->whereNotIn('status',[3,1])->paginate(20);
+                }
+            break;
         }
+        
+        
         return view('publik.category.index',$data);
     }
-    public function catchild($parent,$child)
+    public function catchild(Request $request,$parent,$child)
     {
         $c =str_replace('-', ' ', $parent);
         $b = Category::where('name',$c)->firstOrFail();
-        $data['product'] =Product::where('category_id',[$b->id])->paginate(20);
+        $get=$request->sortir;
+        switch ($get) {
+                case "Suitable":
+                $data['product'] =Product::where('category_id', [$b->id])->whereNotIn('status',[3,1])->paginate(20);
+                break;
+                case "expensive":
+                $data['product'] =Product::where('category_id', [$b->id])->whereNotIn('status',[3,1])->orderBy('harga', 'desc')->paginate(20);
+                break;
+                case "Cheapest":
+                $data['product'] =Product::where('category_id', [$b->id])->whereNotIn('status',[3,1])->orderBy('harga', 'asc')->paginate(20);
+                break;
+            
+            default:
+                $data['product'] =Product::where('category_id', [$b->id])->whereNotIn('status',[3,1])->paginate(20);
+            break;
+        }
+        
         return view('publik.category.show',$data);
     }
     public function homestore($storename)
     {
         $c =str_replace('-', ' ', $storename);
         $data['store'] = Store::where('name',$c)->firstOrFail();
-        $data['product'] =Product::where('store_id',[$data['store']->id])->paginate(20);
+        $data['product'] =Product::where('store_id',[$data['store']->id])->whereNotIn('status',[3,1])->paginate(20);
         foreach($data['product'] as $x){
             $v[]=$x->category_id;
         }
@@ -72,7 +153,7 @@ class HomeController extends Controller
         $l=0;
         foreach(array_unique($v) as $h){
 
-            $data['productcat'.$l] =Product::where('store_id',[$data['store']->id])->where('category_id',$h)->paginate(15);
+            $data['productcat'.$l] =Product::where('store_id',[$data['store']->id])->whereNotIn('status',[3,1])->where('category_id',$h)->paginate(15);
             $b = Category::findorfail($h);
             $n[]=$data['productcat'.$l];
             $k[]=$b;

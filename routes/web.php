@@ -17,11 +17,13 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAdminController;
 use App\Http\Controllers\Admin\AdminSellerController;
 use App\Http\Controllers\Admin\AdminCustomerController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Seller\SaldoController;
 use App\Http\Controllers\Seller\PesananController;
 use App\Http\Controllers\service\PenggunaController;
 use App\Http\Controllers\service\PenjualController;
 use App\Http\Controllers\Service\ProdukSellerController;
+use App\Http\Controllers\Auth\GoogleController;
 
 
 /*
@@ -38,6 +40,9 @@ use App\Http\Controllers\Service\ProdukSellerController;
 Route::get('/', [HomeController::class, 'index'])->name('home.guest');
 Route::get('/shop/{storename}/{slug}', [HomeController::class, 'show'])->name('shop.product');
 Route::get('/keranjang', [CartController::class, 'listCart']);
+
+Route::get('/auth/google', [GoogleController::class,'redirectToGoogle']);
+Route::get('/callback/google', [GoogleController::class,'handleGoogleCallback']);
 
 Route::get('/search',[HomeController::class, 'search'])->name('pub.search');
 Route::get('/detail-toko/{storename}',[HomeController::class, 'homestore'])->name('det.store');
@@ -58,6 +63,9 @@ Route::get('/test2', function () {
 });
 Route::get('/kertas', function () {
     return view('publik.print.index');
+});
+Route::get('/privacy-policy', function () {
+    return view('privacy');
 });
 Route::get('/detailuser', [UserController::class, 'detail'])->name('detail.user');
 Route::get('/detailuser/getcity/{id}', [UserController::class, 'getCity'] );
@@ -81,12 +89,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/tambakekeranjang', [CartController::class, 'addToCart'])->name('front.cart');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('front.checkout')->middleware('App\Http\Middleware\SellerandGuestcheck');
     Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('processCheckout')->middleware('App\Http\Middleware\SellerandGuestcheck');
-    Route::get('/myorder/{id}', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
-    Route::get('/myorder/{id}/detail/{orderid}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
-    Route::put('/myorder/{id}/detail/{orderid}/changestatus', [UserController::class, 'changestatus'])->name('myorder.changestatus')->middleware('App\Http\Middleware\SellerandGuestcheck');
-    Route::get('/profil', function () {
-    return view('publik.profil.profil');
-    });
+    Route::get('/myorder', [UserController::class, 'myorder'])->name('myorder')->middleware('App\Http\Middleware\SellerandGuestcheck');
+    Route::get('/myorder/detail/{orderid}', [UserController::class, 'orderdetail'])->name('myorder.detail')->middleware('App\Http\Middleware\SellerandGuestcheck');
+    Route::put('/myorder/detail/{orderid}/changestatus', [UserController::class, 'changestatus'])->name('myorder.changestatus')->middleware('App\Http\Middleware\SellerandGuestcheck');
+    Route::get('/profil', [UserController::class, 'show'] );
+    Route::put('/profil/update', [UserController::class, 'update'] );
+    Route::patch('/profil/update/image', [UserController::class, 'updateimage'] );
+    Route::get('/profil', [UserController::class, 'show'] );
     Route::get('/payment/success', function () {
     return view('publik.payment.success');
     });
@@ -103,12 +112,18 @@ Route::group(['middleware' => 'App\Http\Middleware\Sellercheck','middleware' =>'
     Route::post('/seller/{storename}/product/store',[ProductController::class,'store'])->name('product.store');
     Route::get('/seller/{storename}/product/{brandname}',[ProductController::class,'show'])->name('product.show');
     Route::put('/seller/{storename}/product/{id}/changestatus',[ProductController::class,'changestatus'])->name('product.changestatus');
+    Route::get('/seller/{storename}/product/{id}/edit',[ProductController::class,'edit'])->name('product.edit');
+    Route::put('/seller/{storename}/product/{id}/update',[ProductController::class,'update'])->name('product.update');
+    Route::delete('/seller/{storename}/product/{id}/delete',[ProductController::class,'destroy'])->name('product.delete');
     Route::get('/seller/{storename}/saldo',[SaldoController::class,'index'])->name('seller.saldo');
     Route::post('/seller/{storename}/saldo/create',[SaldoController::class,'create']);
     Route::get('/seller/{storename}/pesanan',[PesananController::class,'index'])->name('seller.pesanan');
     Route::get('/seller/{storename}/pesanan/{orderid}',[PesananController::class,'show'])->name('seller.pesanan.show');
+    Route::get('/seller/{storename}/pesanan/{orderid}/print',[PesananController::class,'print'])->name('seller.pesanan.print');
     Route::get('/seller/{storename}/product/{brandname}/editproduk',[ProductController::class,'edit'])->name('product.editproduk');
     Route::post('/storereview/{iduser}/{orderid}',[UserController::class, 'storereview']);
+    Route::get('/seller/{storename}/edit',[StoreController::class,'edit'])->name('store.edit');
+
 });
 Route::group(['middleware' => 'App\Http\Middleware\Maintenercheck','middleware' =>'auth'], function () {
     Route::get('/services/dashboard',[ServiceController::class,'index'] )->name('service.dashboard');
@@ -148,6 +163,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Admincheck','middleware' =>'a
     Route::put('/admin/service/{id}/edit-status',[AdminServiceController::class, 'editstatus'])->name('admin.service.edit.status');
     Route::get('/admin/service/{id}/edit',[AdminServiceController::class, 'edit'])->name('admin.service.edit');
     Route::delete('/admin/service/{id}/delete',[AdminServiceController::class, 'destroy'])->name('admin.service.destroy');
+    Route::get('/admin/banner',[BannerController::class,'index'])->name('banner.index');
 });
 Route::group([
     'prefix' => 'wishlists',

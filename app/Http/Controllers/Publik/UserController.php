@@ -13,6 +13,8 @@ use App\Models\Store;
 use App\Models\Phonecode;
 use App\Models\Review;
 use App\Models\User;
+use Alert;
+use File;
 use Barryvdh\DomPDF\Facade as PDF;
 use Xendit\Xendit;
 use GuzzleHttp\Client;
@@ -58,12 +60,10 @@ class UserController extends Controller
         $district = District::where("city_id", $id)->pluck("name", "id");
         return json_encode($district);
     }
-    public function myorder($id)
+    public function myorder()
     {
-        $z = Crypt::decrypt($id);
-        
         //$data['order'] = Order::where('user_id',$z)->latest()->get();
-        $data['order'] = OrderDetail::where('user_id',$z)->latest()->get();
+        $data['order'] = OrderDetail::where('user_id',Auth::user()->id)->latest()->get();
         
         if(count($data['order']) != 0)
         {
@@ -82,11 +82,11 @@ class UserController extends Controller
         // dd($data);
         return view('publik.myorder',$data);
     }
-    public function orderdetail($id,$orderid)
+    public function orderdetail($orderid)
     {
-        $z = Crypt::decrypt($id);
         
-        $data['order_detail'] = OrderDetail::where('id',$orderid)->where('user_id',$z)->first();
+        
+        $data['order_detail'] = OrderDetail::where('id',$orderid)->where('user_id',Auth::user()->id)->first();
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
         $id = $data['order_detail']->order->invoice;
         $data['invoice'] = \Xendit\Invoice::retrieve($id);
@@ -103,6 +103,7 @@ class UserController extends Controller
         ]);
 
         $data['respon'] = json_decode($response->getBody(), true);
+        // dd($data['respon']);
         return view('publik.myorderdetail',$data);
         
     }
@@ -124,11 +125,9 @@ class UserController extends Controller
         return redirect()->route('home.guest');
     }
 
-    public function changestatus(Request $request, $id,$orderid)
+    public function changestatus(Request $request, $orderid)
     {
-        $z = Crypt::decrypt($id);
-        
-        $data['order_detail'] = OrderDetail::where('id',$orderid)->where('user_id',$z)->first();
+        $data['order_detail'] = OrderDetail::where('id',$orderid)->where('user_id',Auth::user()->id)->first();
         $saldo=$data['order_detail']->price;
         $store=$data['order_detail']->store_id;
         $data['store'] = Store::findorfail($store);
@@ -139,9 +138,9 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function cetak($id,$invoice)
+    public function cetak($invoice)
     {
-        $order = Order::where('user_id',$id)->where('invoice',$invoice)->first();
+        $order = Order::where('user_id',Auth::user()->id)->where('invoice',$invoice)->first();
         $orderdetail = OrderDetail::where('order_id',$order->id)->get();
         
         Xendit::setApiKey('xnd_development_cASCUDlOtp2rosqt0HJCSOFBDTr2hA06kQmrmXjrBcIrvOgLFSB7yzaaEVumzlY');
@@ -185,6 +184,7 @@ class UserController extends Controller
                     $resize_image->save(public_path().'/image/review/'. $name);
                     $datagambar[] = $name;  
                 }
+                $imagename = implode("|",$datagambar);
             }
         if($request->hasfile('videorev'))
             {
@@ -198,9 +198,9 @@ class UserController extends Controller
                     $file->move($path, $name);
                     $datavideo[] = $name;  
                 }
+                $videoname = implode("|",$datavideo);
             }
-            $imagename = implode("|",$datagambar);
-            $videoname = implode("|",$datavideo);
+            
         $y=array(
             
         );
@@ -209,9 +209,19 @@ class UserController extends Controller
         $x->user_id=$userid;
         $x->score=$x1;
         $x->review=$x2;
-        $x->gambar=$imagename;
-        $x->video=$videoname;
+        if($request->hasfile('gambarrev')){
+            $x->gambar=$imagename;
+        }
+        if($request->hasfile('videorev')){
+            $x->video=$videoname;
+        }
         $x->save();
+
+        $rev=Review::where('product_id',$data['order_detail']->product_id)->where('user_id',$userid)->where('created_at',date("Y-m-d h:i:s"))->first();
+        $data['order_detail']->review_id=$rev->id;
+        $data['order_detail']->update();
+
+        // $data['order_detail2'] = OrderDetail::where('product_id',$data['order_detail']->product_id)->where('user_id',Auth::user()->id)->first();
         
         return redirect()->back();
 
@@ -223,9 +233,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $province = Province::pluck("name", "id");
+        return view('publik.profil.profil',compact('province'));
     }
 
     /**
@@ -234,7 +245,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
         //
     }
@@ -246,9 +257,39 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $user= User::findorfail(Auth::user()->id);
+        $user->first_name=$request->first_name;
+        $user->last_name=$request->last_name;
+        $user->district_id=$request->district;
+        $user->kode_pos=$request->kode;
+        $user->alamat_lengkap=$request->address;
+        $user->save();
+        Alert::success('Your data has been updated', 'Success');
+        return redirect()->back();
+    }
+    public function updateimage(Request $request)
+    {
+        $user= User::findorfail(Auth::user()->id);
+        if (request()->hasFile('photoa')) {
+            $g=$request->File('photoa');
+            
+            if ($user->foto != null) {
+                $name1 = time().'.'.$g->getClientOriginalExtension();
+                $g->move(public_path().'/image/profil/', $name1);
+                File::delete(public_path().'/image/profil/'.$user->foto);
+                $user->foto=$name1;
+            } else {
+                $name1 = time().'.'.$g->getClientOriginalExtension();
+                $g->move(public_path().'/image/profil/', $name1);
+                $user->foto=$name1;
+            }
+        }
+        $user->update();
+        Alert::success('Your data has been updated', 'Success');
+        return redirect()->back();
+        
     }
 
     /**

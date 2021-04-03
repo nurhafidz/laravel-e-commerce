@@ -13,6 +13,10 @@ class Review extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+    public function detail()
+    {
+        return $this->hasManu('App\Models\OrderDetail');
+    }
     public function product()
     {
         return $this->belongsTo('App\Models\Product');

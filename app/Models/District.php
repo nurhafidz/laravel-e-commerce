@@ -14,4 +14,8 @@ class District extends Model
     {
         return $this->hasMany(User::class);
     }
+    public function store()
+    {
+        return $this->hasMany(Store::class);
+    }
 }

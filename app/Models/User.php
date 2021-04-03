@@ -26,6 +26,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'status',
         'phonecode_id',
         'telepon',
+        'google_id',
+        'email_verified_at',
+        'foto'
     ];
 
     /**
@@ -83,6 +86,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function phonecode()
     {
-        return $this->hasMany("App\Models\Phonecode");
+        return $this->belongsTo("App\Models\Phonecode");
     }
 }

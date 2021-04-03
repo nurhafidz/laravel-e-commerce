@@ -6,8 +6,9 @@
                 <div class="px-3 md:px-0">
                     <h3 class="font-bold text-gray-900">About</h3>
                     <p class="py-4">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel mi ut felis tempus commodo nec id erat. Suspendisse consectetur dapibus velit ut lacinia.
+                        XATORE is an online market place application in the form of a website, but this application is also suitable for mobile. Xatore aims to make it easier for someone to buy and sell with advances in technology. In the Xatore application, users can view product products even without logging in.
                     </p>
+                    <p>{{date('Y')}} &copy; Xatore</p>
                 </div>
             </div>
             <div class="flex w-full lg:w-1/2 lg:justify-end lg:text-right">

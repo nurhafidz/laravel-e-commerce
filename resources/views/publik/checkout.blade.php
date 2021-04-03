@@ -40,7 +40,7 @@
                                     <p class="leading-relaxed text-base">Berat : {{ number_format($row->weight * $row->qty) }} g</p>
                                 </div>
                                 
-                                <select class="form-select text-gray-700 mt-1 block w-full" required name="courier[]" id="courier{{$key}}" required>
+                                <select class="form-select text-gray-700 mt-1 block w-full am" required name="courier[]" id="courier{{$key}}" required>
                                     <option value="">Pilih kurir</option>
                                     @foreach ($kurir[$key] as $item)
                                     <option value="{{$item['courier']}}-{{$item['service']}}-{{$item['cost']}}">{{$item['courier']}} - {{$item['service']}} - RP {{number_format($item['cost'])}}</option>
@@ -68,7 +68,7 @@
                     <div class="px-6 py-4 top-0">
                         <div class="font-bold text-xl mb-2">Alamat tujuan</div>
                         <label class="inline-flex items-center mt-3">
-                            <input type="radio" class="form-radio h-5 w-5 text-gray-600" checked><p class="ml-5 text-grey-darker text-base">
+                            <p class=" text-grey-darker text-base">
                             {{Auth::user()->alamat_lengkap}}
                             {{Auth::user()->district->name}} {{Auth::user()->kode_pos}}, 
                             {{Auth::user()->district->city->name}}, {{Auth::user()->district->city->province->name}}
@@ -88,7 +88,7 @@
 
                             <div class="my-2 px-2 w-full overflow-hidden border-t-2">
                                 <button class="bg-green-400 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full mt-5">
-                                    bayar
+                                    Bayar
                                 </button>
                             </div>
 
@@ -101,7 +101,7 @@
     </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script>
     
 </script>
@@ -113,31 +113,33 @@
     function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
+    var dots = document.getElementsByClassName("am");
     var c = a.length;
     var data = [];
     for (i = 0; i < a.length; i++) {
         (function(index){
-            $('#courier'+i).on('change', function xy() {
+            $('#courier'+index).on('change', function xy() {
                 let split = document.getElementById('courier'+index).value.split('-');
-                
                 var a = split[3];
                 if(a != undefined){
-                    data[index]=Number(split[3]);
+                    var c =parseInt(split[3]);
+                    data[index]=c;
                 }
                 else{
-                    data[index]=Number(split[2]);
+                    var c =parseInt(split[2]);
+                    data[index]=c;
                 }
                 var total2=0;
-                    for(i = 0; i < data.length; i++) { 
-                        total2 += data[i]; 
-                    }
-                    
-                    $('#ongkir')
-                    //UPDATE INFORMASI TOTAL (SUBTOTAL + ONGKIR)
-                    let subtotal = "{{ $subtotal }}"
-                    let total = parseInt(subtotal) + total2
-                    
-                    $('#total').text('Rp ' + formatNumber(total))
+                for(v = 0; v < dots.length; v++) { 
+                    total2 += data[v]; 
+                }
+                
+                $('#ongkir')
+                //UPDATE INFORMASI TOTAL (SUBTOTAL + ONGKIR)
+                let subtotal = "{{ $subtotal }}"
+                let total = parseInt(subtotal) + total2
+                console.log(subtotal);
+                $('#total').text('Rp ' + formatNumber(total))
             });
         })(i);
     };

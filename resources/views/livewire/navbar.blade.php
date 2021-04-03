@@ -35,8 +35,8 @@
 
 
         <div class="order-1 md:order-2">
-            <a class="flex items-center tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl tulisan"
-                href="#">
+            <a class="flex items-center tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
+                href="/">
                 <svg class="fill-current text-gray-800 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24">
                     <path
@@ -101,9 +101,14 @@
                         @endif
                     @else
                         <div class="relative w-10">
+                            @if (Auth::user()->foto != Null)
+                                <img src="{{ asset('/image/profil/'.Auth::user()->foto) }}" class="w-8 h-8 m-auto rounded-full shadow">
+                            @else
+                                
                             <div
                                 class="flex relative w-8 h-8 bg-red-500 justify-center items-center m-1 mr-2 text-xl  text-white rounded-full border border-gray-100 uppercase">
                                 {{ Str::limit(Auth::user()->first_name, 1,'') }}</div>
+                            @endif
                         </div>
                     @endguest
 
@@ -135,12 +140,9 @@
                                 class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
                                 Profil
                             </a>
-                            @php
-                                $data=Auth::user()->id;
-                            @endphp
+                            
 
-                            <a href="{{ url('/myorder/'.\Crypt::encrypt($data)) }}"
-                                class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
+                            <a href="{{ url('/myorder/') }}" class="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white">
                                 Pesanan
                             </a>
 
@@ -199,7 +201,13 @@
     
 </nav>
 
-<div id="box" class="hide h-52 z-20 absolute bg-white w-full shadow-md" style="overflow:hidden; transition: all 0.4s ease-in-out; " >
+<div id="box" class="hide h-96 z-20 absolute bg-white w-full shadow-md" style="overflow:hidden; transition: all 0.4s ease-in-out; " >
+<style> 
+.scroll-hidden::-webkit-scrollbar {
+    height: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+</style>
     <div class="relative container mx-auto">
 
         <form action="{{route('pub.search')}}" method="get">
@@ -214,7 +222,7 @@
         <p class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl mx-3 mt-3 -mb-1">
             Kategori
         </p>
-        <div class="flex flex-wrap overflow-hidden mx-3 text-left">
+        <div class="flex flex-wrap overflow-auto h-80 mx-3 text-left scroll-hidden">
             @foreach ($categories as $category)
             @php
                 $get = $category->name;

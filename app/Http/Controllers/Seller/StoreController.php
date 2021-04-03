@@ -55,6 +55,7 @@ class StoreController extends Controller
         $store->decsription = $request->decsription;
         $store->user_id = $request->user_id;
         $store->district_id = $request->district;
+        $store->alamat = $request->alamat;
         $store->status = 1;
         $user = User::findorFail($request->user_id);
         $user->role_id = 3;
@@ -82,9 +83,17 @@ class StoreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($storename)
     {
-        //
+        $checkuser = Auth::user()->store->name;
+        $c =str_replace('-', ' ', $storename);
+        if($checkuser == $c){
+            $province=Province::pluck("name", "id");
+            return view('seller.profile.edit',compact('province'));
+        }
+        else{
+            return abort(404);
+        }
     }
 
     /**

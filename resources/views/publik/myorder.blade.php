@@ -85,14 +85,14 @@
                             </span>
                             @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{{Str::limit($item->created_at,10,'')}}</td>
+                            <td class=" px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">{{Str::limit($item->created_at,10,'')}}</td>
                             <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
                                 @php
-                                    $data=Auth::user()->id;
+                                    
                                     $idorder=$item->id;
                                     $m++;
                                 @endphp
-                                <a class="px-2 py-1 border-blue-500 border-0 text-blue-500 rounded-full transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none" href="{{url('/myorder/'.\Crypt::encrypt($data).'/detail/'.$idorder)}}">View Details</a>
+                                <a class="px-2 py-1 border-blue-500 border-0 text-blue-500 rounded-full transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none" href="{{url('/myorder/detail/'.$idorder)}}">View Details</a>
                             </td>
                         </tr>
                         @endforeach

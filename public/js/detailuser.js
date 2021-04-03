@@ -150,7 +150,6 @@ jQuery(document).ready(function() {
                 type: "GET",
                 dataType: "json",
                 success: function(data) {
-                    console.log(data);
                     jQuery('select[name="city"]').empty();
                     jQuery.each(data, function(key, value) {
                         $('select[name="city"]').append(
@@ -179,7 +178,6 @@ jQuery(document).ready(function() {
                 type: "GET",
                 dataType: "json",
                 success: function(data) {
-                    console.log(data);
                     jQuery('select[name="district"]').empty();
                     jQuery.each(data, function(key, value) {
                         $('select[name="district"]').append(
@@ -192,4 +190,112 @@ jQuery(document).ready(function() {
             $('select[name="district"]').empty();
         }
     });
+});
+$(document).ready(function() {
+    $("#ajaxBtn").click(function() {
+        var code = $("#phonecode").val();
+        var no = $("#phonenumber").val();
+        $.get(
+            "/otp/create", // url
+            { pcode: code, pno: no }, // data to be submit
+            function(data, status, jqXHR) {
+                // success callback
+                $("#demo2").append("status: " + status);
+            }
+        );
+        $("#ajaxBtn").attr("disabled", "disabled");
+        setTimeout(function() {
+            $("#ajaxBtn").removeAttr("disabled");
+        }, 10 * 60 * 1000);
+    });
+});
+function getTimeRemaining(endtime) {
+    var t = Date.parse(endtime) - Date.parse(new Date());
+    var seconds = Math.floor((t / 1000) % 60);
+    var minutes = Math.floor((t / 1000 / 60) % 60);
+
+    return {
+        total: t,
+        minutes: minutes,
+        seconds: seconds
+    };
+}
+
+function initializeClock(id, endtime) {
+    var clock = document.getElementById(id);
+    var minutesSpan = clock.querySelector(".minutes");
+    var secondsSpan = clock.querySelector(".seconds");
+
+    function updateClock() {
+        var t = getTimeRemaining(endtime);
+        minutesSpan.innerHTML = ("0" + t.minutes).slice(-2);
+        secondsSpan.innerHTML = ("0" + t.seconds).slice(-2);
+
+        if (t.total <= 0) {
+            clearInterval(timeinterval);
+        }
+    }
+
+    updateClock();
+    var timeinterval = setInterval(updateClock, 1000);
+}
+
+$("#ajaxBtn").click(function() {
+    var deadline = new Date(Date.parse(new Date()) + 10 * 60 * 1000);
+    initializeClock("countdown", deadline);
+    $("#tutor").css("display", "none");
+    $("#tutor2").css("display", "block");
+    setTimeout(function() {
+        $("#tutor").show();
+    }, 10 * 60 * 1000);
+    setTimeout(function() {
+        $("#tutor2").hide();
+    }, 10 * 60 * 1000);
+});
+
+$("#btnotp").click(function() {
+    if ($("input[name=otp0]").val().length > 0) {
+        if ($("input[name=otp1]").val().length > 0) {
+            if ($("input[name=otp2]").val().length > 0) {
+                if ($("input[name=otp3]").val().length > 0) {
+                    if ($("input[name=otp4]").val().length > 0) {
+                        if ($("input[name=otp5]").val().length > 0) {
+                            var a = $("input[name=otp0]").val();
+                            var c = $("input[name=otp2]").val();
+                            var b = $("input[name=otp1]").val();
+                            var d = $("input[name=otp3]").val();
+                            var e = $("input[name=otp4]").val();
+                            var f = $("input[name=otp5]").val();
+                            $.ajax({
+                                type: "POST",
+                                url: "/otp/check",
+                                headers: {
+                                    "X-CSRF-TOKEN": $(
+                                        'meta[name="csrf-token"]'
+                                    ).attr("content")
+                                },
+                                data: { a: a, b: b, c: c, d: d, e: e, f: f },
+                                dataType: "json",
+                                success: function(data) {
+                                    console.log(data);
+                                    if (data["status"] == 1) {
+                                        $("#otput").show();
+                                        $("#otput").html(
+                                            '<div class="my-2 px-2 w-full md:w-full overflow-hidden"><div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert"><div class="flex"><div class="py-1"><svg class=" h-6 w-6 text-teal-500 mr-4"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />  <polyline points="22 4 12 14.01 9 11.01" /></svg></div><div><p class="font-bold">Sukses</p><p class="text-sm">No Telepon sudah terhubung</p></div></div></div</div>'
+                                        );
+                                        $("#otpin").hide();
+                                        $("#simpan1").html(
+                                            '<button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" required>Simpan</button>'
+                                        );
+                                    } else {
+                                        $("#alerter").show();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    }
 });

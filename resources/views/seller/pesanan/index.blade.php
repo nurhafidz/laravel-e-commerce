@@ -9,7 +9,7 @@
                 <livewire:sellerside>
             </div>
             <div class="w-full md:w-10/12">
-                <div class="flex flex-wrap -mx-3 overflow-hidden">
+                <div class="flex flex-wrap -mx-3 overflow-hidden p-4">
                     <div class="w-full overflow-hidden rounded-lg shadow-xs">
                         <div class="w-full overflow-x-auto">
                             <table class="w-full whitespace-no-wrap">

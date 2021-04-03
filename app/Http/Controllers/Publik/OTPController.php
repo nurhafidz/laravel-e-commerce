@@ -37,7 +37,7 @@ class OTPController extends Controller
         $otp = rand(100000, 999999);
         
         $sid    = "AC180d354f6652dd8a1e7d3303dc306a14"; 
-        $token  = "e38fb477951206aba4485f6c23c63373"; 
+        $token  = "f7be5992795e185a8d79928bde56a8e7"; 
         $twilio = new Client($sid, $token);
         $request->pcode;
         $request->pno;

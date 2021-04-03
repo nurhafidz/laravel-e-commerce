@@ -2,7 +2,9 @@
 
 @section('content')
 <livewire:navbar>
-
+    <script src="{{ asset('js/charts-lines.js') }}" defer></script>
+    <script src="{{ asset('js/charts-pie.js') }}" defer></script>
+    <script src="{{ asset('js/charts-bars.js') }}" defer></script>
     <!-- component -->
     <div x-data="{ open: false }" @click.away="open = false">
         <div class="flex">
@@ -11,7 +13,7 @@
             </div>
 
 
-            <div class="md:w-10/12">
+            <div class="md:w-10/12 overflow-hidden">
                 <div class="flex flex-wrap -mx-3 overflow-hidden">
                     <div class=" w-full overflow-hidden">
                         <div class=" px-3 w-full overflow-hidden">
@@ -25,7 +27,8 @@
                                     <!-- Avatar -->
                                     <div class="flex flex-1">
                                         <div style="margin-top: -6rem;">
-                                            <div style="height:9rem; width:9rem;" class="md rounded-full relative avatar">
+                                            <div style="height:9rem; width:9rem;"
+                                                class="md rounded-full relative avatar">
                                                 <img style="height:9rem; width:9rem;"
                                                     class="md rounded-full relative border-4 border-gray-900"
                                                     src="https://pbs.twimg.com/profile_images/1254779846615420930/7I4kP65u_400x400.jpg"
@@ -36,45 +39,81 @@
                                     </div>
                                     <!-- Follow Button -->
                                     <div class="flex flex-col text-right">
-                                        <button
+                                        @php
+                                            $a = Auth::user()->store->name;
+                                            $storename = str_replace(' ','-',$a)
+                                        @endphp
+                                        <a href="{{ url('/seller/'.$storename.'/edit') }}"
                                             class="flex justify-center  max-h-max whitespace-nowrap focus:outline-none  focus:ring  rounded-full border bg-transparent border-red-500 text-red-500 hover:border-red-800 items-center hover:shadow-lg py-2 px-4 mr-0 ml-auto">
                                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                             <span>Edit</span>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
-    
+
                                 <!-- Profile info -->
                                 <div class="space-y-1 justify-center w-full mt-3 ml-3">
                                     <!-- User basic-->
                                     <div>
                                         <h2 class="text-xl leading-6 font-bold">NAMA TOKO</h2>
-                                        <p class="text-sm leading-5 font-medium text-gray-600">@NAMA USER</p>
+                                        <p class="text-sm leading-5 font-medium text-gray-600">NAMA USER</p>
                                     </div>
                                     <!-- Description and others -->
                                     <div class="mt-3">
-                                        <p class="leading-tight mb-2">MAKANAN / FASHION / ELEKTRONIK <br>Toko yang bersedia
+                                        <p class="leading-tight mb-2">MAKANAN / FASHION / ELEKTRONIK <br>Toko yang
+                                            bersedia
                                             melakukan apapun <b>YOI</b> </p>
                                         <div class="text-gray-600 flex">
-                                            <span class="flex mr-2"><svg class="h-5 w-5 text-gray-700" viewBox="0 0 24 24"
-                                                    fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
-                                                <g>
-                                                    <path
-                                                        d="M11.96 14.945c-.067 0-.136-.01-.203-.027-1.13-.318-2.097-.986-2.795-1.932-.832-1.125-1.176-2.508-.968-3.893s.942-2.605 2.068-3.438l3.53-2.608c2.322-1.716 5.61-1.224 7.33 1.1.83 1.127 1.175 2.51.967 3.895s-.943 2.605-2.07 3.438l-1.48 1.094c-.333.246-.804.175-1.05-.158-.246-.334-.176-.804.158-1.05l1.48-1.095c.803-.592 1.327-1.463 1.476-2.45.148-.988-.098-1.975-.69-2.778-1.225-1.656-3.572-2.01-5.23-.784l-3.53 2.608c-.802.593-1.326 1.464-1.475 2.45-.15.99.097 1.975.69 2.778.498.675 1.187 1.15 1.992 1.377.4.114.633.528.52.928-.092.33-.394.547-.722.547z">
-                                                    </path>
-                                                    <path
-                                                        d="M7.27 22.054c-1.61 0-3.197-.735-4.225-2.125-.832-1.127-1.176-2.51-.968-3.894s.943-2.605 2.07-3.438l1.478-1.094c.334-.245.805-.175 1.05.158s.177.804-.157 1.05l-1.48 1.095c-.803.593-1.326 1.464-1.475 2.45-.148.99.097 1.975.69 2.778 1.225 1.657 3.57 2.01 5.23.785l3.528-2.608c1.658-1.225 2.01-3.57.785-5.23-.498-.674-1.187-1.15-1.992-1.376-.4-.113-.633-.527-.52-.927.112-.4.528-.63.926-.522 1.13.318 2.096.986 2.794 1.932 1.717 2.324 1.224 5.612-1.1 7.33l-3.53 2.608c-.933.693-2.023 1.026-3.105 1.026z">
-                                                    </path>
-                                                </g></svg> <a href="https://ricardoribeirodev.com/personal/" target="#"
-                                                    class="leading-5 ml-1 text-blue-400">www.RicardoRibeiroDEV.com</a>
-                                            </span>
+                                            <div class="flex flex-wrap overflow-hidden lg:-mx-2">
+                                                
+                                                <div class="w-full overflow-hidden lg:my-2 lg:px-2">
+                                                    <span class="flex mr-2"><svg class="h-5 w-5 text-gray-700"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+                                                        <g>
+                                                            <path
+                                                                d="M11.96 14.945c-.067 0-.136-.01-.203-.027-1.13-.318-2.097-.986-2.795-1.932-.832-1.125-1.176-2.508-.968-3.893s.942-2.605 2.068-3.438l3.53-2.608c2.322-1.716 5.61-1.224 7.33 1.1.83 1.127 1.175 2.51.967 3.895s-.943 2.605-2.07 3.438l-1.48 1.094c-.333.246-.804.175-1.05-.158-.246-.334-.176-.804.158-1.05l1.48-1.095c.803-.592 1.327-1.463 1.476-2.45.148-.988-.098-1.975-.69-2.778-1.225-1.656-3.572-2.01-5.23-.784l-3.53 2.608c-.802.593-1.326 1.464-1.475 2.45-.15.99.097 1.975.69 2.778.498.675 1.187 1.15 1.992 1.377.4.114.633.528.52.928-.092.33-.394.547-.722.547z">
+                                                            </path>
+                                                            <path
+                                                                d="M7.27 22.054c-1.61 0-3.197-.735-4.225-2.125-.832-1.127-1.176-2.51-.968-3.894s.943-2.605 2.07-3.438l1.478-1.094c.334-.245.805-.175 1.05.158s.177.804-.157 1.05l-1.48 1.095c-.803.593-1.326 1.464-1.475 2.45-.148.99.097 1.975.69 2.778 1.225 1.657 3.57 2.01 5.23.785l3.528-2.608c1.658-1.225 2.01-3.57.785-5.23-.498-.674-1.187-1.15-1.992-1.376-.4-.113-.633-.527-.52-.927.112-.4.528-.63.926-.522 1.13.318 2.096.986 2.794 1.932 1.717 2.324 1.224 5.612-1.1 7.33l-3.53 2.608c-.933.693-2.023 1.026-3.105 1.026z">
+                                                            </path>
+                                                        </g></svg> <a href="https://ricardoribeirodev.com/personal/"
+                                                            target="#"
+                                                            class="leading-5 ml-1 text-blue-400">www.RicardoRibeiroDEV.com</a>
+                                                    </span>
+                                                </div>
+                                                <div class="w-full overflow-hidden lg:my-2 lg:px-2">
+                                                    <span class="flex mr-2"><svg class="h-5 w-5 text-black"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                                                        </svg> <a href="https://ricardoribeirodev.com/personal/"
+                                                            target="#"
+                                                            class="leading-5 ml-1 text-blue-400">www.RicardoRibeiroDEV.com</a>
+                                                    </span>
+                                                </div>
+                                                <div class="w-full overflow-hidden lg:my-2 lg:px-2">
+                                                    <span class="flex mr-2"><svg class="h-5 w-5 text-black"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                                                        </svg> <a href="https://ricardoribeirodev.com/personal/"
+                                                            target="#"
+                                                            class="leading-5 ml-1 text-blue-400">www.RicardoRibeiroDEV.com</a>
+                                                    </span>
+                                                </div>
+                                            </div>
                                             <span class="flex mr-2"><svg viewBox="0 0 24 24" class="h-5 w-5 paint-icon">
                                                     <g>
                                                         <path
@@ -92,75 +131,74 @@
                                                 </svg> <span class="leading-5 ml-1">Joined December, 2019</span></span>
                                         </div>
                                     </div>
-    
+
                                 </div>
                             </div>
                             <hr class="border-gray-400">
                         </div>
-    
-    
+
+
                     </div>
-    
-                    <div class="my-3 px-3 w-full overflow-hidden md:w-1/2">
-                        <div class="w-screen bg-white flex flex-row flex-wrap">
-                            <div class="w-full md:w-5/12">
-                                <div class="bg-white rounded shadow">
-                                    <div class="border-b p-3">
-                                        <h5 class="font-bold uppercase text-gray-600">Grafik penghasilan</h5>
-                                    </div>
-                                    <div class="p-5">
-                                        <canvas id="chartjs-0" class="chartjs" width="undefined"
-                                            height="undefined"></canvas>
-                                        <script>
-                                            new Chart(document.getElementById("chartjs-0"), {
-                                                "type": "line",
-                                                "data": {
-                                                    "labels": ["January", "February", "March", "April", ],
-                                                    "datasets": [{
-                                                        "label": "Views",
-                                                        "data": [65, 59, 80, 81, ],
-                                                        "fill": false,
-                                                        "borderColor": "rgb(239, 68, 68)",
-                                                        "lineTension": 0.1
-                                                    }]
-                                                },
-                                                "options": {}
-                                            });
-    
-                                        </script>
-                                    </div>
-                                </div>
+
+
+                </div>
+
+                <div class="grid gap-6 mb-8 md:grid-cols-2">
+                    <!-- Doughnut/Pie chart -->
+                    <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
+                            Doughnut/Pie
+                        </h4>
+                        <canvas id="pie"></canvas>
+                        <div class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
+                            <!-- Chart legend -->
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 mr-1 bg-blue-600 rounded-full"></span>
+                                <span>Shirts</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 mr-1 bg-teal-500 rounded-full"></span>
+                                <span>Shoes</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 mr-1 bg-purple-600 rounded-full"></span>
+                                <span>Bags</span>
                             </div>
                         </div>
                     </div>
-                    <div class="my-3 px-3 w-full overflow-hidden md:w-1/2">
-                        <div class="w-screen bg-white flex flex-row flex-wrap">
-                            <div class=" w-full md:w-5/12">
-                                <!--Graph Card-->
-                                <div class="bg-white rounded">
-                                    <div class="border-b p-3">
-                                        <h5 class="font-bold uppercase text-gray-600">Graph</h5>
-                                    </div>
-                                    <div class="p-1"><canvas id="chartjs-4" class="chartjs" width="200px"></canvas>
-                                        <script>
-                                            new Chart(document.getElementById("chartjs-4"), {
-                                                "type": "doughnut",
-                                                "data": {
-                                                    "labels": ["fashion", "makanan", "elektronik"],
-                                                    "datasets": [{
-                                                        "label": "Issues",
-                                                        "data": [300, 50, 100],
-                                                        "backgroundColor": ["rgb(255, 99, 132)",
-                                                            "rgb(54, 162, 235)", "rgb(255, 205, 86)"
-                                                        ]
-                                                    }]
-                                                }
-                                            });
-    
-                                        </script>
-                                    </div>
-                                </div>
-                                <!--/Graph Card-->
+                    <!-- Lines chart -->
+                    <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
+                            Lines
+                        </h4>
+                        <canvas id="line"></canvas>
+                        <div class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
+                            <!-- Chart legend -->
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 mr-1 bg-teal-500 rounded-full"></span>
+                                <span>Organic</span>
+                            </div>
+                            {{-- <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 mr-1 bg-purple-600 rounded-full"></span>
+                                <span>Paid</span>
+                            </div> --}}
+                        </div>
+                    </div>
+                    <!-- Bars chart -->
+                    <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
+                            Bars
+                        </h4>
+                        <canvas id="bars"></canvas>
+                        <div class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
+                            <!-- Chart legend -->
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 mr-1 bg-teal-500 rounded-full"></span>
+                                <span>Shoes</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="inline-block w-3 h-3 mr-1 bg-purple-600 rounded-full"></span>
+                                <span>Bags</span>
                             </div>
                         </div>
                     </div>
@@ -168,7 +206,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
 
 

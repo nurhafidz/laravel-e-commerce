@@ -100,7 +100,11 @@
         </div>
         <hr>
         <div class="flex">
-            <a href="{{url('/checkout')}}" class=" mt-5 text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg">Checkout</a>
+            @if (count($carts) != 0)
+                <a href="{{url('/checkout')}}" class=" mt-5 text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg">Checkout</a>
+            @else
+                <button type="button" href="#" disabled class=" cursor-not-allowed  mt-5 text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg">Checkout</button>
+            @endif
         </div>
         
     </div>

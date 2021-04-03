@@ -6,9 +6,9 @@
 <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
     <!-- Desktop sidebar -->
     <livewire:adminnav>
-        <form action="{{route('admin.store')}}" method="post" enctype="multipart/form-data">
-            @csrf
-            <main class="h-full overflow-y-auto">
+        <main class="h-full overflow-y-auto">
+                <form action="{{route('admin.store')}}" method="post" enctype="multipart/form-data">
+                    @csrf
                 <div class="container px-6 mx-auto grid">
                 <div class="container grid px-6 mx-auto mb-10 mt-5">
                     <!-- component -->
@@ -167,8 +167,8 @@
                 </footer>
             </div>
         </div>
-    </div>
     </form>
+    </div>
 </div>
 <style>
     .select2-container--default .select2-selection--single {

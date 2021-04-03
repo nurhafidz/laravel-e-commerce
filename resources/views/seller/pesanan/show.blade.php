@@ -8,13 +8,20 @@
             <div class="md:w-2/12">
                 <livewire:sellerside>
             </div>
-            <div class="w-full md:w-10/12">
+			@php $a = Auth::user()->store->name; $storename = str_replace(' ','-',$a) @endphp
+            <div class="w-full md:w-10/12 p-2 ">
+				<div class="flex flex-wrap bg-white">
+					<div class="w-full ">
+						<div class="flex justify-end p-2">
+							<a href="{{url('/seller/'.$storename.'/pesanan/'.$orderdetail->id.'/print')}}" class="bg-red-500 hover:bg-red-700 p-1 px-5 rounded-md text-white"><i class="fa fa-print" aria-hidden="true"></i>print</a>
+						</div>
+					</div>
+				</div>
 				<div class="grid grid-rows-3 gap-4">
                @if ($orderdetail->status == "2" || $orderdetail->status == "1")
-               
 					<div class="row-span-3">
 						<div class="max-w-sm w-full lg:max-w-full lg:flex shadow-lg ">
-                     @php $a = Auth::user()->store->name; $storename = str_replace(' ','-',$a) @endphp
+                     
                      @if ($getinvoice['status'] == "PAID")
                      <div class=" bg-white rounded p-4 flex flex-col justify-between leading-normal">
                         <div class="grid grid-cols-3 gap-4 justify-items-end">
@@ -37,13 +44,13 @@
                                     @method('put')
                                     <div class="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1">
 
-                                       <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 block text-sm">
+                                       <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 text-sm inline">
                                           <span class="text-gray-700 dark:text-gray-400">No resi</span>
                                           <input name="tracking_number" type="text" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="12345" />
                                        </div>
 
-                                       <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2">
-                                          <button class="flex items-center justify-between px-4 text-md font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green" id="change status" name="status" value="3">
+                                       <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 inline">
+                                          <button class="flex py-5 items-center justify-between px-4 text-md font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green" id="change status" name="status" value="3">
                                              Pesanan di kirim
                                           </button>
                                        </div>
@@ -56,12 +63,12 @@
                               @break
                            @default
                            
-                           </div>
-                        @endswitch
-                        @endif
-                        </div>
-							</div>
+						   @endswitch
 						</div>
+					</div>
+                        @endif
+							</div>
+						
 					</div>
                @endif
 					<div class="row-span-3">
@@ -168,7 +175,7 @@
 								</div>
 							</div>
                   </div>@endif
-               </div>
+               		</div>
 				</div>
          </div>
          

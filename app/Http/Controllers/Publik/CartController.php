@@ -44,7 +44,6 @@ class CartController extends Controller
                     
                     $jml=$ker2->qty+$request->qty;
                     $keranjang=Cart::findorFail($ker2->id);
-                    
                     $keranjang->user_id= auth()->id();
                     $keranjang->product_id= $request->product_id;
                     $keranjang->qty = $jml;
@@ -288,10 +287,10 @@ class CartController extends Controller
             'external_id' => Str::random(4) . '-' . time(),
             'payer_email' => $email,
             'description' => 'Bealajar',
-            'merchant_profile_picture_url' => 'http://localhost:8000/logo.png',
+            'merchant_profile_picture_url' => env('APP_URL').'logo.png',
             'amount' => $total,
-            'failure_redirect_url'=>'http://localhost:8000/payment/fail',
-            'success_redirect_url'=>'http://localhost:8000/payment/success'
+            'failure_redirect_url'=>env('APP_URL').'payment/fail',
+            'success_redirect_url'=>env('APP_URL').'payment/success'
         ];
         
 

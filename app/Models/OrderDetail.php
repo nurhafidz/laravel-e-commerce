@@ -33,4 +33,8 @@ class OrderDetail extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+    public function review()
+    {
+        return $this->belongsTo('App\Models\Review');
+    }
 }

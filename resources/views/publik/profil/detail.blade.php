@@ -49,7 +49,7 @@
                     <div class="max-w-xl rounded overflow-hidden shadow-lg">
                         <div class="px-6 py-4">
                             
-                            <lottie-player src="https://assets10.lottiefiles.com/datafiles/RzKl3dNS5JLA14D/data.json" class=" w-2/3 block mx-auto mb-5 mt-5 object-cover object-center rounded gambaraja" mode="bounce" background="transparent"  speed="0.8" loop  autoplay></lottie-player>
+                            <lottie-player src="https://assets6.lottiefiles.com/datafiles/RzKl3dNS5JLA14D/data.json" class=" w-2/3 block mx-auto mb-5 mt-5 object-cover object-center rounded gambaraja" mode="bounce" background="transparent"  speed="0.8" loop  autoplay></lottie-player>
                             <div class="font-bold text-xl mb-2">Jenis Kelamin</div>
                             @error('gender')
                                 <span class="invalid-feedback" role="alert">
@@ -83,7 +83,7 @@
                 <div class="flex justify-center">
                     <div class="max-w-xl rounded overflow-hidden shadow-lg">
                         <div class="px-6 py-4">
-                            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_UTtnTR.json" class=" w-2/3 block mx-auto mb-5 mt-5 object-cover object-center rounded" mode="bounce" background="transparent"  speed="0.8"  style="width: 250px; height: 250px;" loop  autoplay></lottie-player>
+                            <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_UTtnTR.json" class=" w-2/3 block mx-auto mb-5 mt-5 object-cover object-center rounded" mode="bounce" background="transparent"  speed="0.8"  style="width: 250px; height: 250px;" loop  autoplay></lottie-player>
                             {{-- <div class="font-bold text-xl mb-2">Tempat </div> --}}
                             <div class="flex flex-wrap -mx-2 overflow-hidden">
 
@@ -105,7 +105,7 @@
                                         </span>
                                     @enderror
                                     <div class="font-bold text-xl mb-2">Tanggal lahir</div>
-                                    <input type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('tgl_lahir') is-invalid @enderror" name="tgl_lahir" id="tgl_lahir" placeholder="Tanggal lahir" value="{{ old('tgl_lahir') }}"> 
+                                    <input type="date" class="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('tgl_lahir') is-invalid @enderror" name="tgl_lahir" id="tgl_lahir" placeholder="Tanggal lahir" value="{{ old('tgl_lahir') }}"> 
                                 </div>
 
                             </div>
@@ -250,7 +250,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <p>buka whatsapp pada no +621xxxxxxx92 kemudian masukkan kode berikut </p>
+                                    <p>buka whatsapp kemudian masukkan kode berikut </p>
                                     <div class="mt-4 flex items-center justify-center" id="otp" >
                                     <input
                                         class="m-2 w-10 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline border-b-2 "
@@ -300,142 +300,33 @@
 @endsection
 
 @push('script')
+
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <script src="{{ asset('js/detailuser.js') }}" data-turbolinks-track="true"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        
-        $('#ajaxBtn').click(function(){
-        var code = $( "#phonecode" ).val();
-        var no = $( "#phonenumber" ).val();
-        $.get('/otp/create',   // url
-            { pcode:code,pno:no}, // data to be submit
-            function(data, status, jqXHR) {// success callback
-                    $('#demo2').append('status: ' + status);
-            });
-            $("#ajaxBtn").attr("disabled", "disabled");
-            setTimeout(function() {
-                $("#ajaxBtn").removeAttr("disabled");
-            }, 10 * 60 * 1000);
-            
-        });
-    });
-</script>
-<script>
-    function getTimeRemaining(endtime) {
-        var t = Date.parse(endtime) - Date.parse(new Date());
-        var seconds = Math.floor((t / 1000) % 60);
-        var minutes = Math.floor((t / 1000 / 60) % 60);
-        
-        return {
-        'total': t,
-        'minutes': minutes,
-        'seconds': seconds
-        };
-    }
-
-    function initializeClock(id, endtime) {
-        var clock = document.getElementById(id);
-        var minutesSpan = clock.querySelector('.minutes');
-        var secondsSpan = clock.querySelector('.seconds');
-
-        function updateClock() {
-        var t = getTimeRemaining(endtime);
-        minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-            if (t.total <= 0) {
-                clearInterval(timeinterval);
-            }
-        }
-
-        updateClock();
-        var timeinterval = setInterval(updateClock, 1000);
-    }
-
-    $('#ajaxBtn').click(function(){
-        var deadline = new Date(Date.parse(new Date()) + 10 * 60 * 1000);
-        initializeClock('countdown', deadline); 
-        $("#tutor").css("display","none");
-        $("#tutor2").css("display","block");
-        setTimeout(function() {
-            $('#tutor').show()
-        }, 10 * 60 * 1000);
-        setTimeout(function() {
-            $('#tutor2').hide()
-        }, 10 * 60 * 1000);
-    });
-</script>
 <script>
     function OTPInput() {
-        const inputs = document.querySelectorAll('#otp > *[id]');
-        for (let i = 0; i < inputs.length; i++) {
-            inputs[i].addEventListener('keydown', function (event) {
-                if (event.key === "Backspace") {
-                    inputs[i].value = '';
-                    if (i !== 0)
-                        inputs[i - 1].focus();
-                } else {
-                    if (i === inputs.length - 1 && inputs[i].value !== '') {
-                        return true;
-                    } else if (event.keyCode > 47 && event.keyCode < 58) {
-                        inputs[i].value = event.key;
-                        if (i !== inputs.length - 1)
-                            inputs[i + 1].focus();
-                        event.preventDefault();
-                    } else if (event.keyCode > 64 && event.keyCode < 91) {
-                        inputs[i].value = String.fromCharCode(event.keyCode);
-                        if (i !== inputs.length - 1)
-                            inputs[i + 1].focus();
-                        event.preventDefault();
-                    }
-                }
-            });
-        }
-    }
-    OTPInput();
-
-</script>
-<script>
-    $('#btnotp').click(function(){
-        if ($('input[name=otp0]').val().length > 0){
-            if ($('input[name=otp1]').val().length > 0){
-                if ($('input[name=otp2]').val().length > 0){
-                    if ($('input[name=otp3]').val().length > 0){
-                        if ($('input[name=otp4]').val().length > 0){
-                            if ($('input[name=otp5]').val().length > 0){
-                                var a = $("input[name=otp0]").val();
-                                var c = $("input[name=otp2]").val();
-                                var b = $("input[name=otp1]").val();
-                                var d = $("input[name=otp3]").val();
-                                var e = $("input[name=otp4]").val();
-                                var f = $("input[name=otp5]").val();
-                                $.ajax({
-                                    type: "POST",
-                                    url: '/otp/check',
-                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                    data: {a:a,b:b,c:c,d:d,e:e,f:f},
-                                    dataType: "json",
-                                    success: function(data) {
-                                        console.log(data);
-                                        if (data['status'] == 1) {
-                                            $("#otput").show();
-                                            $("#otput").html('<div class="my-2 px-2 w-full md:w-full overflow-hidden"><div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert"><div class="flex"><div class="py-1"><svg class=" h-6 w-6 text-teal-500 mr-4"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />  <polyline points="22 4 12 14.01 9 11.01" /></svg></div><div><p class="font-bold">Sukses</p><p class="text-sm">No Telepon sudah terhubung</p></div></div></div</div>');
-                                            $("#otpin").hide();
-                                            $("#simpan1").html('<button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" required>Simpan</button>');
-                                        } else {
-                                            $('#alerter').show();
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    }
+    const inputs = document.querySelectorAll("#otp > *[id]");
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener("keydown", function(event) {
+            if (event.key === "Backspace") {
+                inputs[i].value = "";
+                if (i !== 0) inputs[i - 1].focus();
+            } else {
+                if (i === inputs.length - 1 && inputs[i].value !== "") {
+                    return true;
+                } else if (event.keyCode > 47 && event.keyCode < 58) {
+                    inputs[i].value = event.key;
+                    if (i !== inputs.length - 1) inputs[i + 1].focus();
+                    event.preventDefault();
+                } else if (event.keyCode > 64 && event.keyCode < 91) {
+                    inputs[i].value = String.fromCharCode(event.keyCode);
+                    if (i !== inputs.length - 1) inputs[i + 1].focus();
+                    event.preventDefault();
                 }
             }
-        }
-    });
-    
-    
+        });
+    }
+}
+OTPInput();
 </script>
 @endpush

@@ -171,10 +171,10 @@
 
 
 <script>
-// window.setInterval(function(){
-//     var elem = document.getElementById('messages2');
-//     elem.scrollTop = elem.scrollHeight;
-// }, 1000);
+window.setInterval(function(){
+    var elem = document.getElementById('messages2');
+    elem.scrollTop = elem.scrollHeight;
+}, 1000);
 </script>
 
 </div>

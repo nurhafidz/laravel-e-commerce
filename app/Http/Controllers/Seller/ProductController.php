@@ -24,7 +24,7 @@ class ProductController extends Controller
         $c =str_replace('-', ' ', $storename);
         if($checkuser == $c){
             $b = Store::where('name',$c)->firstOrFail();
-            $data['products'] = Product::where('store_id',$b->id)->latest()->paginate(12);
+            $data['products'] = Product::where('store_id',$b->id)->whereNotIn('status',[3])->latest()->paginate(12);
             return view('seller.productindex',$data);
         }
         else{
@@ -75,6 +75,8 @@ class ProductController extends Controller
                 }
             }
             $imagename = implode("|",$data);
+            $x = $request->category2;
+
             $product->name =$request->name;
             $product->image =$imagename;
             $product->store_id =Auth::user()->store->id;
@@ -84,7 +86,7 @@ class ProductController extends Controller
             $product->weight =$request->weight;
             $product->harga =$request->price;
             $product->description =$request->desc;
-            $product->category_id =$request->category;
+            $product->category_id =implode('|',$x);
 
             $product->save();
             return redirect()->route('product.index',$storename);
@@ -127,13 +129,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($storename,$id)
     {
-        {
-            $product=Product::findorfail($id);
-    
-            return view('seller.editproduk',compact('product'));
-        }
+        $c =str_replace('-', ' ', $storename);
+        $b = Store::where('name',$c)->firstOrFail();
+        $get = str_replace('-', ' ', $id);
+        $data['product'] = Product::where('store_id',$b->id)->where('name', $get)->firstOrFail();
+        $data['category'] = Category::with('children')->whereNull('parent_id')->get();
+        // $product=Product::findorfail($id);
+        return view('seller.product.edit',$data);
+        
     }
 
     /**
@@ -143,9 +148,49 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $storename,$id)
     {
-        //
+        $c =str_replace('-', ' ', $storename);
+        $b = Store::where('name',$c)->firstOrFail();
+        $get = str_replace('-', ' ', $id);
+        $checkuser = Auth::user()->store->name;
+        if($checkuser == $c){
+            $product = Product::where('store_id',$b->id)->where('name', $get)->firstOrFail();
+            if($request->file('image')!=NULL){
+                if($request->hasfile('image'))
+                {
+                    foreach($request->file('image') as $key=>$file)
+                    {
+                        $name1 = $key+time().'.'.$file->extension();
+                        $name = $storename.'-'.$name1;
+                        $resize_image = Image::make($file->getRealPath());
+                        $resize_image->resize(700, 700)->save(public_path().'/image/product/'. $name);
+                        
+                        $data[] = $name;  
+                    }
+                }
+                $imagename = implode("|",$data);
+                $product->image =$imagename;
+            }
+            $x = $request->category2;
+            $product->name =$request->name;
+            $product->store_id =Auth::user()->store->id;
+            $product->status = "1" ;
+            $product->status_product = $request->status_product ;
+            $product->stock =$request->stock;
+            $product->weight =$request->weight;
+            $product->harga =$request->price;
+            $product->description =$request->desc;
+            $product->category_id =implode('|',$x);
+
+            $product->update();
+            return redirect()->route('product.index',$storename);
+
+            
+        }
+        else{
+            return abort(404);
+        }
     }
 
     /**
@@ -154,10 +199,12 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($storename,$id)
     {
-        //
+        $prod=Product::findorfail($id);
+        $prod->status=3;
+        $prod->save();
+        
+         return redirect()->route('product.index',$storename);
     }
-
-  
 }
